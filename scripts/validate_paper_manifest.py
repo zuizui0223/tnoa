@@ -22,18 +22,22 @@ REQUIRED_REPO_FILES = (
     "paper_manifest.json",
     "references.bib",
     "requirements-figures.txt",
+    "manuscript/TNOA_P1_DRAFT.md",
     "docs/CONCEPTUAL_FRAMEWORK.md",
     "docs/NOVELTY_POSITIONING.md",
     "docs/LITERATURE_EVIDENCE_MAP.md",
+    "docs/FINAL_PRIOR_ART_AUDIT.md",
     "docs/REVIEWER_ATTACK_MATRIX.md",
     "docs/TRANSFERABILITY_TABLE.md",
     "docs/CLAIM_BOUNDARY.md",
     "docs/CLAIM_TRACEABILITY.md",
+    "docs/FINAL_CLAIM_AUDIT.md",
     "docs/SOURCE_PROVENANCE.md",
     "docs/METHOD_PAPER_BLUEPRINT.md",
     "docs/FIGURE_PLAN.md",
     "docs/FIGURE_VALIDATION.md",
     "scripts/build_paper_figures.py",
+    "scripts/audit_manuscript_claims.py",
 )
 
 REQUIRED_LOCKED_IDS = {
@@ -49,12 +53,19 @@ def fail(message: str) -> None:
     raise SystemExit(f"TNOA manifest validation failed: {message}")
 
 
+def require_file(path: str, label: str) -> None:
+    if not path or not (ROOT / path).is_file():
+        fail(f"missing or invalid {label}: {path!r}")
+
+
 def main() -> None:
     for relative in REQUIRED_REPO_FILES:
         if not (ROOT / relative).is_file():
             fail(f"missing required repository file: {relative}")
 
     payload = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    if payload.get("schema") != "tnoa-paper-manifest-v5":
+        fail("manifest schema must be tnoa-paper-manifest-v5")
     if payload.get("paper_generation") != "TNOA-P1":
         fail("paper_generation must be TNOA-P1")
     if "closed-world methods paper" not in str(payload.get("scope", "")):
@@ -109,6 +120,7 @@ def main() -> None:
         "field_absence_certification",
         "universal_pi3_law",
         "universal_optimal_abstention",
+        "component_level_priority",
     )
     for key in required_false:
         if boundary.get(key) is not False:
@@ -117,20 +129,36 @@ def main() -> None:
         fail("closed_world_method_claims must remain true")
 
     literature = payload.get("literature_positioning", {})
-    if literature.get("status") != "initial_evidence_map_complete_not_systematic_review":
-        fail("literature positioning must not be mislabeled as a systematic review")
-    for key in ("evidence_map", "reviewer_attack_matrix", "bibliography", "transferability_map"):
-        path = literature.get(key)
-        if not path or not (ROOT / path).is_file():
-            fail(f"literature positioning path missing or invalid: {key}")
+    if literature.get("status") != "targeted_final_prior_art_audit_complete_not_systematic_review":
+        fail("literature positioning must record completed targeted audit without claiming systematic review")
+    for key in (
+        "evidence_map",
+        "final_prior_art_audit",
+        "reviewer_attack_matrix",
+        "bibliography",
+        "transferability_map",
+    ):
+        require_file(str(literature.get(key, "")), f"literature positioning path {key}")
+    if literature.get("absolute_priority_claimed") is not False:
+        fail("absolute historical priority must remain unclaimed")
+    if literature.get("quantitative_cross_system_transfer_claimed") is not False:
+        fail("quantitative cross-system transfer must remain unclaimed")
+
+    reproducibility = payload.get("reproducibility", {})
+    for key in (
+        "claim_traceability",
+        "entry_point",
+        "manifest_validator",
+        "manuscript_claim_scanner",
+        "ci_workflow",
+    ):
+        require_file(str(reproducibility.get(key, "")), f"reproducibility path {key}")
 
     figures = payload.get("figure_package", {})
     if figures.get("status") != "initial_paper_grade_quantitative_set_rendered_and_visually_audited":
         fail("figure_package status must record the render-audited quantitative set")
     for key in ("builder", "plan", "validation", "requirements"):
-        path = figures.get(key)
-        if not path or not (ROOT / path).is_file():
-            fail(f"figure-package path missing or invalid: {key}")
+        require_file(str(figures.get(key, "")), f"figure-package path {key}")
     if figures.get("insepi_source_commit") != repos["insepi"]["main_commit_at_seed"]:
         fail("figure-package InsePi commit must match the pinned paper source commit")
     if figures.get("locked_phase_surface_sha256") != final.get("result_sha256"):
@@ -147,18 +175,27 @@ def main() -> None:
     if figures.get("field_claims_from_figures_allowed") is not False:
         fail("Paper-1 figures must not authorize field claims")
 
+    manuscript = payload.get("manuscript_package", {})
+    if manuscript.get("status") != "full_working_draft_instantiated_and_claim_audited":
+        fail("manuscript package must be instantiated and claim-audited")
+    for key in ("draft", "blueprint", "final_claim_audit"):
+        require_file(str(manuscript.get(key, "")), f"manuscript path {key}")
+    if manuscript.get("internal_result_provenance_tags") != "C1-C15":
+        fail("manuscript must retain C1-C15 internal result provenance tags")
+
     blockers = payload.get("submission_blockers")
-    if not isinstance(blockers, list):
-        fail("submission_blockers must be a list")
-    if any("paper-grade figure generation" in str(item) for item in blockers):
-        fail("render-audited figure package cannot remain listed as an unresolved blocker")
+    if blockers != []:
+        fail("scientific submission_blockers must be empty after final prior-art and claim audits")
+    editorial = payload.get("editorial_tasks_before_upload")
+    if not isinstance(editorial, list) or not editorial:
+        fail("editorial tasks must remain explicit rather than being called scientific blockers")
 
     print(
         "TNOA manifest OK: "
         f"{len(locked)} locked results, "
         f"{len(payload.get('retained_failures', []))} retained failures, "
         f"{len(stems)} quantitative figures, "
-        f"{len(blockers)} submission blockers"
+        "0 scientific submission blockers"
     )
 
 
