@@ -142,11 +142,15 @@ Field deployment and V15 empirical validation are external validation, not prere
 ## Repository map
 
 - [`docs/CONCEPTUAL_FRAMEWORK.md`](docs/CONCEPTUAL_FRAMEWORK.md) — definitions and inference logic.
-- [`docs/NOVELTY_POSITIONING.md`](docs/NOVELTY_POSITIONING.md) — what TNOA is and is not relative to neighbouring method families.
+- [`docs/NOVELTY_POSITIONING.md`](docs/NOVELTY_POSITIONING.md) — internal novelty framing.
+- [`docs/LITERATURE_EVIDENCE_MAP.md`](docs/LITERATURE_EVIDENCE_MAP.md) — evidence-backed comparison with selective classification, imperfect detection, state-space models, camera-trap detectability, adaptive sampling and sensor fusion.
+- [`docs/REVIEWER_ATTACK_MATRIX.md`](docs/REVIEWER_ATTACK_MATRIX.md) — likely reviewer objections and the manuscript evidence required to answer them.
 - [`docs/METHOD_PAPER_BLUEPRINT.md`](docs/METHOD_PAPER_BLUEPRINT.md) — manuscript architecture.
 - [`docs/CLAIM_BOUNDARY.md`](docs/CLAIM_BOUNDARY.md) — allowed, conditional and forbidden claims.
 - [`docs/SOURCE_PROVENANCE.md`](docs/SOURCE_PROVENANCE.md) — implementation/result provenance to PolliPi and InsePi.
+- [`references.bib`](references.bib) — initial nearest-method bibliography.
+- [`paper_manifest.json`](paper_manifest.json) — machine-readable source and submission state.
 
 ## Current status
 
-**Methods-paper extraction initiated.** The closed-world methodological result is substantially developed; literature positioning, paper-grade figure assembly, and a final reproducibility manifest remain before submission packaging.
+**Methods-paper extraction + initial literature positioning completed.** The central novelty is now framed as the integrated ecological sensing architecture and its tested decision geometry, not abstention, imperfect-detection correction, sensor fusion or adaptive sampling individually. Remaining submission work is paper-grade figure assembly, claim-to-artifact traceability, reproducibility entry point, transferability table, citation-completeness audit and final manuscript claim audit.
