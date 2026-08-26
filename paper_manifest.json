@@ -1,0 +1,115 @@
+{
+  "schema": "tnoa-paper-manifest-v1",
+  "paper_generation": "TNOA-P1",
+  "scope": "closed-world methods paper; V15 field validation external",
+  "source_repositories": {
+    "pollipi": {
+      "repository": "zuizui0223/pollipi",
+      "main_commit_at_seed": "f3b266897f3e9139e6c3fe9ce6b645e25371e092",
+      "target_evidence_adapter": "packages/analysis/src/pollipi_analysis/target_evidence.py",
+      "target_evidence_adapter_git_blob_sha1": "4be5f7c88edda1dda3b62e8a95529386d702bb47"
+    },
+    "insepi": {
+      "repository": "zuizui0223/insepi",
+      "main_commit_at_seed": "1664a190cec47142e8d14cc5157302a7af18d019"
+    }
+  },
+  "locked_results": [
+    {
+      "id": "v14a2_first_spatiotemporal_sweep",
+      "source_path": "benchmarks/v14a2_first_scientific_sweep_receipt.json",
+      "workflow_run_id": 32921177706,
+      "execution_commit": "9d4467c6c93f5b51fe46b250ede4e4e10d3e4bb3",
+      "artifact_digest": "sha256:11c0409e163183395410271141928777310137711f74fee7e9e0f6e500e32b72",
+      "role": "locked negative/refinement generation",
+      "paper_use": "dimensionless spatiotemporal design and failure of narrow Pi2/Pi5 collision hypothesis"
+    },
+    {
+      "id": "v14a2_corrected_observation_safe_audit",
+      "source_path": "benchmarks/v14a2_plateau_diagnosis_observation_safe_result.json",
+      "workflow_run_id": 32926639089,
+      "execution_commit": "74eb7aadc2d4b84b771baf9e4ed5a540da94cf47",
+      "artifact_digest": "sha256:52d7c2602db0eecf826d760cf760ac868c86e02032fbbfe53b469d217fb48075",
+      "role": "locked diagnostic",
+      "paper_use": "direct-visible representation defect versus indirect-only attribution ambiguity"
+    },
+    {
+      "id": "v14b_target_observer_freeze",
+      "source_path": "benchmarks/v14b_target_observer_direct_first_validation_v2_result.json",
+      "workflow_run_id": 32928566405,
+      "execution_commit": "791a58b30bfa2f7ac8acac20e654006ac8d3e0c8",
+      "artifact_id": 9592413407,
+      "artifact_digest": "sha256:7caade2a19b21d700cb21cb19b5955e611fcff6c984ecd44d72e9b2e322d0b6e",
+      "result_sha256": "c863dc123f3d6f7a624043e0626a776af371097814fd84226469139146c4c7eb",
+      "role": "frozen validation",
+      "paper_use": "direct-positive target support retained; indirect-only remains U without attribution"
+    },
+    {
+      "id": "v14b_nuisance_familywise_risk_freeze",
+      "source_path": "benchmarks/v14b_nuisance_familywise_risk_result.json",
+      "workflow_run_id": 32931223272,
+      "execution_commit": "42e6d58bea37f024f35a2aea21ef10b49070fa91",
+      "artifact_id": 9593286927,
+      "artifact_digest": "sha256:46777528229e45d01bea5195bdb271e7e764c87a16f378e25f2c4517cc928044",
+      "result_sha256": "e5f0fac6f0b5790192be46f923572e5f3f57b1913325d435a2f9f6320fb57617",
+      "role": "frozen validation",
+      "paper_use": "family-wise alpha=0.05 false-certainty decision contract",
+      "registered_summary": {
+        "alpha": 0.05,
+        "target_only_false_nuisance_attribution": 0.0,
+        "target_nuisance_coupled_false_nuisance_attribution": 0.044444444444444446,
+        "heldout_nuisance_coverage": 1.0
+      }
+    },
+    {
+      "id": "v14b_final_ternary_phase_surface",
+      "source_path": "benchmarks/v14b_frozen_ternary_phase_surface_result.json",
+      "workflow_run_id": 32932634622,
+      "execution_commit": "5f3456e543b32713745b06404290489d9239f373",
+      "artifact_id": 9593775550,
+      "artifact_digest": "sha256:66122ad367fc4f5334b4f4fa8756c9512f205ba4a1e18df3d1ac87a6176135fa",
+      "result_sha256": "1d2c7c1f8f7370aad3cdde4d9d9d47bf318b2a057b6f788d3a48df9ea8d16c34",
+      "role": "final frozen closed-world measurement",
+      "paper_use": "main B/T/N/U phase-surface result",
+      "registered_summary": {
+        "coordinate_count": 30625,
+        "world_count": 5880000,
+        "baseline_rate": 0.2302328231292517,
+        "target_rate": 0.42873333333333336,
+        "nuisance_rate": 0.08769761904761905,
+        "undetermined_total_rate": 0.2533362244897959,
+        "historical_no_support_label_rate": 0.026752891156462583,
+        "overlap_or_attribution_U_rate": 0.22658333333333333,
+        "forced_binary_false_negative_rate": 0.3569,
+        "observer_retuned": false
+      },
+      "semantic_note": "The source result uses the historical label undetermined_information_absent_rate. TNOA follows V14c and treats this as no-supported-evidence unless information absence is independently established."
+    }
+  ],
+  "retained_failures": [
+    {
+      "source_generation": "InsePi PR #40",
+      "reason": "target separability diagnostic invalidated by target truth leakage",
+      "paper_role": "supplementary falsification/provenance example; not evidence for target separability"
+    },
+    {
+      "source_generation": "InsePi PR #43",
+      "reason": "nuisance process ranking remained strong but inherited raw threshold failed coverage gate",
+      "paper_role": "motivates separation of representation from decision-scale contract"
+    }
+  ],
+  "paper_claim_boundary": {
+    "field_accuracy": false,
+    "field_absence_certification": false,
+    "universal_pi3_law": false,
+    "universal_optimal_abstention": false,
+    "closed_world_method_claims": true
+  },
+  "submission_blockers": [
+    "systematic neighbouring-method literature matrix",
+    "paper-grade figure generation from locked artifacts",
+    "claim-to-artifact traceability table",
+    "reproducibility entry point",
+    "final manuscript claim audit"
+  ]
+}
