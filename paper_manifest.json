@@ -1,5 +1,5 @@
 {
-  "schema": "tnoa-paper-manifest-v4",
+  "schema": "tnoa-paper-manifest-v5",
   "paper_generation": "TNOA-P1",
   "scope": "closed-world methods paper; V15 field validation external",
   "source_repositories": {
@@ -37,7 +37,7 @@
       "id": "v14b_target_observer_freeze",
       "source_path": "benchmarks/v14b_target_observer_direct_first_validation_v2_result.json",
       "workflow_run_id": 32928566405,
-      "execution_commit": "791a58b30bfa2f7ac8ac20e654006ac8d3e0c8",
+      "execution_commit": "791a58b30bfa2f7ac8acac20e654006ac8d3e0c8",
       "artifact_id": 9592413407,
       "artifact_digest": "sha256:7caade2a19b21d700cb21cb19b5955e611fcff6c984ecd44d72e9b2e322d0b6e",
       "result_sha256": "c863dc123f3d6f7a624043e0626a776af371097814fd84226469139146c4c7eb",
@@ -99,27 +99,34 @@
     }
   ],
   "literature_positioning": {
-    "status": "initial_evidence_map_complete_not_systematic_review",
+    "status": "targeted_final_prior_art_audit_complete_not_systematic_review",
     "evidence_map": "docs/LITERATURE_EVIDENCE_MAP.md",
+    "final_prior_art_audit": "docs/FINAL_PRIOR_ART_AUDIT.md",
     "reviewer_attack_matrix": "docs/REVIEWER_ATTACK_MATRIX.md",
     "bibliography": "references.bib",
     "transferability_map": "docs/TRANSFERABILITY_TABLE.md",
     "nearest_method_families": [
       "selective classification / reject option",
-      "imperfect detection / occupancy",
-      "state-space ecological observation models",
+      "conformal rejection",
+      "partial / set-valued reject options",
+      "open-set recognition",
+      "belief functions and evidential uncertainty",
+      "imperfect detection / occupancy including false-positive models",
+      "hierarchical and state-space ecological observation models",
       "camera-trap detection-process frameworks",
       "adaptive and preferential ecological sampling",
-      "sensor fusion and uncertainty-aware sensing"
+      "sensor fusion and conflict-aware sensing"
     ],
-    "central_defensible_novelty": "integrated process-preserving ecological sensing architecture plus frozen decision geometry, not invention of abstention, imperfect-detection correction, sensor fusion, or process/observation separation individually",
+    "central_defensible_novelty": "integrated process-preserving ecological sensor-decision architecture plus frozen dimensionless decision geometry; no component-level priority claim for abstention, imperfect detection, set-valued decisions, ignorance/conflict, sensor fusion, or process/observation separation",
     "cross_system_transfer_demonstrated_conceptually": true,
-    "quantitative_cross_system_transfer_claimed": false
+    "quantitative_cross_system_transfer_claimed": false,
+    "absolute_priority_claimed": false
   },
   "reproducibility": {
     "claim_traceability": "docs/CLAIM_TRACEABILITY.md",
     "entry_point": "reproduce/README.md",
     "manifest_validator": "scripts/validate_paper_manifest.py",
+    "manuscript_claim_scanner": "scripts/audit_manuscript_claims.py",
     "ci_workflow": ".github/workflows/validate.yml",
     "historical_one_shot_policy": "verify immutable protocol/result/receipt; do not replace locked results with later reruns"
   },
@@ -145,15 +152,28 @@
     "manual_data_geometry_editing_allowed": false,
     "field_claims_from_figures_allowed": false
   },
+  "manuscript_package": {
+    "status": "full_working_draft_instantiated_and_claim_audited",
+    "draft": "manuscript/TNOA_P1_DRAFT.md",
+    "blueprint": "docs/METHOD_PAPER_BLUEPRINT.md",
+    "final_claim_audit": "docs/FINAL_CLAIM_AUDIT.md",
+    "claim_audit_scope": "current repository draft; rerun after material revision",
+    "internal_result_provenance_tags": "C1-C15"
+  },
   "paper_claim_boundary": {
     "field_accuracy": false,
     "field_absence_certification": false,
     "universal_pi3_law": false,
     "universal_optimal_abstention": false,
+    "component_level_priority": false,
     "closed_world_method_claims": true
   },
-  "submission_blockers": [
-    "final citation-completeness audit and prior-art search against the literature evidence map",
-    "final manuscript claim audit"
+  "submission_blockers": [],
+  "editorial_tasks_before_upload": [
+    "finalize conceptual Figure 1 artwork without changing quantitative figure geometry",
+    "convert the working Markdown manuscript to target-journal format",
+    "complete author contributions, acknowledgements and submission metadata",
+    "perform final citation-style/reference-completeness pass after journal formatting",
+    "rerun final claim audit after any material manuscript revision"
   ]
 }
