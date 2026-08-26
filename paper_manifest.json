@@ -1,5 +1,5 @@
 {
-  "schema": "tnoa-paper-manifest-v2",
+  "schema": "tnoa-paper-manifest-v3",
   "paper_generation": "TNOA-P1",
   "scope": "closed-world methods paper; V15 field validation external",
   "source_repositories": {
@@ -116,6 +116,13 @@
     "cross_system_transfer_demonstrated_conceptually": true,
     "quantitative_cross_system_transfer_claimed": false
   },
+  "reproducibility": {
+    "claim_traceability": "docs/CLAIM_TRACEABILITY.md",
+    "entry_point": "reproduce/README.md",
+    "manifest_validator": "scripts/validate_paper_manifest.py",
+    "ci_workflow": ".github/workflows/validate.yml",
+    "historical_one_shot_policy": "verify immutable protocol/result/receipt; do not replace locked results with later reruns"
+  },
   "paper_claim_boundary": {
     "field_accuracy": false,
     "field_absence_certification": false,
@@ -126,8 +133,6 @@
   "submission_blockers": [
     "final citation-completeness audit and prior-art search against the literature evidence map",
     "paper-grade figure generation from locked artifacts",
-    "claim-to-artifact traceability table",
-    "reproducibility entry point",
     "final manuscript claim audit"
   ]
 }
