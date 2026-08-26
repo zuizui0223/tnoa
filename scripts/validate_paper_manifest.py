@@ -21,6 +21,7 @@ REQUIRED_REPO_FILES = (
     "README.md",
     "paper_manifest.json",
     "references.bib",
+    "requirements-figures.txt",
     "docs/CONCEPTUAL_FRAMEWORK.md",
     "docs/NOVELTY_POSITIONING.md",
     "docs/LITERATURE_EVIDENCE_MAP.md",
@@ -30,6 +31,8 @@ REQUIRED_REPO_FILES = (
     "docs/CLAIM_TRACEABILITY.md",
     "docs/SOURCE_PROVENANCE.md",
     "docs/METHOD_PAPER_BLUEPRINT.md",
+    "docs/FIGURE_PLAN.md",
+    "scripts/build_paper_figures.py",
 )
 
 REQUIRED_LOCKED_IDS = {
@@ -119,6 +122,20 @@ def main() -> None:
         path = literature.get(key)
         if not path or not (ROOT / path).is_file():
             fail(f"literature positioning path missing or invalid: {key}")
+
+    figures = payload.get("figure_generation", {})
+    if figures.get("status") not in {"builder_implemented_render_review_pending", "rendered_and_reviewed"}:
+        fail("figure_generation status is missing or invalid")
+    for key in ("builder", "plan", "requirements"):
+        path = figures.get(key)
+        if not path or not (ROOT / path).is_file():
+            fail(f"figure-generation path missing or invalid: {key}")
+    if figures.get("locked_phase_surface_sha256") != final.get("result_sha256"):
+        fail("figure-generation phase-surface SHA must match the final locked result")
+    expected_blobs = figures.get("expected_insepi_git_blobs", {})
+    for name in ("figure_data", "surface_result", "nuisance_risk"):
+        if not HEX40.fullmatch(str(expected_blobs.get(name, ""))):
+            fail(f"figure-generation expected Git blob missing/invalid: {name}")
 
     blockers = payload.get("submission_blockers")
     if not isinstance(blockers, list):
