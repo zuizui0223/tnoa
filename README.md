@@ -6,11 +6,11 @@ TNOA is a methods-paper repository for a process-preserving framework that asks 
 
 > **When is an ecological sensor entitled to make a biological decision, and when should it retain abstention?**
 
-The framework was developed from the PolliPi/InsePi programme, but this repository is not the Raspberry Pi runtime and is not a classifier package. PolliPi and InsePi remain the implementation/provenance sources; TNOA isolates the transferable methodological contribution.
+The framework was developed from the PolliPi/InsePi programme, but this repository is not the Raspberry Pi runtime and is not a classifier package. PolliPi and InsePi remain the implementation/provenance sources; TNOA isolates the transferable methodological contribution and its paper package.
 
 ## Core object
 
-The observed state is closed as
+The observed decision state is closed as
 
 \[
 B + \{T, N, U\},
@@ -47,14 +47,14 @@ Low T is not A−. Good O is not A−. N is not `1 - T`. O is not `1 - N`.
 2. **Process types, not cause lists.** Nuisance is defined by effects on inference—mimic, mask, corrupt attribution, degrade support—rather than an open-ended catalogue of wind, shadow, blur, etc.
 3. **Preserve superposition.** Real biological and exogenous processes can co-occur.
 4. **Abstention is an output, not a defect.** U is retained whenever evidence cannot safely support a unique conclusion.
-5. **Separate information absence from representation defect.** `no supported evidence` is not automatically proof that the world contained no informative structure.
+5. **Separate no support from proven information absence.** `no supported evidence` is not automatically proof that the world contained no informative structure.
 6. **Risk contracts replace inherited raw thresholds.** Operational boundaries are tied to tolerated false certainty, not score values that happen to work under an earlier representation.
 7. **Freeze before measurement.** Definitions, observers, thresholds and claim rules are frozen before one-shot or held-out evaluation.
 8. **Negative generations are retained.** Failed hypotheses remain part of the method history and constrain later claims.
 
 ## Dimensionless closed-world formulation
 
-The synthetic theory is expressed over dimensionless coordinates rather than absolute scales. The current core axes are:
+The synthetic theory is expressed over dimensionless coordinates rather than absolute scales:
 
 - \(\Pi_1\): observation-window length / target-process timescale;
 - \(\Pi_2\): nuisance-response timescale / target timescale;
@@ -65,7 +65,7 @@ The synthetic theory is expressed over dimensionless coordinates rather than abs
 
 The output is a response surface over this phase space, not a single performance number.
 
-## Locked closed-world result currently motivating the paper
+## Locked closed-world result
 
 The frozen V14b/V14c measurement generation evaluated **5,880,000 synthetic worlds** after target and nuisance observers were frozen.
 
@@ -76,17 +76,15 @@ Equal-grid / equal-regime aggregate decision rates were approximately:
 - nuisance: 0.0877;
 - abstention: 0.2533.
 
-Most U in the frozen design space was associated with overlap/attribution rather than simple lack of supported evidence. Observation duration did not make U vanish monotonically: longer observation can reveal genuine T+N co-occurrence and therefore increase attribution ambiguity even as raw information shortage decreases.
+Most U in the frozen design space was associated with overlap/attribution rather than simple lack of supported evidence. Observation duration did not make U vanish monotonically: longer observation can reveal genuine T+N co-occurrence and therefore increase attribution ambiguity even as the no-support component changes.
 
-The earlier hypothesis that ambiguity should peak narrowly near \(\Pi_2 \approx 1\) was falsified and retired. A stronger current interpretation is that identifiability depends on **attribution-channel availability and evidence geometry**, not timescale equality alone.
-
-The sharp \(\Pi_3=0\) versus \(\Pi_3>0\) boundary must be interpreted as a structural consequence of the frozen synthetic direct-channel rule, not as a universal ecological SNR law.
+The earlier hypothesis that ambiguity should peak narrowly near \(\Pi_2 \approx 1\) was falsified and retired. The sharp \(\Pi_3=0\) versus \(\Pi_3>0\) boundary is explicitly treated as a structural consequence of the frozen synthetic direct-channel rule, not a universal ecological SNR law.
 
 ## Relation to PolliPi and InsePi
 
 ### PolliPi
 
-PolliPi is the deployable local-first Raspberry Pi observer. Its portable target-evidence adapter currently exports the canonical states as ordinal positive target evidence:
+PolliPi is the deployable local-first Raspberry Pi observer. Its portable target-evidence adapter exports canonical states as ordinal positive target evidence:
 
 - `no_activity -> 0.0`
 - `environmental_noise -> 0.0`
@@ -101,7 +99,7 @@ InsePi contains the closed-world theory, process-preserving T/N/O logic, risk co
 
 ### TNOA
 
-TNOA extracts the general method from those implementations:
+TNOA extracts the general method and manuscript package:
 
 ```text
 world
@@ -115,42 +113,82 @@ B / T / N / U
 false-certainty-controlled claims
 ```
 
+## Novelty boundary after targeted prior-art audit
+
+TNOA does **not** claim to invent:
+
+- abstention / reject options;
+- partial or set-valued decisions;
+- open-set recognition;
+- ignorance / evidence conflict;
+- imperfect-detection correction;
+- nondetection ≠ absence;
+- process/observation separation;
+- false-positive/false-negative occupancy modeling;
+- sensor fusion;
+- adaptive ecological sampling.
+
+The defensible contribution is the **integrated ecological sensor-decision architecture plus its frozen dimensionless decision geometry**: positive non-complementary T/N, separate O, attribution-gated C, optional independently supported A−, preserved T+N coexistence, reasoned U, process-effect nuisance definitions, false-certainty calibration, and freeze/falsification provenance.
+
+See [`docs/FINAL_PRIOR_ART_AUDIT.md`](docs/FINAL_PRIOR_ART_AUDIT.md).
+
 ## Paper boundary
 
-The first TNOA paper is intended to be a **methods paper**, not a field-accuracy paper.
+Paper 1 is a **closed-world methods paper**, not a field-accuracy paper.
 
 It may claim:
 
-- a process-preserving observation ontology;
-- a formal separation of target, nuisance, observability and optional absence evidence;
-- a principled role for abstention;
-- locked simulation/benchmark evidence for the resulting phase geometry;
-- negative-result-preserving development and false-certainty risk contracts;
-- a reusable architecture for ecological sensing systems.
+- the process-preserving observation architecture;
+- formal separation of target, nuisance, observability and optional absence evidence;
+- locked simulation/benchmark evidence for the resulting decision geometry;
+- negative-result-preserving development;
+- false-certainty risk contracts;
+- broad conceptual transferability of the architecture.
 
-It must not claim, without field validation:
+It must not claim without external validation:
 
 - field visit-detection accuracy;
 - calibrated biological absence;
 - universal superiority over existing classifiers;
 - universal validity of PolliPi thresholds;
 - universal ecological significance of the synthetic \(\Pi_3\) boundary;
+- quantitative cross-system transfer;
 - pollination effectiveness.
 
 Field deployment and V15 empirical validation are external validation, not prerequisites for the closed-world methodological result.
 
 ## Repository map
 
+### Manuscript
+
+- [`manuscript/TNOA_P1_DRAFT.md`](manuscript/TNOA_P1_DRAFT.md) — full working Paper-1 draft.
+- [`docs/METHOD_PAPER_BLUEPRINT.md`](docs/METHOD_PAPER_BLUEPRINT.md) — manuscript architecture and current figure order.
+
+### Scientific framing and audit
+
 - [`docs/CONCEPTUAL_FRAMEWORK.md`](docs/CONCEPTUAL_FRAMEWORK.md) — definitions and inference logic.
-- [`docs/NOVELTY_POSITIONING.md`](docs/NOVELTY_POSITIONING.md) — internal novelty framing.
-- [`docs/LITERATURE_EVIDENCE_MAP.md`](docs/LITERATURE_EVIDENCE_MAP.md) — evidence-backed comparison with selective classification, imperfect detection, state-space models, camera-trap detectability, adaptive sampling and sensor fusion.
-- [`docs/REVIEWER_ATTACK_MATRIX.md`](docs/REVIEWER_ATTACK_MATRIX.md) — likely reviewer objections and the manuscript evidence required to answer them.
-- [`docs/METHOD_PAPER_BLUEPRINT.md`](docs/METHOD_PAPER_BLUEPRINT.md) — manuscript architecture.
-- [`docs/CLAIM_BOUNDARY.md`](docs/CLAIM_BOUNDARY.md) — allowed, conditional and forbidden claims.
-- [`docs/SOURCE_PROVENANCE.md`](docs/SOURCE_PROVENANCE.md) — implementation/result provenance to PolliPi and InsePi.
-- [`references.bib`](references.bib) — initial nearest-method bibliography.
-- [`paper_manifest.json`](paper_manifest.json) — machine-readable source and submission state.
+- [`docs/NOVELTY_POSITIONING.md`](docs/NOVELTY_POSITIONING.md) — novelty framing after targeted audit.
+- [`docs/LITERATURE_EVIDENCE_MAP.md`](docs/LITERATURE_EVIDENCE_MAP.md) — nearest-method evidence map.
+- [`docs/FINAL_PRIOR_ART_AUDIT.md`](docs/FINAL_PRIOR_ART_AUDIT.md) — final targeted prior-art boundary.
+- [`docs/REVIEWER_ATTACK_MATRIX.md`](docs/REVIEWER_ATTACK_MATRIX.md) — likely reviewer objections.
+- [`docs/TRANSFERABILITY_TABLE.md`](docs/TRANSFERABILITY_TABLE.md) — cross-domain conceptual mapping.
+- [`docs/CLAIM_BOUNDARY.md`](docs/CLAIM_BOUNDARY.md) — allowed and forbidden Paper-1 claims.
+- [`docs/CLAIM_TRACEABILITY.md`](docs/CLAIM_TRACEABILITY.md) — C1–C15 claim-to-artifact ledger.
+- [`docs/FINAL_CLAIM_AUDIT.md`](docs/FINAL_CLAIM_AUDIT.md) — audit of the instantiated draft.
+
+### Figures and reproducibility
+
+- [`docs/FIGURE_PLAN.md`](docs/FIGURE_PLAN.md) — quantitative figure contract.
+- [`docs/FIGURE_VALIDATION.md`](docs/FIGURE_VALIDATION.md) — source-lock and visual render audit.
+- [`scripts/build_paper_figures.py`](scripts/build_paper_figures.py) — locked-source figure builder.
+- [`scripts/validate_paper_manifest.py`](scripts/validate_paper_manifest.py) — repository manifest guard.
+- [`scripts/audit_manuscript_claims.py`](scripts/audit_manuscript_claims.py) — manuscript claim scanner.
+- [`reproduce/README.md`](reproduce/README.md) — reproduction policy.
+- [`references.bib`](references.bib) — nearest-method bibliography.
+- [`paper_manifest.json`](paper_manifest.json) — machine-readable source, claim and submission state.
 
 ## Current status
 
-**Methods-paper extraction + initial literature positioning completed.** The central novelty is now framed as the integrated ecological sensing architecture and its tested decision geometry, not abstention, imperfect-detection correction, sensor fusion or adaptive sampling individually. Remaining submission work is paper-grade figure assembly, claim-to-artifact traceability, reproducibility entry point, transferability table, citation-completeness audit and final manuscript claim audit.
+**Scientific Paper-1 package assembled and audited.** The repository now contains the full working manuscript, targeted final prior-art audit, C1–C15 claim traceability, locked quantitative figure builder/render audit, reproducibility guards, and a final claim audit. `paper_manifest.json` records **zero unresolved scientific submission blockers** for the current draft.
+
+Remaining work before actual journal upload is editorial/production work: finalize conceptual Figure 1, convert the Markdown draft to journal format, complete authorship/acknowledgement metadata, check final citation style, and rerun the claim audit after any material rewrite.
