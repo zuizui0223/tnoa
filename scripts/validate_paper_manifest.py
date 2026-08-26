@@ -32,6 +32,7 @@ REQUIRED_REPO_FILES = (
     "docs/SOURCE_PROVENANCE.md",
     "docs/METHOD_PAPER_BLUEPRINT.md",
     "docs/FIGURE_PLAN.md",
+    "docs/FIGURE_VALIDATION.md",
     "scripts/build_paper_figures.py",
 )
 
@@ -123,28 +124,40 @@ def main() -> None:
         if not path or not (ROOT / path).is_file():
             fail(f"literature positioning path missing or invalid: {key}")
 
-    figures = payload.get("figure_generation", {})
-    if figures.get("status") not in {"builder_implemented_render_review_pending", "rendered_and_reviewed"}:
-        fail("figure_generation status is missing or invalid")
-    for key in ("builder", "plan", "requirements"):
+    figures = payload.get("figure_package", {})
+    if figures.get("status") != "initial_paper_grade_quantitative_set_rendered_and_visually_audited":
+        fail("figure_package status must record the render-audited quantitative set")
+    for key in ("builder", "plan", "validation", "requirements"):
         path = figures.get(key)
         if not path or not (ROOT / path).is_file():
-            fail(f"figure-generation path missing or invalid: {key}")
+            fail(f"figure-package path missing or invalid: {key}")
+    if figures.get("insepi_source_commit") != repos["insepi"]["main_commit_at_seed"]:
+        fail("figure-package InsePi commit must match the pinned paper source commit")
     if figures.get("locked_phase_surface_sha256") != final.get("result_sha256"):
-        fail("figure-generation phase-surface SHA must match the final locked result")
-    expected_blobs = figures.get("expected_insepi_git_blobs", {})
+        fail("figure-package phase-surface SHA must match the final locked result")
+    expected_blobs = figures.get("source_git_blob_sha1", {})
     for name in ("figure_data", "surface_result", "nuisance_risk"):
         if not HEX40.fullmatch(str(expected_blobs.get(name, ""))):
-            fail(f"figure-generation expected Git blob missing/invalid: {name}")
+            fail(f"figure-package source Git blob missing/invalid: {name}")
+    stems = figures.get("quantitative_figure_stems", [])
+    if len(stems) != 4 or len(set(stems)) != 4:
+        fail("figure-package must define four unique quantitative figure stems")
+    if figures.get("manual_data_geometry_editing_allowed") is not False:
+        fail("manual data-geometry editing must remain forbidden")
+    if figures.get("field_claims_from_figures_allowed") is not False:
+        fail("Paper-1 figures must not authorize field claims")
 
     blockers = payload.get("submission_blockers")
     if not isinstance(blockers, list):
         fail("submission_blockers must be a list")
+    if any("paper-grade figure generation" in str(item) for item in blockers):
+        fail("render-audited figure package cannot remain listed as an unresolved blocker")
 
     print(
         "TNOA manifest OK: "
         f"{len(locked)} locked results, "
         f"{len(payload.get('retained_failures', []))} retained failures, "
+        f"{len(stems)} quantitative figures, "
         f"{len(blockers)} submission blockers"
     )
 
