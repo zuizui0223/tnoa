@@ -1,5 +1,5 @@
 {
-  "schema": "tnoa-paper-manifest-v1",
+  "schema": "tnoa-paper-manifest-v2",
   "paper_generation": "TNOA-P1",
   "scope": "closed-world methods paper; V15 field validation external",
   "source_repositories": {
@@ -98,6 +98,21 @@
       "paper_role": "motivates separation of representation from decision-scale contract"
     }
   ],
+  "literature_positioning": {
+    "status": "initial_evidence_map_complete_not_systematic_review",
+    "evidence_map": "docs/LITERATURE_EVIDENCE_MAP.md",
+    "reviewer_attack_matrix": "docs/REVIEWER_ATTACK_MATRIX.md",
+    "bibliography": "references.bib",
+    "nearest_method_families": [
+      "selective classification / reject option",
+      "imperfect detection / occupancy",
+      "state-space ecological observation models",
+      "camera-trap detection-process frameworks",
+      "adaptive and preferential ecological sampling",
+      "sensor fusion and uncertainty-aware sensing"
+    ],
+    "central_defensible_novelty": "integrated process-preserving ecological sensing architecture plus frozen decision geometry, not invention of abstention, imperfect-detection correction, sensor fusion, or process/observation separation individually"
+  },
   "paper_claim_boundary": {
     "field_accuracy": false,
     "field_absence_certification": false,
@@ -106,10 +121,11 @@
     "closed_world_method_claims": true
   },
   "submission_blockers": [
-    "systematic neighbouring-method literature matrix",
+    "final citation-completeness audit and prior-art search against the literature evidence map",
     "paper-grade figure generation from locked artifacts",
     "claim-to-artifact traceability table",
     "reproducibility entry point",
+    "cross-system transferability table for multiple ecological sensor domains",
     "final manuscript claim audit"
   ]
 }
