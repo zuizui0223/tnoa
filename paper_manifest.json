@@ -1,5 +1,5 @@
 {
-  "schema": "tnoa-paper-manifest-v3",
+  "schema": "tnoa-paper-manifest-v4",
   "paper_generation": "TNOA-P1",
   "scope": "closed-world methods paper; V15 field validation external",
   "source_repositories": {
@@ -123,6 +123,28 @@
     "ci_workflow": ".github/workflows/validate.yml",
     "historical_one_shot_policy": "verify immutable protocol/result/receipt; do not replace locked results with later reruns"
   },
+  "figure_package": {
+    "status": "initial_paper_grade_quantitative_set_rendered_and_visually_audited",
+    "plan": "docs/FIGURE_PLAN.md",
+    "validation": "docs/FIGURE_VALIDATION.md",
+    "builder": "scripts/build_paper_figures.py",
+    "requirements": "requirements-figures.txt",
+    "insepi_source_commit": "1664a190cec47142e8d14cc5157302a7af18d019",
+    "locked_phase_surface_sha256": "1d2c7c1f8f7370aad3cdde4d9d9d47bf318b2a057b6f788d3a48df9ea8d16c34",
+    "source_git_blob_sha1": {
+      "figure_data": "4c8c2935e61c9266697da315b40f58ba13e89f2c",
+      "surface_result": "feffae4c9457a9defd4f5b640cda781409a6b4ed",
+      "nuisance_risk": "19b7432d0551e2526750f7f6cfa09d07421d7c11"
+    },
+    "quantitative_figure_stems": [
+      "fig2_u_composition_by_pi1",
+      "fig3_pi1_pi2_total_u",
+      "fig4_pi3_structural_boundary",
+      "fig5_familywise_nuisance_risk"
+    ],
+    "manual_data_geometry_editing_allowed": false,
+    "field_claims_from_figures_allowed": false
+  },
   "paper_claim_boundary": {
     "field_accuracy": false,
     "field_absence_certification": false,
@@ -132,7 +154,6 @@
   },
   "submission_blockers": [
     "final citation-completeness audit and prior-art search against the literature evidence map",
-    "paper-grade figure generation from locked artifacts",
     "final manuscript claim audit"
   ]
 }
