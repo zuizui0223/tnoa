@@ -16,3 +16,5 @@ jobs:
           python-version: "3.11"
       - name: Validate TNOA paper manifest
         run: python scripts/validate_paper_manifest.py
+      - name: Audit manuscript claim boundaries
+        run: python scripts/audit_manuscript_claims.py
