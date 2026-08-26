@@ -37,7 +37,7 @@
       "id": "v14b_target_observer_freeze",
       "source_path": "benchmarks/v14b_target_observer_direct_first_validation_v2_result.json",
       "workflow_run_id": 32928566405,
-      "execution_commit": "791a58b30bfa2f7ac8acac20e654006ac8d3e0c8",
+      "execution_commit": "791a58b30bfa2f7ac8ac20e654006ac8d3e0c8",
       "artifact_id": 9592413407,
       "artifact_digest": "sha256:7caade2a19b21d700cb21cb19b5955e611fcff6c984ecd44d72e9b2e322d0b6e",
       "result_sha256": "c863dc123f3d6f7a624043e0626a776af371097814fd84226469139146c4c7eb",
@@ -103,6 +103,7 @@
     "evidence_map": "docs/LITERATURE_EVIDENCE_MAP.md",
     "reviewer_attack_matrix": "docs/REVIEWER_ATTACK_MATRIX.md",
     "bibliography": "references.bib",
+    "transferability_map": "docs/TRANSFERABILITY_TABLE.md",
     "nearest_method_families": [
       "selective classification / reject option",
       "imperfect detection / occupancy",
@@ -111,7 +112,9 @@
       "adaptive and preferential ecological sampling",
       "sensor fusion and uncertainty-aware sensing"
     ],
-    "central_defensible_novelty": "integrated process-preserving ecological sensing architecture plus frozen decision geometry, not invention of abstention, imperfect-detection correction, sensor fusion, or process/observation separation individually"
+    "central_defensible_novelty": "integrated process-preserving ecological sensing architecture plus frozen decision geometry, not invention of abstention, imperfect-detection correction, sensor fusion, or process/observation separation individually",
+    "cross_system_transfer_demonstrated_conceptually": true,
+    "quantitative_cross_system_transfer_claimed": false
   },
   "paper_claim_boundary": {
     "field_accuracy": false,
@@ -125,7 +128,6 @@
     "paper-grade figure generation from locked artifacts",
     "claim-to-artifact traceability table",
     "reproducibility entry point",
-    "cross-system transferability table for multiple ecological sensor domains",
     "final manuscript claim audit"
   ]
 }
