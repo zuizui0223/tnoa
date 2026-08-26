@@ -112,11 +112,14 @@ Core result:
 
 InsePi PR #42.
 
-Final validation:
+Final validation, verified from `benchmarks/v14b_target_observer_direct_first_validation_v2_result.json` on InsePi main:
 
 - workflow: `32928566405`;
 - execution commit: `791a58b30bfa2f7ac8acac20e654006ac8d3e0c8`;
-- artifact digest: `sha256:7caade2a19b21d700cb21c3d157b40adc8b4a68c5cc84fcff6c984ecd44d72e9b2e322d0b6e`.
+- artifact id: `9592413407`;
+- artifact digest: `sha256:7caade2a19b21d700cb21cb19b5955e611fcff6c984ecd44d72e9b2e322d0b6e`;
+- validation SHA-256: `c863dc123f3d6f7a624043e0626a776af371097814fd84226469139146c4c7eb`;
+- runtime: Python 3.11.16 / NumPy 2.4.6.
 
 Scientific boundary:
 
@@ -125,8 +128,6 @@ Scientific boundary:
 - indirect-only coupling not promoted to target support;
 - truth-known indirect-only target worlds retained as U;
 - target-side contradiction types saturated under that generation.
-
-> Note: before submission, verify the exact artifact digest above against the repository receipt and correct this provenance file if any transcription error is found. The repository receipt remains authoritative.
 
 ### Nuisance observer failure and diagnosis
 
