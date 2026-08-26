@@ -2,7 +2,7 @@
 """Build TNOA Paper-1 quantitative figures from locked InsePi artifacts only.
 
 The script fails closed unless the three authoritative source files match the
-Git blob SHA-1 values recorded when the TNOA figure package was defined.  It does
+Git blob SHA-1 values recorded when the TNOA figure package was defined. It does
 not refit observers, recompute the phase surface, or reinterpret historical
 one-shot outputs.
 
@@ -110,8 +110,6 @@ def _fig_u_composition(figure_data: dict[str, Any], out_dir: Path) -> None:
 
     fig, ax = plt.subplots(figsize=(6.6, 4.4))
     ax.plot(x, panel["undetermined_total_rate"], marker="o", label="Total U")
-    # Historical source field name is retained in the source JSON, but V14c/TNOA
-    # semantics require the paper label below.
     ax.plot(
         x,
         panel["undetermined_information_absent_rate"],
@@ -153,7 +151,8 @@ def _fig_pi1_pi2_heatmap(figure_data: dict[str, Any], out_dir: Path) -> None:
 
 def _fig_pi3_boundary(figure_data: dict[str, Any], out_dir: Path) -> None:
     panel = figure_data["panels"]["pi3_target_truth_lines"]
-    x = panel["pi3"]
+    registered_pi3 = panel["pi3"]
+    x = list(range(len(registered_pi3)))
 
     fig, ax = plt.subplots(figsize=(6.6, 4.4))
     ax.plot(x, panel["target_rate"], marker="o", label="T decision rate")
@@ -164,9 +163,8 @@ def _fig_pi3_boundary(figure_data: dict[str, Any], out_dir: Path) -> None:
         marker="o",
         label="Forced-binary false-negative rate",
     )
-    # Symlog retains the structural zero while spacing the positive ratio levels.
-    ax.set_xscale("symlog", linthresh=0.05)
-    ax.set_xlabel(r"$\Pi_3$: direct target amplitude / nuisance amplitude")
+    ax.set_xticks(x, [f"{v:g}" for v in registered_pi3])
+    ax.set_xlabel(r"Registered $\Pi_3$ level: direct target amplitude / nuisance amplitude")
     ax.set_ylabel("Rate among target-present worlds")
     ax.set_ylim(0, 1.05)
     ax.legend(frameon=False)
