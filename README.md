@@ -2,15 +2,15 @@
 
 **Target–Nuisance–Observability–Abstention for ecological sensing**
 
-TNOA is a methods-paper repository for a process-preserving framework that asks a narrower and safer question than ordinary event classification:
+TNOA is a methods-paper repository for a process-preserving observation framework that asks a narrower question than ordinary event classification:
 
-> **When is an ecological sensor entitled to make a biological decision, and when should it retain abstention?**
+> **What observation state should an ecological sensor preserve before downstream ecological inference?**
 
-The framework was developed from the PolliPi/InsePi programme, but this repository is not the Raspberry Pi runtime and is not a classifier package. PolliPi and InsePi remain the implementation/provenance sources; TNOA isolates the transferable methodological contribution and its paper package.
+The repository isolates the transferable methodological contribution from the source sensing systems used during development. It is not itself a field-accuracy claim or a universal detector package.
 
 ## Core object
 
-The observed decision state is closed as
+The minimal observed decision vocabulary is
 
 \[
 B + \{T, N, U\},
@@ -20,8 +20,8 @@ where:
 
 - **B — baseline:** no marked dynamic deviation requiring target/nuisance adjudication;
 - **T — target-supported:** positive evidence for the focal biological process;
-- **N — nuisance-supported:** positive evidence for an exogenous observation process that can mimic, mask, or corrupt attribution;
-- **U — abstention / undetermined:** the current evidence does not justify a unique T/N decision.
+- **N — nuisance-supported:** positive evidence for an exogenous observation process that can mimic, mask or corrupt attribution;
+- **U — unresolved / abstention:** the available evidence does not justify a unique target/nuisance statement.
 
 T and N are **positive, non-complementary hypotheses**. They may be jointly supported. T+N superposition is therefore not automatically an error state.
 
@@ -34,86 +34,99 @@ The field-facing evidence architecture is richer than the final decision vocabul
 with:
 
 - **T:** direct positive target evidence;
-- **C:** target-coupled local response with independent attribution;
-- **N:** exogenous nuisance-process evidence;
+- **C:** target-coupled local response that requires independent attribution before promotion to target evidence;
+- **N:** positive evidence for an exogenous nuisance process;
 - **O:** measurement-channel observability/support;
 - **A−:** independently validated target-absence evidence, if such a channel exists.
 
 Low T is not A−. Good O is not A−. N is not `1 - T`. O is not `1 - N`.
 
-## Methodological principles
+## Main methodological results
 
-1. **Positive definitions, not complements.** Target and nuisance are defined by what supports them, not by mutual negation.
-2. **Process types, not cause lists.** Nuisance is defined by effects on inference—mimic, mask, corrupt attribution, degrade support—rather than an open-ended catalogue of wind, shadow, blur, etc.
-3. **Preserve superposition.** Real biological and exogenous processes can co-occur.
-4. **Abstention is an output, not a defect.** U is retained whenever evidence cannot safely support a unique conclusion.
-5. **Separate no support from proven information absence.** `no supported evidence` is not automatically proof that the world contained no informative structure.
-6. **Risk contracts replace inherited raw thresholds.** Operational boundaries are tied to tolerated false certainty, not score values that happen to work under an earlier representation.
-7. **Freeze before measurement.** Definitions, observers, thresholds and claim rules are frozen before one-shot or held-out evaluation.
-8. **Negative generations are retained.** Failed hypotheses remain part of the method history and constrain later claims.
+The MEE-focused manuscript now leads with three results rather than with the size of the simulation sweep.
+
+### 1. Error criteria transferred when a raw threshold did not
+
+After the nuisance representation changed, nuisance/non-nuisance ranking remained strong but the inherited raw threshold `0.55` no longer had the intended operating meaning: nuisance recall at that threshold was `0.23125`. A pooled risk calibration then failed family-wise control (`0.08889 > alpha=0.05` in the coupled-negative family), whereas the preregistered family-wise calibration passed (`0.04444 <= 0.05`).
+
+The transferable object in this closed-world experiment was therefore the declared error criterion, not the numerical raw-score threshold.
+
+### 2. Binary coarsening destroyed downstream ecological information
+
+Using known latent truth and the frozen observation matrix across a deterministic 3,003-composition simplex:
+
+- naive TARGET/not-TARGET estimates were negatively biased in 99.63% of compositions;
+- median naive bias was about `-0.238` prevalence units;
+- median compatible target-prevalence width was about `0.030` with B/T/N/U versus `0.266` after binary coarsening;
+- median relative width reduction among non-zero binary widths was about 84.45%;
+- the four-state record was never wider than its binary coarsening.
+
+This is a **synthetic target-prevalence information-preservation result**, not a field visit-rate estimate.
+
+### 3. A preregistered matched-timescale ridge was falsified
+
+The expectation of a narrow ambiguity ridge near \(\Pi_2\approx1\) was not supported. The small final equal-weight contrast is also weighting-sensitive and can change sign within the tested bounded reweighting class. The failed prediction is retained rather than rescued post hoc.
+
+## Secondary structural results
+
+Under the frozen equal-grid design, unresolved observations were mostly overlap/attribution cases rather than no-supported-evidence cases. That qualitative dominance remained above one half through the tested density-ratio reweighting class to `kappa=10`.
+
+The observation-duration result is deliberately narrower than an earlier non-monotonicity framing. From \(\Pi_1=1\) to \(\Pi_1=3.162\), no-supported-evidence U decreased while overlap/attribution U increased. This is interpreted as **reason substitution**—additional observation can reduce evidence shortage while leaving an attribution/coexistence problem—not as a universal law that longer monitoring increases uncertainty. The pooled total-U shape is not robust to moderate reweighting.
+
+The six registered coordinates also have strongly uneven marginal separation. In particular, five numerical \(\Pi_3\) levels reduce to two distinct marginal B/T/N/U vectors (zero versus positive) in the frozen surface. The 30,625 coordinates and 5.88M worlds therefore describe design coverage and provenance, not six equally effective ecological dimensions or evidence magnitude.
+
+## Minimal reusable implementation
+
+TNOA includes a dependency-free Python API and CSV CLI. The reusable layer starts **after domain-specific calibration**:
+
+```python
+from tnoa import Evidence, classify
+
+result = classify(
+    Evidence(
+        deviation_observed=True,
+        target_supported=True,
+        nuisance_supported=True,
+        observable=True,
+    )
+)
+
+print(result.decision.value)  # U
+print(result.reason.value)    # target_nuisance_overlap
+```
+
+See [`docs/REUSABLE_IMPLEMENTATION.md`](docs/REUSABLE_IMPLEMENTATION.md) and [`examples/minimal_evidence.csv`](examples/minimal_evidence.csv).
+
+## Fail-closed field translation
+
+A new sensor domain must not copy synthetic or source-device raw thresholds into the reusable API. The prospective translation sequence is:
+
+1. preserve an interpretable primary scientific record;
+2. log raw T/N/O/C diagnostics separately;
+3. retain pre-calibration observations as `U / field_calibration_pending` and leave TNOA acquisition control inactive;
+4. establish independent biological-event, coupled-response, nuisance and observability truth;
+5. calibrate on grouped development data against declared error criteria;
+6. freeze the calibration manifest before new days/scenes are scored held-out;
+7. only after held-out validation allow reason-specific TNOA states to alter adaptive acquisition.
+
+Camera-trap, passive-acoustic and interaction-camera mappings are given in [`docs/FIELD_TRANSLATION_PATHWAY.md`](docs/FIELD_TRANSLATION_PATHWAY.md).
+
+This pathway is **implementation guidance, not Paper-1 field validation**.
 
 ## Dimensionless closed-world formulation
 
-The synthetic theory is expressed over dimensionless coordinates rather than absolute scales:
+The registered synthetic design uses:
 
 - \(\Pi_1\): observation-window length / target-process timescale;
 - \(\Pi_2\): nuisance-response timescale / target timescale;
 - \(\Pi_3\): direct target amplitude / nuisance amplitude;
 - \(\Pi_4\): target-driven local-response amplitude / nuisance amplitude;
-- \(\Pi_5\): nuisance spatial correlation length / target spatial support width;
+- \(\Pi_5\): nuisance spatial correlation length / target spatial-support width;
 - \(\Pi_6\): samples per target timescale.
 
-The output is a response surface over this phase space, not a single performance number.
+The final frozen surface contains 30,625 registered coordinate combinations and 5,880,000 synthetic worlds. Equal-grid B/T/N/U rates are retained for reproducibility but are not ecological prevalences.
 
-## Locked closed-world result
-
-The frozen V14b/V14c measurement generation evaluated **5,880,000 synthetic worlds** after target and nuisance observers were frozen.
-
-Equal-grid / equal-regime aggregate decision rates were approximately:
-
-- baseline: 0.2302;
-- target: 0.4287;
-- nuisance: 0.0877;
-- abstention: 0.2533.
-
-Most U in the frozen design space was associated with overlap/attribution rather than simple lack of supported evidence. Observation duration did not make U vanish monotonically: longer observation can reveal genuine T+N co-occurrence and therefore increase attribution ambiguity even as the no-support component changes.
-
-The earlier hypothesis that ambiguity should peak narrowly near \(\Pi_2 \approx 1\) was falsified and retired. The sharp \(\Pi_3=0\) versus \(\Pi_3>0\) boundary is explicitly treated as a structural consequence of the frozen synthetic direct-channel rule, not a universal ecological SNR law.
-
-## Relation to PolliPi and InsePi
-
-### PolliPi
-
-PolliPi is the deployable local-first Raspberry Pi observer. Its portable target-evidence adapter exports canonical states as ordinal positive target evidence:
-
-- `no_activity -> 0.0`
-- `environmental_noise -> 0.0`
-- `uncertain_local_activity -> 0.5`
-- `strong_visitation_candidate -> 1.0`
-
-This scale is not a probability and score 0 does not certify biological absence.
-
-### InsePi
-
-InsePi contains the closed-world theory, process-preserving T/N/O logic, risk contracts, phase-space experiments, provenance locks, and the V15 empirical bridge.
-
-### TNOA
-
-TNOA extracts the general method and manuscript package:
-
-```text
-world
-  ↓
-independent evidence channels T / C / N / O / optional A−
-  ↓
-process-preserving inference
-  ↓
-B / T / N / U
-  ↓
-false-certainty-controlled claims
-```
-
-## Novelty boundary after targeted prior-art audit
+## Novelty boundary
 
 TNOA does **not** claim to invent:
 
@@ -124,13 +137,18 @@ TNOA does **not** claim to invent:
 - imperfect-detection correction;
 - nondetection ≠ absence;
 - process/observation separation;
-- false-positive/false-negative occupancy modeling;
+- false-positive/false-negative occupancy modelling;
 - sensor fusion;
 - adaptive ecological sampling.
 
-The defensible contribution is the **integrated ecological sensor-decision architecture plus its frozen dimensionless decision geometry**: positive non-complementary T/N, separate O, attribution-gated C, optional independently supported A−, preserved T+N coexistence, reasoned U, process-effect nuisance definitions, false-certainty calibration, and freeze/falsification provenance.
+The defensible contribution is the integration of:
 
-See [`docs/FINAL_PRIOR_ART_AUDIT.md`](docs/FINAL_PRIOR_ART_AUDIT.md).
+1. a **process-preserving ecological observation interface** with positive non-complementary T/N, separate O, attribution-gated C and optional independently supported A−;
+2. **explicit error-rate calibration** that remains meaningful when a score representation changes;
+3. **downstream information preservation**, demonstrated against a known synthetic ecological estimand;
+4. a freeze/falsification record that retains failed predictions and invalidated diagnostics rather than rewriting development history.
+
+See [`docs/FINAL_PRIOR_ART_AUDIT.md`](docs/FINAL_PRIOR_ART_AUDIT.md) and [`docs/REVIEWER_ATTACK_MATRIX.md`](docs/REVIEWER_ATTACK_MATRIX.md).
 
 ## Paper boundary
 
@@ -139,62 +157,59 @@ Paper 1 is a **closed-world methods paper**, not a field-accuracy paper.
 It may claim:
 
 - the process-preserving observation architecture;
-- formal separation of target, nuisance, observability and optional absence evidence;
-- locked simulation/benchmark evidence for the resulting decision geometry;
-- negative-result-preserving development;
-- false-certainty risk contracts;
-- downstream information preservation for a known-truth synthetic target-prevalence estimand;
-- weighting robustness only within the tested bounded-reweighting class;
-- broad conceptual transferability of the architecture.
+- separation of target, nuisance, observability, attribution and optional absence evidence;
+- the frozen closed-world threshold-portability/error-control result;
+- downstream information preservation for a known synthetic target-prevalence estimand;
+- the preregistered negative Pi2 result;
+- robustness only within explicitly tested weighting classes;
+- uneven effective separation of the registered synthetic coordinates;
+- a prospective fail-closed pathway for revalidating the architecture in new sensing domains.
 
-It must not claim without external validation:
+It must not claim without later empirical validation:
 
 - field visit-detection accuracy;
 - calibrated biological absence;
+- field prevalence or visit-rate accuracy;
 - universal superiority over existing classifiers;
-- universal validity of PolliPi thresholds;
-- universal ecological significance of the synthetic \(\Pi_3\) boundary;
+- universal numerical thresholds;
 - quantitative cross-system transfer;
 - pollination effectiveness.
 
-Field deployment and V15 empirical validation are external validation, not prerequisites for the closed-world methodological result.
+Later field deployment is external validation, not a prerequisite for the closed-world Paper-1 result.
 
 ## Repository map
 
-### Manuscript
+### Manuscript and submission
 
 - [`manuscript/TNOA_MEE_DRAFT.md`](manuscript/TNOA_MEE_DRAFT.md) — active MEE-focused working draft.
-- [`manuscript/TNOA_P1_DRAFT.md`](manuscript/TNOA_P1_DRAFT.md) — retained historical Paper-1 draft.
-- [`docs/METHOD_PAPER_BLUEPRINT.md`](docs/METHOD_PAPER_BLUEPRINT.md) — manuscript architecture and current figure order.
+- [`manuscript/TNOA_P1_DRAFT.md`](manuscript/TNOA_P1_DRAFT.md) — retained historical draft.
+- [`submission/MEE_FRONT_MATTER.md`](submission/MEE_FRONT_MATTER.md) — numbered MEE abstract and review statements.
+- [`submission/MEE_SUBMISSION_CHECKLIST.md`](submission/MEE_SUBMISSION_CHECKLIST.md) — production/upload checklist.
+- [`scripts/build_mee_submission_docx.py`](scripts/build_mee_submission_docx.py) — reproducible anonymous Word builder.
+- [`scripts/validate_mee_submission_docx.py`](scripts/validate_mee_submission_docx.py) — fail-closed Word XML/format validator.
 
-### Scientific framing and audit
+### Method, transfer and audit
 
 - [`docs/CONCEPTUAL_FRAMEWORK.md`](docs/CONCEPTUAL_FRAMEWORK.md) — definitions and inference logic.
-- [`docs/NOVELTY_POSITIONING.md`](docs/NOVELTY_POSITIONING.md) — novelty framing after targeted audit.
-- [`docs/LITERATURE_EVIDENCE_MAP.md`](docs/LITERATURE_EVIDENCE_MAP.md) — nearest-method evidence map.
-- [`docs/FINAL_PRIOR_ART_AUDIT.md`](docs/FINAL_PRIOR_ART_AUDIT.md) — final targeted prior-art boundary.
-- [`docs/REVIEWER_ATTACK_MATRIX.md`](docs/REVIEWER_ATTACK_MATRIX.md) — likely reviewer objections.
-- [`docs/TRANSFERABILITY_TABLE.md`](docs/TRANSFERABILITY_TABLE.md) — cross-domain conceptual mapping.
+- [`docs/REUSABLE_IMPLEMENTATION.md`](docs/REUSABLE_IMPLEMENTATION.md) — runnable API/CLI.
+- [`docs/FIELD_TRANSLATION_PATHWAY.md`](docs/FIELD_TRANSLATION_PATHWAY.md) — fail-closed field calibration/validation sequence.
+- [`docs/FINAL_PRIOR_ART_AUDIT.md`](docs/FINAL_PRIOR_ART_AUDIT.md) — targeted prior-art boundary.
+- [`docs/REVIEWER_ATTACK_MATRIX.md`](docs/REVIEWER_ATTACK_MATRIX.md) — reviewer objections and required answers.
 - [`docs/CLAIM_BOUNDARY.md`](docs/CLAIM_BOUNDARY.md) — allowed and forbidden Paper-1 claims.
 - [`docs/CLAIM_TRACEABILITY.md`](docs/CLAIM_TRACEABILITY.md) — C1–C15 claim-to-artifact ledger.
-- [`docs/FINAL_CLAIM_AUDIT.md`](docs/FINAL_CLAIM_AUDIT.md) — retained audit of the historical draft.
 
 ### Figures and reproducibility
 
-- [`docs/FIGURE_PLAN.md`](docs/FIGURE_PLAN.md) — quantitative figure contract.
-- [`docs/MEE_FIGURE_VALIDATION.md`](docs/MEE_FIGURE_VALIDATION.md) — active MEE figure provenance and interpretation guard.
-- [`derived/mee_figure_data.json`](derived/mee_figure_data.json) — pinned MEE figure values and upstream provenance.
-- [`scripts/validate_mee_figure_data.py`](scripts/validate_mee_figure_data.py) — fail-closed MEE figure-data guard.
-- [`scripts/build_mee_figures.py`](scripts/build_mee_figures.py) — MEE-priority panel builder.
-- [`docs/FIGURE_VALIDATION.md`](docs/FIGURE_VALIDATION.md) and [`scripts/build_paper_figures.py`](scripts/build_paper_figures.py) — retained historical figure package.
-- [`scripts/validate_paper_manifest.py`](scripts/validate_paper_manifest.py) — repository manifest guard.
-- [`scripts/audit_manuscript_claims.py`](scripts/audit_manuscript_claims.py) — manuscript claim scanner.
+- [`derived/mee_figure_data.json`](derived/mee_figure_data.json) — pinned MEE figure data and provenance.
+- [`scripts/build_mee_figures.py`](scripts/build_mee_figures.py) — quantitative component-panel builder.
+- [`scripts/build_mee_composite_figures.py`](scripts/build_mee_composite_figures.py) — final Figure 2–4/S2 composition.
+- [`scripts/audit_manuscript_claims.py`](scripts/audit_manuscript_claims.py) — manuscript claim/anonymity guard.
+- [`scripts/build_anonymous_review_bundle.py`](scripts/build_anonymous_review_bundle.py) — deterministic anonymous reviewer package.
 - [`reproduce/README.md`](reproduce/README.md) — reproduction policy.
-- [`references.bib`](references.bib) — nearest-method bibliography.
-- [`paper_manifest.json`](paper_manifest.json) — machine-readable source, claim and submission state.
+- [`paper_manifest.json`](paper_manifest.json) — machine-readable scientific source/claim state.
 
 ## Current status
 
-**MEE-focused scientific package assembled and claim-guarded.** The active draft, C1–C15 plus D1–D2 traceability, pinned MEE figure data/builder, runnable observation-state API and post-freeze audits are registered in `paper_manifest.json`, which records **zero unresolved MEE scientific blockers**. The earlier Paper-1 draft and figure package remain in place as historical records.
+**MEE scientific package: no unresolved scientific blockers.** The current package contains the active MEE manuscript, fixed result hierarchy, known-truth downstream estimand, weighting and structural audits, runnable API/CLI, fail-closed field-translation template, reproducible multi-panel figures, deterministic anonymous reviewer bundle, and an automatically generated/validated anonymous MEE DOCX.
 
-Remaining work before actual journal upload is editorial/production work: finalize conceptual Figure 1, convert the Markdown draft to journal format, complete authorship/acknowledgement metadata, check final citation style, and rerun the claim audit after any material rewrite.
+Remaining work before actual upload is production/user metadata rather than missing scientific analysis: final human inspection of the generated DOCX/figures/reference rendering, publisher-facing final word-count check, author/title-page/CRediT/acknowledgement/funding/competing-interest metadata, final reviewer ZIP identity-literal scan and private upload, followed by one last claim audit after any text edit.

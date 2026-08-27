@@ -36,9 +36,9 @@ The registered narrow ambiguity-ridge prediction near `Pi2 ~= 1` was not support
 
 Within the frozen synthetic representation, direct-visible target evidence is separable from nuisance-only worlds while indirect-only coupled response without independent attribution remains unresolved under the tested observation-safe statistic family.
 
-### A9. Risk-contract principle
+### A9. Error-criterion principle
 
-A raw score threshold need not retain meaning after representation changes. Operational decisions can instead be tied to predeclared false-certainty budgets.
+A raw score threshold need not retain meaning after representation changes. Operational decisions can instead be tied to predeclared false-attribution or false-certainty criteria.
 
 ### A10. Frozen final surface
 
@@ -165,6 +165,28 @@ Not allowed:
 
 > TNOA achieves zero false positives or prevents 35.69% misses in field sensing.
 
+### B9. Fail-closed field translation pathway
+
+Paper 1 may describe a **prospective implementation sequence** that moves a new sensor domain toward calibrated TNOA inputs:
+
+1. preserve an interpretable primary scientific record;
+2. log raw T/N/O/C diagnostics without promoting them to calibrated support;
+3. retain pre-calibration observations as `U / field_calibration_pending` and keep TNOA acquisition actions inactive;
+4. establish independent biological-event, coupled-response, nuisance and observability truth;
+5. calibrate evidence channels on grouped development data against declared error criteria;
+6. freeze the calibration manifest before held-out days/scenes are scored;
+7. enable adaptive acquisition only after the observation semantics pass held-out validation.
+
+Allowed wording:
+
+> This fail-closed sequence is an implementation template for transferring the architecture to a new sensor system.
+
+Not allowed:
+
+> The field translation pathway is empirically validated, the field thresholds are established, or the hardware implementation provides Paper-1 field-performance evidence.
+
+The pathway is **implementation guidance, not a new result**. It must remain true even if future empirical validation is null or adverse.
+
 ## C. Claims not allowed in Paper 1
 
 Do not claim:
@@ -176,14 +198,15 @@ Do not claim:
 - pollination or visitation effectiveness;
 - universal superiority of the TNOA decision rule;
 - universal optimality of any alpha, threshold, sampling budget or abstention rate;
-- statistical independence of PolliPi and InsePi errors;
+- statistical independence of target-side and nuisance-side implementation errors;
 - that every no-supported-evidence case is true information absence;
 - that nuisance is fully represented by the current synthetic process families;
 - that synthetic phase-space frequency equals natural ecological frequency;
 - that 5.88M synthetic worlds substitute for external ecological validation;
 - that the equal-grid synthetic emission matrix transfers numerically to another camera, site, taxon or sensor domain;
 - that the six registered coordinates are six equally effective or intrinsic ecological dimensions;
-- that C13 is a field or transferable classifier-performance estimate.
+- that C13 is a field or transferable classifier-performance estimate;
+- that a development shadow implementation, hardware smoke test or prospective calibration protocol constitutes field validation.
 
 ## D. Terminology guardrails
 
@@ -193,17 +216,18 @@ Use:
 - `nuisance-supported`, not `noise`, when referring to the formal N output;
 - `no supported evidence`, not `information absent`, unless absence of information is independently established;
 - `abstention` or `undetermined`, not `classification error`, for U by default;
-- `ordinal evidence`, not `probability`, for PolliPi 0/0.5/1;
+- `ordinal evidence`, not `probability`, for a source-system 0/0.5/1 evidence adapter;
 - `structural boundary`, not `field threshold`, for the exact-zero synthetic Pi3 result;
 - `registered six-coordinate design`, not `six-dimensional ecological complexity`;
 - `registered design space`, not `nature`, when reporting phase-surface frequencies;
 - `synthetic target-prevalence estimand`, not `field visit-rate estimate`, for the known-truth downstream analysis;
 - `bounded reweighting sensitivity`, not `prior robustness`, unless an actual ecological prior has been specified;
-- `design-compositional comparator rate`, not `performance`, for C13.
+- `design-compositional comparator rate`, not `performance`, for C13;
+- `field translation pathway` or `implementation template`, not `field validation`, for the prospective fail-closed deployment sequence.
 
 ## E. Paper-2 promotion rules
 
-A claim may move from forbidden/conditional to empirical only when the V15 empirical bridge freezes and validates the relevant channel.
+A claim may move from forbidden/conditional to empirical only when the empirical bridge freezes and validates the relevant channel.
 
 Examples:
 
@@ -213,6 +237,6 @@ Examples:
 - absence claims require validated A− or an explicitly different study design;
 - **empirical** visit-rate claims require frozen split/exposure/sampling design and held-out estimates.
 
-The A11 synthetic known-truth estimand analysis does not satisfy or bypass these empirical promotion rules.
+The A11 synthetic known-truth estimand analysis and B9 implementation pathway do not satisfy or bypass these empirical promotion rules.
 
-Paper 1 must remain valid if every Paper-2 empirical result is null or adverse.
+Paper 1 must remain valid if every later empirical result is null or adverse.
