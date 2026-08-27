@@ -53,6 +53,8 @@ jobs:
         run: python scripts/build_mee_initial_submission_source.py
       - name: Audit initial-submission structure, citations and word count
         run: python scripts/audit_initial_submission_readiness.py
+      - name: Audit active-manuscript versus prior-art reference scope
+        run: python scripts/audit_reference_scope.py
       - name: Checkout pinned Source A for reviewer-bundle validation
         uses: actions/checkout@v4
         with:
@@ -91,6 +93,7 @@ jobs:
           path: |
             submission/generated/MEE_INITIAL_SUBMISSION_SOURCE.md
             submission/generated/initial_submission_readiness.json
+            submission/generated/reference_scope_audit.json
           retention-days: 7
       - name: Upload final MEE multi-panel figure validation artifact
         uses: actions/upload-artifact@v4
