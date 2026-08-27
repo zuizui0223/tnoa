@@ -1,23 +1,22 @@
 #!/usr/bin/env python3
-"""Build the anonymous MEE manuscript source from audited TNOA components.
+"""Build the anonymous MEE manuscript from the canonical initial-submission source.
 
-The builder replaces title/abstract/keywords with numbered MEE front matter,
-appends the MEE-focused body at Introduction, strips internal C/D provenance
-comments, and fails if common identity-bearing strings remain.
+The canonical assembly is produced by ``build_mee_initial_submission_source.py``.
+Using one source prevents the journal manuscript and reviewer-bundle manuscript
+from drifting in headings, figure callouts or captions.
 """
 from __future__ import annotations
 
 import re
+import subprocess
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-FRONT = ROOT / "submission" / "MEE_FRONT_MATTER.md"
-DRAFT = ROOT / "manuscript" / "TNOA_MEE_DRAFT.md"
-OUT_DIR = ROOT / "submission" / "generated"
-OUT = OUT_DIR / "MEE_ANONYMOUS_MANUSCRIPT.md"
+ASSEMBLER = ROOT / "scripts" / "build_mee_initial_submission_source.py"
+SOURCE = ROOT / "submission" / "generated" / "MEE_INITIAL_SUBMISSION_SOURCE.md"
+OUT = ROOT / "submission" / "generated" / "MEE_ANONYMOUS_MANUSCRIPT.md"
 
-BODY_MARKER = "## 1. Introduction"
-PROVENANCE_TAG = re.compile(r"\s*<!--\s*[CD]\d+(?:\s+[CD]\d+)*\s*-->")
 EMAIL = re.compile(r"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b", re.I)
 FORBIDDEN_LITERAL = (
     "zuizui0223",
@@ -31,19 +30,13 @@ def fail(message: str) -> None:
 
 
 def main() -> None:
-    if not FRONT.is_file() or not DRAFT.is_file():
-        fail("required front matter or MEE manuscript is missing")
+    if not ASSEMBLER.is_file():
+        fail("canonical initial-submission assembler is missing")
+    subprocess.run([sys.executable, str(ASSEMBLER)], check=True)
+    if not SOURCE.is_file():
+        fail("canonical initial-submission source was not produced")
 
-    front = FRONT.read_text(encoding="utf-8").strip()
-    draft = DRAFT.read_text(encoding="utf-8")
-    if BODY_MARKER not in draft:
-        fail(f"MEE manuscript does not contain body marker: {BODY_MARKER}")
-
-    body = BODY_MARKER + draft.split(BODY_MARKER, 1)[1]
-    body = PROVENANCE_TAG.sub("", body)
-    front = front.split("## Manuscript structure after this front matter", 1)[0].rstrip()
-    output = front + "\n\n---\n\n" + body.lstrip()
-
+    output = SOURCE.read_text(encoding="utf-8")
     lower = output.lower()
     for literal in FORBIDDEN_LITERAL:
         if literal.lower() in lower:
@@ -52,8 +45,10 @@ def main() -> None:
         fail("email address remains in anonymous manuscript")
     if re.search(r"<!--\s*[CD]\d+", output):
         fail("internal provenance comments remain in reviewer manuscript")
+    if "## 2. Materials and Methods" not in output or "## Figure captions" not in output:
+        fail("canonical MEE structure or figure captions missing")
 
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(output.rstrip() + "\n", encoding="utf-8")
     print(f"Built anonymous MEE manuscript source: {OUT}")
 

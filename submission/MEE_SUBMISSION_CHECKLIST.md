@@ -11,9 +11,12 @@ This checklist translates the current MEE author guidance into concrete TNOA upl
 - [x] Numbered 1–4 abstract text is prepared in `submission/MEE_FRONT_MATTER.md`.
 - [x] Keywords are prepared.
 - [x] Data/Code for peer review statement is prepared.
-- [ ] Convert final manuscript to single-column, double-line-spaced document with continuous page and line numbering.
-- [ ] Confirm final Standard Article word count, including references, remains within the journal's current 7000–8000-word guidance.
-- [ ] Put all figure/table captions in the manuscript in the journal-required location/order.
+- [x] `scripts/build_mee_initial_submission_source.py` assembles one anonymous source with the standard `Materials and Methods` heading, figure callouts and Figure 1–4/S2 captions.
+- [x] `scripts/audit_initial_submission_readiness.py` checks structure, citation-key completeness and a conservative word-count estimate including bibliography text in CI.
+- [x] CI run `33039903388` estimated 4,953 words including a conservative bibliography-field estimate; all 12 cited bibliography keys resolved with zero missing citations. Six unused bibliography entries remain non-blocking and do not represent missing citations.
+- [ ] Convert the assembled source to a single-column, double-line-spaced upload document with continuous page and line numbering.
+- [ ] Recheck the final publisher-facing word count, including references, after conversion. The 4,953-word CI estimate is a guard, not the publisher's final count.
+- [ ] Confirm figure/table caption placement after conversion to the final upload format.
 
 ## Double-anonymous review
 
@@ -21,6 +24,7 @@ This checklist translates the current MEE author guidance into concrete TNOA upl
 - [x] Anonymous code/data-review instructions are separated into `submission/ANONYMOUS_PEER_REVIEW_PACKAGE.md`.
 - [x] Deterministic anonymous reviewer-bundle builder and standalone validator are implemented.
 - [x] CI builds the bundle from the active MEE package plus pinned Source-A/Source-B checkouts and runs the recursive identity/hash checks.
+- [x] The reviewer manuscript and initial-submission manuscript are assembled from the same canonical anonymous source.
 - [ ] After the title page is complete, rebuild the final ZIP with every author/institution identifying literal supplied through repeated `--forbid-literal` arguments.
 - [ ] Review any remaining ORCID, acknowledgement or file-metadata identifiers that are not representable as simple text literals.
 - [ ] Use a private-for-peer-review archive/link or reviewer-only uploaded ZIP, not the public owner-identifying repository URL in the anonymous manuscript.
@@ -50,12 +54,13 @@ Complete only in the separate title-page file:
 - [x] `scripts/validate_anonymous_review_bundle.py` verifies file hashes, active MEE schemas, source commits, figure inventory and identity leakage.
 - [ ] Build the final reviewer ZIP after all author/title-page metadata are known and retain its external receipt SHA-256.
 - [ ] Upload that final validated ZIP to the journal's reviewer-only/private location. The public CI artifact is validation only.
-- [ ] At acceptance, replace private review locations with permanent public archival accession/DOI(s).
+- [ ] At acceptance, replace private review locations with a permanent archive carrying a persistent identifier/DOI; do not rely solely on a mutable source-code host.
 
 ## Figures
 
 - [x] Quantitative Figures 2–4 and Supplementary Figure S2 have pinned data, a fail-closed validator and a CI smoke-tested builder.
 - [x] Conceptual Figure 1 source is stored as `figures/fig1_tnoa_architecture.svg`.
+- [x] Figure 1–4 and Supplementary Figure S2 captions are assembled into the canonical anonymous submission source.
 - [ ] Final editorial pass on Figure 1 typography only; do not alter its scientific semantics without re-audit.
 - [ ] Visually inspect and assemble the final MEE multi-panel layouts without changing plotted data geometry.
 - [ ] Generate final submission-resolution raster/vector files from authoritative sources.
@@ -73,4 +78,4 @@ Do not upload until all unchecked items above that apply to the initial submissi
 
 ## Journal guidance checked
 
-This checklist was aligned to the MEE author guidance retrieved on 2026-08-27. Journal requirements can change; re-check the live author guidelines immediately before upload.
+This checklist was aligned to the MEE author guidance retrieved on 2026-08-27. Current guidance requires a single-column, double-line-spaced Standard Article within the 7000–8000-word range/ceiling (including references), continuous line and page numbering, a separate title page, a numbered 1–4 abstract, and anonymized code/data available for peer review. Re-check the live author guidelines immediately before upload.
