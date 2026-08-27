@@ -22,55 +22,33 @@ Figure 1 and Methods must include a case with strong T and strong N that remains
 
 ## Objection 2 — “Ecologists already know non-detection is not absence; occupancy models solved this.”
 
-### Why the objection is plausible
-MacKenzie et al. and the imperfect-detection literature explicitly separate occupancy and detection.
-
 ### Required response
 Agree with the premise. TNOA acts upstream of occupancy: it governs whether a sensor window can safely be emitted as target evidence, nuisance evidence, unresolved, or censored before detection/non-detection observations enter a population model.
 
-The MEE synthetic-estimand analysis should make this connection operational: when the frozen observation process is collapsed to binary, target prevalence becomes less identifiable or is naively underestimated across most synthetic regime mixtures.
+The MEE synthetic-estimand analysis makes this connection operational: when the frozen observation process is collapsed to binary, target prevalence becomes less identifiable or is naively underestimated across most synthetic regime mixtures.
 
 ### Evidence the manuscript must show
-A schematic should place TNOA before occupancy/state-space inference and state that TNOA is complementary, not a replacement. The downstream synthetic prevalence comparison should use known latent truth and remain explicitly non-field-calibrated.
+A schematic should place TNOA before occupancy/state-space inference and state that TNOA is complementary, not a replacement. The downstream synthetic prevalence comparison must use known latent truth and remain explicitly non-field-calibrated.
 
 ## Objection 3 — “State-space models already separate process and observation error.”
 
 ### Required response
-Agree. TNOA does not claim to invent process/observation separation. It specializes the sensor-decision layer where multiple positive processes can coexist and where the main object is decision entitlement for one observation window.
-
-### Evidence the manuscript must show
-The contribution statement must use “process-preserving sensing architecture” rather than “first separation of process and observation.”
+Agree. TNOA does not claim to invent process/observation separation. It specializes the sensor-decision layer where multiple positive processes can coexist and where the main object is the observation state handed to downstream ecological inference.
 
 ## Objection 4 — “This is just sensor fusion.”
 
 ### Required response
 Conventional fusion generally aims to combine channels into a better estimate of a latent state. TNOA can terminate without fusion into a unique state. It preserves T and N jointly and permits U when attribution is not justified.
 
-### Evidence the manuscript must show
-An explicit contrast between “fusion to sharpen a state estimate” and “channel preservation until a statement is licensed.”
-
 ## Objection 5 — “U is just uncertainty quantification.”
 
 ### Required response
-U is not a scalar uncertainty estimate. It is a decision state produced by missing or competing evidential structure. TNOA distinguishes at least no-supported-evidence from overlap/attribution U, and V14c forbids calling all no-support cases information absence.
-
-### Evidence the manuscript must show
-The main result should report the U decomposition and the semantic correction from historical `information_absent` to `no_supported_evidence`.
+U is not a scalar uncertainty estimate. It is a decision state produced by missing or competing evidential structure. TNOA distinguishes no-supported-evidence from overlap/attribution U, and V14c forbids calling all no-support cases information absence.
 
 ## Objection 6 — “The method is flower-visitor specific.”
 
 ### Required response
-The locked synthetic generator is visit-oriented, but the ontology is process-level. The paper must demonstrate mappings to multiple sensor domains without claiming quantitative transfer.
-
-### Minimum transfer table
-For each of the following, define T, C, N, O and optional A-:
-
-- camera-trap animal event;
-- acoustic call/event sensor;
-- nest/feeding interaction monitor;
-- phenology or remote camera anomaly/event monitor.
-
-If a domain has no meaningful C or A-, mark that channel absent rather than forcing an analogy.
+The locked synthetic generator is visit-oriented, but the ontology is process-level. Show mappings to camera traps, passive acoustics, nest/feeding monitors and phenology cameras without claiming numerical transfer. If a domain has no meaningful C or A-, mark that channel absent rather than forcing an analogy.
 
 ## Objection 7 — “The method is a workflow that strings together existing ideas.”
 
@@ -78,80 +56,64 @@ If a domain has no meaningful C or A-, mark that channel absent rather than forc
 MEE explicitly notes that workflows linking existing methods are generally not considered new methods.
 
 ### Required response
-The paper must center the new formal object and experimentally tested consequences:
+Center experimentally tested consequences rather than the repository workflow:
 
 - non-complementary positive T/N hypotheses;
 - separate O and optional A-;
-- process-preserving B/T/N/U decision map;
-- dimensionless phase-space measurement;
+- process-preserving B/T/N/U observation map;
 - false-certainty risk contract;
 - frozen-generation contradiction protocol;
 - downstream information loss when B/T/N/U is coarsened before ecological estimation.
 
-PolliPi and InsePi implementations are examples/provenance, not the novelty claim by themselves.
+PolliPi and InsePi are provenance/implementation sources, not the novelty claim by themselves.
 
 ## Objection 8 — “The strong Pi3 boundary is tautological because direct evidence is defined structurally.”
 
 ### Required response
-Agree in part. V14c already restricts the claim: the Pi3=0 versus Pi3>0 split is a structural result of the closed-world direct-channel rule, not a universal SNR law.
+Agree. The boundary is a structural result, not a performance discovery. The post-freeze effective-axis audit makes the limitation explicit: five registered Pi3 values produce only **two** distinct marginal B/T/N/U vectors, zero versus positive.
 
 ### Evidence the manuscript must show
-Do not write “direct signal amplitude above zero is biologically sufficient.” Write that the frozen structural observer exposes channel availability as a dominant axis in this synthetic decision geometry. The downstream slice analysis should retain the weak `Pi3=0` case rather than hiding it: median prevalence-identification width remains about 0.897 even with B/T/N/U retained.
+Do not write that positive signal amplitude is biologically sufficient. Treat Pi3 primarily as a structural channel-availability axis in this generation.
 
 ## Objection 9 — “The U rates are arbitrary because the phase-space weighting is arbitrary.”
 
 ### Required response
-The global B/T/N/U fractions are properties of the prefrozen equal-grid/equal-regime design, not estimated ecological prevalences. This is no longer answered only by a disclaimer.
-
-A post-freeze density-ratio sensitivity analysis now asks which qualitative results survive bounded reweighting of the immutable rows.
+The global B/T/N/U fractions are properties of the prefrozen equal-grid/equal-regime design, not estimated ecological prevalences. A post-freeze density-ratio sensitivity analysis now asks which qualitative results survive bounded reweighting of the immutable rows.
 
 ### Current evidence
 
-- The overlap/attribution share of U remains above 0.5 through the tested `kappa=10` class; its worst-case share is about 0.520 at `kappa=10`.
-- Pi1 nonmonotonicity is not robust enough to remain a headline: a monotone non-increasing U curve is infeasible through `kappa=1.5` but becomes feasible at `kappa=1.6`.
-- The small pooled Pi2=1 contrast is highly weight-sensitive: at `kappa=1.25` its admissible range already crosses zero.
+- overlap/attribution remains a majority of U through the tested `kappa=10` class; worst-case share is about 0.520;
+- the exact Pi1 pooled total-U shape is not robust enough for a headline; a monotone non-increasing curve becomes feasible at about `kappa=1.6`;
+- the small pooled Pi2=1 contrast already admits either sign at `kappa=1.25`.
 
 ### Evidence the manuscript must show
-Global percentages should be secondary descriptive summaries. The robust headline should be the overlap/attribution composition result within its explicit reweighting class. Pi1 nonmonotonicity and the Pi2 pooled contrast must be presented as conditional design-space properties, not prior-free laws.
+Global percentages are secondary. Weighting-robust statements must name their tested weighting class.
 
 ## Objection 10 — “Why not minimize U?”
 
 ### Required response
-Because U is not automatically error. Forcing a binary decision can create false certainty and can destroy information used by downstream ecological estimands.
+Because U is not automatically error. Forcing a binary decision can create false certainty and destroy information used by downstream ecological estimands.
 
 ### Evidence the manuscript must show
-Retain the forced-binary false-negative comparison, but do not stop there. Add the synthetic prevalence result: across the 3,003 regime-mixture lattice, naive binary prevalence is negatively biased in 99.63% of compositions, while calibrated B/T/N/U retention produces substantially narrower partial-identification sets than binary coarsening in almost all compositions.
+The synthetic prevalence analysis is the main answer. Across the 3,003 registered regime-mixture compositions, binary coarsening discards information that the four-state observation preserves. C13 is only a design diagnostic and should not carry this argument by itself.
 
 ## Objection 11 — “Your nuisance result is just threshold tuning.”
 
 ### Required response
-The development history directly addresses this. A raw threshold inherited across score representations failed; the response was not post-hoc threshold search on positives, but a prefrozen family-wise false-certainty calibration on negative families with held-out validation.
+This is the strongest development result. A redefined nuisance representation retained ranking while the inherited raw threshold failed its coverage rule. The repair was not post-hoc threshold search on positive test cases: a prefrozen family-wise false-certainty budget was calibrated on negative families and then evaluated held-out. A pooled quantile had itself failed family-wise control before family-specific calibration passed.
 
 ### Evidence the manuscript must show
-Retain PR #43 failure, PR #44 diagnosis and PR #46 family-wise risk freeze in the method-generation ledger.
+Promote the PR #43 failure -> PR #44 diagnosis -> PR #46 risk-contract freeze sequence to a primary result, with the failure retained rather than rewritten away.
 
 ## Objection 12 — “The method was over-developed on the benchmark.”
 
 ### Required response
-The manuscript must make the frozen-generation protocol visible: negative generations are retained, truth-leakage diagnostics are invalidated rather than hidden, alternating development freezes one observer while changing the other, and the final surface is measured only after both sides are frozen.
-
-The new MEE analysis is post-freeze and must remain a deterministic transformation of the immutable phase surface. It cannot alter observer thresholds or regenerate a preferred surface.
-
-### Evidence the manuscript must show
-Include a concise generation timeline with FAIL / DIAGNOSIS / FREEZE / MEASUREMENT / POST-FREEZE DERIVATION labels and immutable source hashes in the supplement.
+Make the frozen-generation protocol visible: negative generations are retained, truth-leakage diagnostics are invalidated rather than hidden, alternating development freezes one observer while changing the other, and the final surface is measured only after both sides are frozen. Post-freeze analyses may transform only the immutable surface and cannot retune observers.
 
 ## Objection 13 — “What ecological quantity becomes better identified by keeping these states?”
 
-### Why this matters
-Without a downstream ecological estimand, the paper can be read as a decision-ontology exercise rather than a method that changes ecological inference.
-
 ### Required response
-Use synthetic target prevalence as the known-truth ecological estimand. For each regime composition, treat the frozen regime-by-B/T/N/U matrix as the observation process and compare the set of latent target prevalences compatible with:
-
-1. full B/T/N/U observations;
-2. the binary coarsening TARGET/not-TARGET.
-
-Do not claim a field estimator. The point is information loss under coarsening.
+Use synthetic target prevalence as the known-truth ecological estimand. For each regime composition, treat the frozen regime-by-B/T/N/U matrix as the observation process and compare the set of latent target prevalences compatible with full B/T/N/U versus TARGET/not-TARGET.
 
 ### Current evidence
 Across the deterministic 0.1 six-regime simplex (3,003 compositions):
@@ -163,13 +125,52 @@ Across the deterministic 0.1 six-regime simplex (3,003 compositions):
 - median relative width reduction where binary width is non-zero = about 84.45%;
 - TNOA is never wider than binary, as expected from retaining a refinement of the same observation.
 
-The 34 registered-axis slice audit preserves the “never wider” property, while also showing honest boundary cases where binary calibration already suffices or both encodings remain weak.
+The 34 registered-axis slice audit preserves the “never wider” property while exposing boundary cases where both encodings are weak or the coarsening loses little.
+
+## Objection 14 — “You call this a six-dimensional phase space, but how many axes actually distinguish outcomes?”
+
+### Why the objection is serious
+A large nominal grid can create the impression of complexity without corresponding effective response dimensionality. The exact-zero Pi3 rule is especially vulnerable because four positive Pi3 levels collapse.
+
+### Required response
+Report marginal axis separation rather than implying six equally effective dimensions. In the frozen deviation design, maximum total-variation shifts between level-mean B/T/N/U vectors are approximately:
+
+- Pi3: `0.6431` with only **2** distinct marginal decision vectors across 5 registered levels;
+- Pi1: `0.2665`;
+- Pi2: `0.2402`;
+- Pi6: `0.1608`;
+- Pi4: `0.0728`;
+- Pi5: `0.0214`.
+
+These are descriptive marginal summaries, not intrinsic-dimension estimates. The correct claim is that the **six-coordinate registered design has strongly uneven effective separation**.
 
 ### Evidence the manuscript must show
-A main-text figure or table should show naive bias plus identification-width comparison, and the Methods must define the latent prevalence estimand and partial-identification construction in ecological observation-model language.
+Describe 30,625 coordinates and 5.88M worlds as design coverage/provenance, not evidence magnitude. Explicitly state that Pi3 behaves as a binary structural axis and Pi4/Pi5 weakly separate the final marginal decision vector in this generation.
+
+## Objection 15 — “Your 35.69% forced-binary miss rate and zero false-positive rate are built into the design.”
+
+### Required response
+Agree and demote C13. The exact decomposition is:
+
+- `FN(Pi3=0) = 1.0`;
+- `FN(Pi3>0) = 0.196125` at every registered positive level;
+- equal-grid `FN = 0.2*1 + 0.8*0.196125 = 0.3569`.
+
+The zero target false-positive rate likewise follows the frozen positive-target observer on the registered non-target regimes. These quantities are not transferable performance metrics.
+
+### Evidence the manuscript must show
+Keep C13 only as a transparent comparator diagnostic. The downstream prevalence-mixture analysis, not 0.3569, must carry the claim that binary coarsening can damage ecological inference.
+
+## Objection 16 — “Where is the method readers can actually run?”
+
+### Required response
+TNOA now includes a minimal reusable Python API and CSV CLI. It accepts **already-calibrated positive-support flags**, maps them to B/T/N/U with reason provenance, and summarizes U rates by user-supplied ecological covariates. It deliberately does not ship universal raw-score thresholds.
+
+### Evidence the manuscript must show
+The code/data statement and repository README should point to `tnoa/`, `docs/REUSABLE_IMPLEMENTATION.md`, `examples/minimal_evidence.csv`, and tests. The Methods should separate domain-specific support calibration from the reusable process-preserving decision layer.
 
 ## Submission gate implied by this matrix
 
-Paper 1 should not be submitted to MEE until each objection above has a direct manuscript location (section, figure, table or supplement) rather than being answerable only from repository history.
+Paper 1 should not be submitted to MEE until each objection above has a direct manuscript location, figure, table, code example or supplement rather than being answerable only from repository history.
 
-The downstream estimand and weighting analyses are now implemented and locked. Remaining MEE-specific blockers are the minimal reusable implementation/API, the main-text vocabulary translation, and integration of these new results into the final manuscript/figure package.
+The downstream estimand, weighting analysis, structural-axis audit and minimal reusable implementation are now implemented. The remaining MEE-specific work is the ecological-statistical vocabulary rewrite and integration of the revised result hierarchy into the final manuscript/figure package.
