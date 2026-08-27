@@ -44,6 +44,19 @@ A raw score threshold need not retain meaning after representation changes. Oper
 
 The 5.88M-world frozen surface and its B/T/N/U rates may be reported as properties of the registered design space.
 
+### A11. Synthetic downstream ecological estimand
+
+Using known latent truth and the frozen V14b emission map, Paper 1 may report how binary collapse versus retention of B/T/N/U changes inference about **synthetic target prevalence**.
+
+Allowed outputs include:
+
+- naive forced-binary bias against known synthetic truth;
+- partial-identification bounds over latent-regime mixtures compatible with the retained observation states;
+- identification-width comparisons between full B/T/N/U and its binary coarsening;
+- repetition of the same calculation within registered Pi-axis slices.
+
+This is a downstream information-preservation result. It is **not** a field-calibrated visit-rate estimator and does not promote any field prevalence claim into Paper 1.
+
 ## B. Claims allowed only with explicit qualification
 
 ### B1. U is mainly attribution/overlap
@@ -51,6 +64,10 @@ The 5.88M-world frozen surface and its B/T/N/U rates may be reported as properti
 Allowed wording:
 
 > In the registered frozen design space, most U was assigned to attribution/overlap rather than no-supported-evidence cases.
+
+Stronger wording is now allowed only with the explicit weighting class:
+
+> Under bounded density-ratio reweighting of the frozen rows, overlap/attribution remained more than half of U through the tested `kappa=10` class.
 
 Not allowed:
 
@@ -60,7 +77,11 @@ Not allowed:
 
 Allowed:
 
-> In the frozen phase design, increasing observation duration did not reduce U monotonically because additional observation could reveal simultaneous target and nuisance processes.
+> In the frozen equal-grid phase design, increasing observation duration did not reduce U monotonically because additional observation could reveal simultaneous target and nuisance processes.
+
+Required sensitivity qualification:
+
+> This nonmonotonicity is not weighting-robust over a broad class: a monotone non-increasing Pi1 curve becomes feasible by approximately `kappa=1.6` in the registered density-ratio sensitivity analysis.
 
 Not allowed:
 
@@ -96,6 +117,22 @@ Not allowed without comparative empirical/benchmark evidence:
 
 > TNOA is safer or more accurate than all existing ecological classifiers.
 
+### B6. Weighting robustness
+
+Allowed:
+
+> A qualitative result is robust only within the explicitly reported reweighting class or registered axis slices actually tested.
+
+For the current post-freeze analysis:
+
+- overlap/attribution dominance of U survives the tested density-ratio class through `kappa=10`;
+- Pi1 nonmonotonicity does **not** survive all moderate reweightings and must remain conditional;
+- the small pooled Pi2=1 contrast changes sign within the `kappa=1.25` admissible range and therefore cannot be presented as a stable ridge.
+
+Not allowed:
+
+> The phase-surface conclusions are prior-free or invariant to arbitrary ecological prevalence weighting.
+
 ## C. Claims not allowed in Paper 1
 
 Do not claim:
@@ -103,6 +140,7 @@ Do not claim:
 - field flower-visitor detection accuracy;
 - field-calibrated T/C/N/O probabilities;
 - field-calibrated biological absence;
+- field visit prevalence, abundance or visitation-rate accuracy;
 - pollination or visitation effectiveness;
 - universal superiority of the TNOA decision rule;
 - universal optimality of any alpha, threshold, sampling budget or abstention rate;
@@ -110,7 +148,8 @@ Do not claim:
 - that every no-supported-evidence case is true information absence;
 - that nuisance is fully represented by the current synthetic process families;
 - that synthetic phase-space frequency equals natural ecological frequency;
-- that 5.88M synthetic worlds substitute for external ecological validation.
+- that 5.88M synthetic worlds substitute for external ecological validation;
+- that the equal-grid synthetic emission matrix transfers numerically to another camera, site, taxon or sensor domain.
 
 ## D. Terminology guardrails
 
@@ -122,7 +161,9 @@ Use:
 - `abstention` or `undetermined`, not `classification error`, for U by default;
 - `ordinal evidence`, not `probability`, for PolliPi 0/0.5/1;
 - `structural boundary`, not `field threshold`, for the exact-zero synthetic Pi3 result;
-- `registered design space`, not `nature`, when reporting phase-surface frequencies.
+- `registered design space`, not `nature`, when reporting phase-surface frequencies;
+- `synthetic target-prevalence estimand`, not `field visit-rate estimate`, for the known-truth downstream analysis;
+- `bounded reweighting sensitivity`, not `prior robustness`, unless an actual ecological prior has been specified.
 
 ## E. Paper-2 promotion rules
 
@@ -134,6 +175,8 @@ Examples:
 - C indirect-rescue claims require independently validated attribution;
 - N field claims require effect-specific nuisance calibration;
 - absence claims require validated A− or an explicitly different study design;
-- visit-rate claims require frozen split/exposure/sampling design and held-out estimates.
+- **empirical** visit-rate claims require frozen split/exposure/sampling design and held-out estimates.
+
+The A11 synthetic known-truth estimand analysis does not satisfy or bypass these empirical promotion rules.
 
 Paper 1 must remain valid if every Paper-2 empirical result is null or adverse.
