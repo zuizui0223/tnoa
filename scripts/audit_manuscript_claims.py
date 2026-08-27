@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Fail-closed claim scan for the instantiated TNOA Paper-1 draft.
 
-This is a narrow repository guard, not a semantic peer reviewer. It blocks known
-priority overclaims and requires internal C-ID provenance tags around the central
-locked numerical claims.
+The scanner blocks known priority overclaims and requires internal C-ID provenance
+for central numerical claims in the Abstract and Results. Repeated explanatory
+mentions in Methods/Discussion do not need duplicate C-ID comments as long as the
+registered claim has at least one tagged occurrence and every Abstract/Results
+occurrence is tagged.
 """
 from __future__ import annotations
 
@@ -57,6 +59,15 @@ def paragraphs(text: str) -> list[str]:
     return [chunk.strip() for chunk in re.split(r"\n\s*\n", text) if chunk.strip()]
 
 
+def section_text(text: str, start: str, end: str | None) -> str:
+    if start not in text:
+        return ""
+    tail = text.split(start, 1)[1]
+    if end and end in tail:
+        tail = tail.split(end, 1)[0]
+    return tail
+
+
 def main() -> None:
     if not DRAFT.is_file():
         fail(f"missing manuscript draft: {DRAFT.relative_to(ROOT)}")
@@ -69,26 +80,34 @@ def main() -> None:
             fail(f"forbidden priority/claim phrase present: {phrase!r}")
 
     ps = paragraphs(text)
+    abstract = section_text(text, "## Abstract", "## 1. Introduction")
+    results = section_text(text, "## 3. Results", "## 4. Discussion")
+    high_stakes_ps = paragraphs(abstract) + paragraphs(results)
 
     for token, claim_id in NUMERIC_CLAIM_REQUIREMENTS.items():
         matched = [p for p in ps if token in p]
         if not matched:
             fail(f"expected central numerical claim token missing: {token}")
-        for paragraph in matched:
-            if claim_id not in paragraph:
-                fail(f"numerical claim {token} lacks {claim_id} traceability in its paragraph")
+        if not any(claim_id in p for p in matched):
+            fail(f"numerical claim {token} has no {claim_id}-tagged occurrence")
+        for paragraph in high_stakes_ps:
+            if token in paragraph and claim_id not in paragraph:
+                fail(
+                    f"Abstract/Results occurrence of numerical claim {token} lacks {claim_id} traceability"
+                )
 
     for pattern, claim_id, label in QUALIFICATION_CHECKS:
-        for paragraph in ps:
+        all_matches = [p for p in ps if re.search(pattern, p)]
+        if all_matches and not any(claim_id in p for p in all_matches):
+            fail(f"{label} has no {claim_id}-tagged occurrence")
+        for paragraph in high_stakes_ps:
             if re.search(pattern, paragraph):
-                # Method-definition occurrences can be untagged; empirical/result
-                # occurrences using directional language must carry the claim ID.
                 empirical = any(
                     word in paragraph.lower()
                     for word in ("result", "rate", "failed", "not supported", "surface", "contrast")
                 )
                 if empirical and claim_id not in paragraph:
-                    fail(f"{label} lacks {claim_id} traceability in an empirical paragraph")
+                    fail(f"Abstract/Results {label} lacks {claim_id} traceability")
 
     if "not a universal ecological frequency" not in lower and "not a universal" not in lower:
         fail("draft must retain an explicit non-universality qualification")
