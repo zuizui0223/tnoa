@@ -256,16 +256,23 @@
       "C13 design-composition audit",
       "minimal reusable implementation callable on calibrated evidence outputs",
       "ecological-statistical vocabulary and result-hierarchy rewrite",
-      "MEE-priority figure data and reproducible builder"
+      "MEE-priority figure data and reproducible builder",
+      "sensor-agnostic fail-closed field translation pathway",
+      "code-assembled MEE composite figures",
+      "anonymous MEE DOCX generation and XML validation",
+      "deterministic double-anonymous reviewer bundle",
+      "MEE front-matter, running-headline, keyword and inclusion-statement guards",
+      "tested-method framing separating deterministic coarsening guarantees from empirical information-loss magnitude"
     ],
     "remaining_scientific_blockers": [],
-    "strategy": "Lead with C6-C7 error-control evidence and D1 downstream ecological-estimand information preservation; retain C2 as preregistered negative result; keep pooled rates, C13, Pi3 and world count as secondary design/provenance information."
+    "strategy": "Lead with C6-C7 error-control evidence and the empirical D1 information-loss magnitude (median compatible width about 0.030 versus 0.266); retain the deterministic never-wider relation as a structural property rather than performance evidence; retain C2 as the preregistered negative result; keep naive binary bias, pooled rates, C13, Pi3 and world count secondary."
   },
   "editorial_tasks_before_upload": [
-    "visually inspect final rendered MEE figure panels and assemble multi-panel layouts without changing data geometry",
-    "convert the MEE Markdown manuscript to final journal format",
-    "complete author contributions, acknowledgements and title-page metadata",
-    "perform final citation-style/reference-completeness pass",
-    "rerun all claim and package audits after final formatting"
+    "complete author names, affiliations, corresponding-author details, CRediT contributions, acknowledgements, funding and competing-interest metadata",
+    "visually inspect the generated anonymous DOCX, equations, line/page numbering, composite figures and rendered references without changing quantitative data geometry",
+    "recheck the final publisher-facing word count in the generated DOCX and submission system",
+    "rebuild the final reviewer ZIP with all final author/institution literals supplied to the identity scanner and place it in the reviewer-only location",
+    "decide whether to use the prepared optional cover letter or pre-submission enquiry",
+    "rerun claim and package audits after any final text-changing edit"
   ]
 }
