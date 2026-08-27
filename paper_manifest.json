@@ -98,6 +98,36 @@
       "paper_role": "motivates separation of representation from decision-scale contract"
     }
   ],
+  "derived_analyses": {
+    "mee_synthetic_consequences": {
+      "status": "post_freeze_deterministic_derivation_no_observer_retuning",
+      "source_workflow_run_id": 32932634622,
+      "source_artifact_id": 9593775550,
+      "source_phase_surface_sha256": "1d2c7c1f8f7370aad3cdde4d9d9d47bf318b2a057b6f788d3a48df9ea8d16c34",
+      "script": "scripts/analyze_mee_synthetic_consequences.py",
+      "result": "derived/mee_synthetic_consequences.json",
+      "requirements": "requirements-analysis.txt",
+      "validation": "scripts/validate_mee_synthetic_consequences.py",
+      "documentation": "docs/MEE_SYNTHETIC_CONSEQUENCES.md",
+      "field_claims_allowed": false,
+      "registered_design_summary": {
+        "prevalence_simplex_mixtures": 3003,
+        "naive_binary_negative_bias_fraction": 0.9963369963369964,
+        "naive_binary_bias_median": -0.23767428571428578,
+        "tnoa_partial_identification_width_median": 0.02992070478107567,
+        "binary_partial_identification_width_median": 0.2656306018443621,
+        "relative_width_reduction_median_nonzero_binary": 0.8444740221005506,
+        "tnoa_never_wider_on_registered_axis_slices": true
+      },
+      "weighting_sensitivity_summary": {
+        "overlap_attribution_majority_robust_through_density_ratio_kappa": 10.0,
+        "overlap_attribution_share_worst_case_at_kappa_10_approximately": 0.52,
+        "pi1_nonmonotonicity_not_robust_beyond_approximately_kappa": 1.5,
+        "pi2_equal_timescale_peak_not_weighting_robust": true
+      },
+      "interpretation": "Known-truth synthetic estimand and weighting sensitivity derived from the frozen observation surface; not an empirical visit-rate estimate and not an ecological prior."
+    }
+  },
   "literature_positioning": {
     "status": "targeted_final_prior_art_audit_complete_not_systematic_review",
     "evidence_map": "docs/LITERATURE_EVIDENCE_MAP.md",
@@ -117,7 +147,7 @@
       "adaptive and preferential ecological sampling",
       "sensor fusion and conflict-aware sensing"
     ],
-    "central_defensible_novelty": "integrated process-preserving ecological sensor-decision architecture plus frozen dimensionless decision geometry; no component-level priority claim for abstention, imperfect detection, set-valued decisions, ignorance/conflict, sensor fusion, or process/observation separation",
+    "central_defensible_novelty": "integrated process-preserving ecological sensor-decision architecture plus frozen dimensionless decision geometry and a downstream known-truth ecological-estimand consequence; no component-level priority claim",
     "cross_system_transfer_demonstrated_conceptually": true,
     "quantitative_cross_system_transfer_claimed": false,
     "absolute_priority_claimed": false
@@ -157,7 +187,7 @@
     "draft": "manuscript/TNOA_P1_DRAFT.md",
     "blueprint": "docs/METHOD_PAPER_BLUEPRINT.md",
     "final_claim_audit": "docs/FINAL_CLAIM_AUDIT.md",
-    "claim_audit_scope": "current repository draft; rerun after material revision",
+    "claim_audit_scope": "historical working draft plus post-freeze MEE consequence work; rerun after MEE rewrite",
     "internal_result_provenance_tags": "C1-C15"
   },
   "paper_claim_boundary": {
@@ -166,14 +196,28 @@
     "universal_pi3_law": false,
     "universal_optimal_abstention": false,
     "component_level_priority": false,
-    "closed_world_method_claims": true
+    "closed_world_method_claims": true,
+    "synthetic_known_truth_estimand_claims": true,
+    "weighting_robustness_only_within_tested_class": true
   },
   "submission_blockers": [],
+  "target_journal_readiness": {
+    "target": "Methods in Ecology and Evolution",
+    "completed": [
+      "downstream synthetic ecological estimand",
+      "equal-grid weighting sensitivity"
+    ],
+    "remaining_blockers": [
+      "minimal reusable implementation callable on arbitrary B/T/N/U evidence outputs",
+      "ecological-statistical vocabulary rewrite of the working manuscript"
+    ],
+    "strategy": "Move the paper centre from pooled decision-space percentages to downstream ecological inference consequences and robust structural properties."
+  },
   "editorial_tasks_before_upload": [
     "finalize conceptual Figure 1 artwork without changing quantitative figure geometry",
     "convert the working Markdown manuscript to target-journal format",
     "complete author contributions, acknowledgements and submission metadata",
     "perform final citation-style/reference-completeness pass after journal formatting",
-    "rerun final claim audit after any material manuscript revision"
+    "rerun final claim audit after the MEE rewrite"
   ]
 }
