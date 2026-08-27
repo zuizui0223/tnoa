@@ -3,8 +3,9 @@
 
 The scanner blocks known priority overclaims and requires internal C-ID provenance
 for every registered numerical claim occurrence. A claim tag may sit in the same
-Markdown paragraph or in an immediately adjacent standalone HTML-comment paragraph;
-this supports display-equation blocks without weakening provenance requirements.
+Markdown paragraph or in an immediately adjacent paragraph that begins with a C-ID
+HTML comment; this supports display-equation blocks without weakening provenance
+requirements.
 """
 from __future__ import annotations
 
@@ -49,7 +50,7 @@ QUALIFICATION_CHECKS = (
     (r"Pi2\s*~=\s*1|Pi2≈1|\\Pi_2\\approx1|\\Pi_2=1", "C2", "Pi2 ridge result"),
 )
 
-COMMENT_ONLY = re.compile(r"^<!--\s*(C\d+(?:\s+C\d+)*)\s*-->$")
+COMMENT_PREFIX = re.compile(r"^<!--\s*(C\d+(?:\s+C\d+)*)\s*-->")
 
 
 def fail(message: str) -> None:
@@ -66,7 +67,7 @@ def has_claim_tag(ps: list[str], index: int, claim_id: str) -> bool:
     for neighbor in (index - 1, index + 1):
         if neighbor < 0 or neighbor >= len(ps):
             continue
-        match = COMMENT_ONLY.fullmatch(ps[neighbor])
+        match = COMMENT_PREFIX.match(ps[neighbor])
         if match and claim_id in match.group(1).split():
             return True
     return False
@@ -92,7 +93,7 @@ def main() -> None:
         for index in matched_indices:
             if not has_claim_tag(ps, index, claim_id):
                 fail(
-                    f"numerical claim {token} lacks {claim_id} traceability in its paragraph or adjacent standalone tag"
+                    f"numerical claim {token} lacks {claim_id} traceability in its paragraph or adjacent leading tag"
                 )
 
     for pattern, claim_id, label in QUALIFICATION_CHECKS:
