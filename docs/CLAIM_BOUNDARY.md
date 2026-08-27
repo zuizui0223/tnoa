@@ -48,12 +48,14 @@ The 30,625-coordinate / 5.88M-world frozen surface and its B/T/N/U rates may be 
 
 Using known latent truth and the frozen V14b emission map, Paper 1 may report how binary collapse versus retention of B/T/N/U changes inference about **synthetic target prevalence**.
 
-Allowed outputs include:
+The logical direction of the comparison is structural. Because TARGET/not-TARGET is a deterministic coarsening of B/T/N/U, every latent mixture compatible with the four-state record is also compatible with the binary record. Therefore the B/T/N/U compatible set cannot be wider. This **never-wider property is not an empirical performance result**.
 
-- naive forced-binary bias against known synthetic truth;
+The empirical Paper-1 result is the magnitude and design dependence of the information loss under coarsening. Allowed outputs include:
+
 - partial-identification bounds over latent-regime mixtures compatible with the retained observation states;
-- identification-width comparisons between full B/T/N/U and its binary coarsening;
-- repetition of the same calculation within registered Pi-axis slices.
+- identification-width magnitudes comparing full B/T/N/U with its binary coarsening, especially the registered median `0.030` versus `0.266` contrast;
+- variation in the amount of narrowing across registered Pi-axis slices;
+- the deliberately naive forced-binary prevalence bias as a **secondary comparator diagnostic**, not the primary information-preservation result.
 
 This is a downstream information-preservation result. It is **not** a field-calibrated visit-rate estimator and does not promote any field prevalence claim into Paper 1.
 
