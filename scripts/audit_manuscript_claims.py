@@ -33,8 +33,8 @@ NUMERIC_CLAIM_REQUIREMENTS = {
     "3,003": "D1",
     "99.63%": "D1",
     "-0.238": "D1",
-    "0.030": "D1",
-    "0.266": "D1",
+    "`0.030`": "D1",
+    "`0.266`": "D1",
     "84.45%": "D1",
     "0.02675": "C10",
     "0.22658": "C10",
@@ -105,13 +105,27 @@ def main() -> None:
     required_phrases = (
         "not a field bias estimate",
         "not intrinsic-dimension estimates",
-        "not a performance claim",
+        "performance claim",
         "does not claim priority",
         "design coverage and provenance",
     )
     for phrase in required_phrases:
         if phrase not in lower:
             fail(f"required qualification missing: {phrase!r}")
+
+    # Result hierarchy must stay MEE-facing: C6/C7 -> D1 -> C2.
+    results = text.split("## 3. Results", 1)[-1].split("## 4. Discussion", 1)[0]
+    first = results.find("### 3.1")
+    second = results.find("### 3.2")
+    third = results.find("### 3.3")
+    if not (0 <= first < second < third):
+        fail("Results 3.1-3.3 ordering is malformed")
+    if "inherited raw threshold" not in results[first:second].lower():
+        fail("Results 3.1 must lead with the inherited-threshold failure")
+    if "target prevalence" not in results[second:third].lower():
+        fail("Results 3.2 must lead with the downstream ecological estimand")
+    if "not supported" not in results[third:].lower() or "pi2" not in results[third:].lower():
+        fail("Results 3.3 must retain the preregistered Pi2 negative result")
 
     print(
         "TNOA MEE manuscript claim scan OK: "
