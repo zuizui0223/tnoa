@@ -20,3 +20,5 @@ jobs:
         run: python scripts/audit_manuscript_claims.py
       - name: Check MEE submission package
         run: python scripts/check_mee_submission.py
+      - name: Assemble anonymised MEE main text
+        run: python scripts/assemble_mee_main.py --output /tmp/TNOA_P1_MEE_MAIN.md
