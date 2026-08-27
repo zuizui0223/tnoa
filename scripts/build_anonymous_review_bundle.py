@@ -55,6 +55,7 @@ TNOA_DOCS = (
     "docs/MEE_SYNTHETIC_CONSEQUENCES.md",
     "docs/STRUCTURAL_RESULT_AUDIT.md",
     "docs/REUSABLE_IMPLEMENTATION.md",
+    "docs/FIELD_TRANSLATION_PATHWAY.md",
     "docs/MEE_VOCABULARY_MAP.md",
 )
 
@@ -212,7 +213,6 @@ def anonymous_manifest(extra_literals: tuple[str, ...]) -> dict:
         },
     }
     payload["scope"] = str(payload.get("scope", "")) + "; public source locations withheld during review"
-    # Round-trip through the same sanitizer so future identity-bearing prose cannot leak.
     return json.loads(sanitize_text(json.dumps(payload), extra_literals))
 
 
@@ -279,7 +279,7 @@ def generate_review_figures(stage: Path) -> None:
     output = stage / "figures" / "generated"
     output.mkdir(parents=True, exist_ok=True)
     env = dict(os.environ)
-    env["SOURCE_DATE_EPOCH"] = "315532800"  # 1980-01-01 for stable SVG metadata where supported.
+    env["SOURCE_DATE_EPOCH"] = "315532800"
     subprocess.run(
         [sys.executable, str(ROOT / "scripts" / "build_mee_figures.py"), "--output-dir", str(output)],
         check=True,
@@ -289,7 +289,6 @@ def generate_review_figures(stage: Path) -> None:
     svg = sorted(output.glob("*.svg"))
     if len(png) != 8 or len(svg) != 8 or not (output / "figure_provenance.json").is_file():
         fail("MEE figure builder did not produce the expected 8 PNG + 8 SVG + provenance files")
-    # Matplotlib SVG may retain a date element; normalize it for deterministic bundle bytes.
     for path in svg:
         text = path.read_text(encoding="utf-8")
         text = re.sub(r"<dc:date>.*?</dc:date>", "<dc:date>1980-01-01T00:00:00</dc:date>", text)
