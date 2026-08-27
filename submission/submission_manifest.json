@@ -1,5 +1,5 @@
 {
-  "schema": "tnoa-mee-submission-package-v2",
+  "schema": "tnoa-mee-submission-package-v3",
   "target_journal": "Methods in Ecology and Evolution",
   "article_type": "Standard Article / methods paper",
   "journal_guidance_checked_date": "2026-08-27",
@@ -15,13 +15,21 @@
     "audited_body": "manuscript/TNOA_MEE_DRAFT.md",
     "historical_body_retained": "manuscript/TNOA_P1_DRAFT.md",
     "claim_audit": "scripts/audit_manuscript_claims.py",
-    "builder": "scripts/build_mee_anonymous_manuscript.py",
-    "expected_output": "submission/generated/MEE_ANONYMOUS_MANUSCRIPT.md",
+    "initial_submission_builder": "scripts/build_mee_initial_submission_source.py",
+    "initial_submission_output": "submission/generated/MEE_INITIAL_SUBMISSION_SOURCE.md",
+    "readiness_audit": "scripts/audit_initial_submission_readiness.py",
+    "readiness_report": "submission/generated/initial_submission_readiness.json",
+    "anonymous_builder": "scripts/build_mee_anonymous_manuscript.py",
+    "anonymous_output": "submission/generated/MEE_ANONYMOUS_MANUSCRIPT.md",
     "numbered_abstract_1_to_4": true,
     "data_code_peer_review_statement": true,
+    "materials_and_methods_heading_normalized_in_submission_source": true,
+    "figure_callouts_and_captions_added_in_submission_source": true,
     "internal_c_tags_removed_from_review_copy": true,
     "public_owner_strings_forbidden": true,
-    "email_addresses_forbidden": true
+    "email_addresses_forbidden": true,
+    "word_count_conservative_ceiling": 8000,
+    "final_formatted_word_count_must_be_rechecked": true
   },
   "title_page": {
     "template": "submission/TITLE_PAGE_TEMPLATE.md",
@@ -56,11 +64,11 @@
   },
   "submission_checklist": "submission/MEE_SUBMISSION_CHECKLIST.md",
   "remaining_initial_upload_tasks": [
-    "assemble journal-formatted single-column double-line-spaced manuscript with continuous page and line numbering",
-    "confirm final word count including references against current MEE guidance",
+    "convert the assembled source to a single-column double-line-spaced upload document with continuous page and line numbering",
+    "recheck final formatted word count using the publisher-facing document",
     "complete author names, affiliations, contributions, acknowledgements and submission metadata on separate title page",
     "build the validated anonymous reviewer ZIP with final author/institution literals supplied to the identity scanner and upload it to the private reviewer-only location",
-    "perform final reference formatting/completeness pass in the journal-formatted manuscript",
+    "perform final visual reference-style and multi-panel-figure inspection",
     "rerun manuscript claim audit after any material formatting edits"
   ],
   "scientific_claim_boundary_unchanged": true
