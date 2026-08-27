@@ -16,6 +16,8 @@ REQUIRED = (
     "submission/ANONYMOUS_PEER_REVIEW_PACKAGE.md",
     "submission/submission_manifest.json",
     "scripts/build_mee_anonymous_manuscript.py",
+    "scripts/build_anonymous_review_bundle.py",
+    "scripts/validate_anonymous_review_bundle.py",
     "scripts/audit_manuscript_claims.py",
     "manuscript/TNOA_MEE_DRAFT.md",
     "manuscript/TNOA_P1_DRAFT.md",
@@ -43,6 +45,8 @@ def main() -> None:
         fail("LICENSE is not the expected MIT license text")
 
     payload = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    if payload.get("schema") != "tnoa-mee-submission-package-v2":
+        fail("submission manifest must be v2 after reviewer-bundle implementation")
     if payload.get("target_journal") != "Methods in Ecology and Evolution":
         fail("target journal drifted")
     if payload.get("scientific_submission_blockers") != 0:
@@ -69,10 +73,30 @@ def main() -> None:
         fail("anonymous manuscript must forbid email addresses")
 
     peer = payload.get("peer_review_code_data", {})
+    expected_peer = {
+        "bundle_builder": "scripts/build_anonymous_review_bundle.py",
+        "bundle_validator": "scripts/validate_anonymous_review_bundle.py",
+        "bundle_schema": "tnoa-anonymous-review-bundle-v2",
+        "expected_zip": "TNOA_MEE_ANONYMOUS_REVIEW_BUNDLE.zip",
+        "expected_receipt": "TNOA_MEE_ANONYMOUS_REVIEW_BUNDLE.receipt.json",
+        "source_A_commit": "f3b266897f3e9139e6c3fe9ce6b645e25371e092",
+        "source_B_commit": "1664a190cec47142e8d14cc5157302a7af18d019",
+    }
+    for key, expected in expected_peer.items():
+        if peer.get(key) != expected:
+            fail(f"peer-review bundle field {key} drifted")
+    if "CI-validated" not in str(peer.get("status", "")):
+        fail("peer-review bundle must be registered as CI-validated")
     if peer.get("private_or_reviewer_only_location_required") is not True:
         fail("anonymous code/data package must use reviewer-only/private location")
     if peer.get("public_owner_identifying_url_allowed_in_anonymous_manuscript") is not False:
         fail("anonymous manuscript cannot expose owner-identifying repository URL")
+    if peer.get("locked_scientific_generation_rerun_required_for_routine_review") is not False:
+        fail("routine reviewer bundle must not require rerunning the frozen scientific generation")
+    if peer.get("final_author_institution_literals_must_be_scanned_at_upload") is not True:
+        fail("final author/institution literal scan is not registered")
+    if peer.get("ci_bundle_artifact_is_validation_only_not_final_delivery_location") is not True:
+        fail("CI bundle must not be represented as the final reviewer delivery location")
 
     figures = payload.get("figures", {})
     expected_figures = {
@@ -97,18 +121,32 @@ def main() -> None:
         fail("front matter lost the closed-world field-calibration boundary")
 
     reviewer = (ROOT / "submission" / "ANONYMOUS_PEER_REVIEW_PACKAGE.md").read_text(encoding="utf-8")
-    for token in ("mee_figure_data.json", "validate_mee_figure_data.py", "build_mee_figures.py"):
+    for token in (
+        "mee_figure_data.json",
+        "validate_mee_figure_data.py",
+        "build_mee_figures.py",
+        "build_anonymous_review_bundle.py",
+        "validate_anonymous_review_bundle.py",
+        "--forbid-literal",
+    ):
         if token not in reviewer:
-            fail(f"anonymous reviewer package missing current MEE figure component: {token}")
+            fail(f"anonymous reviewer package missing current component: {token}")
     if "build_paper_figures.py" in reviewer:
         fail("anonymous reviewer package still points to the historical figure builder")
+
+    remaining = payload.get("remaining_initial_upload_tasks", [])
+    if any("prepare anonymized reviewer ZIP" in str(item) for item in remaining):
+        fail("reviewer ZIP is implemented; remaining task should be final literal scan/private upload, not initial preparation")
+    if not any("--forbid-literal" not in str(item) and "author/institution literals" in str(item) for item in remaining):
+        # Keep the actual upload task human-readable rather than embedding command syntax.
+        fail("remaining upload tasks must retain final author/institution literal scan")
 
     svg = (ROOT / "figures" / "fig1_tnoa_architecture.svg").read_text(encoding="utf-8")
     for token in ("World / process layer", "Evidence layer", "Decision layer", "Development safeguards"):
         if token not in svg:
             fail(f"Figure 1 semantic layer missing: {token}")
 
-    print("MEE submission package OK: license, anonymous front matter, title-page split, peer-review plan and Figure 1 registered")
+    print("MEE submission package OK: scientific blockers 0, active MEE draft/figures aligned, anonymous review bundle v2 registered")
 
 
 if __name__ == "__main__":
