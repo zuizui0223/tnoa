@@ -117,6 +117,8 @@ def main() -> None:
         "do not transfer automatically to another device",
         "implementation guidance, not field validation",
         "no field result from such a deployment is used as evidence in paper 1",
+        "mathematical property of the two representations, not an empirical performance result",
+        "the empirical result is the size of that advantage",
     )
     for phrase in required_phrases:
         if phrase not in lower:
@@ -131,8 +133,13 @@ def main() -> None:
         fail("Results 3.1-3.3 ordering is malformed")
     if "inherited raw threshold" not in results[first:second].lower():
         fail("Results 3.1 must lead with the inherited-threshold failure")
-    if "target prevalence" not in results[second:third].lower():
+    section32 = results[second:third].lower()
+    if "target prevalence" not in section32:
         fail("Results 3.2 must lead with the downstream ecological estimand")
+    if "the empirical result is the size of that advantage" not in section32:
+        fail("Results 3.2 must distinguish the coarsening guarantee from the empirical magnitude")
+    if section32.find("`0.030`") > section32.find("99.63%"):
+        fail("Results 3.2 must lead with identification-width magnitude before the secondary naive-bias diagnostic")
     if "not supported" not in results[third:].lower() or "pi2" not in results[third:].lower():
         fail("Results 3.3 must retain the preregistered Pi2 negative result")
 
