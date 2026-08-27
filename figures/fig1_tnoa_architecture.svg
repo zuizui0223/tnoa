@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">TNOA observation ontology and decision entitlement</title>
+  <desc id="desc">Conceptual diagram separating world processes, evidence channels, decision outputs, forbidden shortcuts, and development safeguards.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#222"/>
+    </marker>
+    <style>
+      .h1 { font: 700 28px sans-serif; fill: #111; }
+      .h2 { font: 700 19px sans-serif; fill: #111; }
+      .txt { font: 16px sans-serif; fill: #111; }
+      .small { font: 14px sans-serif; fill: #222; }
+      .box { fill: #fff; stroke: #222; stroke-width: 2; rx: 12; }
+      .soft { fill: #f2f2f2; stroke: #222; stroke-width: 2; rx: 12; }
+      .u { fill: #e8e8e8; stroke: #222; stroke-width: 2; rx: 12; }
+      .arr { stroke: #222; stroke-width: 2.4; fill: none; marker-end: url(#arrow); }
+      .dash { stroke: #555; stroke-width: 2; stroke-dasharray: 7 6; fill: none; marker-end: url(#arrow); }
+      .bad { stroke: #555; stroke-width: 2.5; stroke-dasharray: 5 5; fill: none; }
+      .x { stroke: #111; stroke-width: 3; }
+    </style>
+  </defs>
+
+  <text x="50" y="48" class="h1">TNOA: when is an ecological sensor entitled to decide?</text>
+
+  <!-- World/process layer -->
+  <text x="55" y="95" class="h2">1. World / process layer</text>
+  <rect x="55" y="115" width="210" height="90" class="soft"/>
+  <text x="160" y="150" class="h2" text-anchor="middle">Baseline</text>
+  <text x="160" y="177" class="small" text-anchor="middle">no marked deviation</text>
+
+  <rect x="315" y="115" width="210" height="90" class="box"/>
+  <text x="420" y="150" class="h2" text-anchor="middle">Target process</text>
+  <text x="420" y="177" class="small" text-anchor="middle">focal biological process</text>
+
+  <rect x="575" y="115" width="210" height="90" class="box"/>
+  <text x="680" y="150" class="h2" text-anchor="middle">Nuisance process</text>
+  <text x="680" y="177" class="small" text-anchor="middle">mimic / mask / corrupt</text>
+
+  <rect x="835" y="115" width="310" height="90" class="soft"/>
+  <text x="990" y="150" class="h2" text-anchor="middle">Legitimate coexistence</text>
+  <text x="990" y="177" class="small" text-anchor="middle">target + nuisance may both be active</text>
+
+  <path d="M525 160 L575 160" class="dash"/>
+  <path d="M785 160 L835 160" class="dash"/>
+
+  <!-- Evidence layer -->
+  <text x="55" y="260" class="h2">2. Evidence layer — keep propositions separate</text>
+  <rect x="55" y="282" width="180" height="100" class="box"/>
+  <text x="145" y="315" class="h2" text-anchor="middle">T</text>
+  <text x="145" y="340" class="small" text-anchor="middle">direct positive</text>
+  <text x="145" y="360" class="small" text-anchor="middle">target evidence</text>
+
+  <rect x="265" y="282" width="180" height="100" class="box"/>
+  <text x="355" y="315" class="h2" text-anchor="middle">C</text>
+  <text x="355" y="340" class="small" text-anchor="middle">coupled response ×</text>
+  <text x="355" y="360" class="small" text-anchor="middle">independent attribution</text>
+
+  <rect x="475" y="282" width="180" height="100" class="box"/>
+  <text x="565" y="315" class="h2" text-anchor="middle">N</text>
+  <text x="565" y="340" class="small" text-anchor="middle">positive exogenous</text>
+  <text x="565" y="360" class="small" text-anchor="middle">process evidence</text>
+
+  <rect x="685" y="282" width="180" height="100" class="box"/>
+  <text x="775" y="315" class="h2" text-anchor="middle">O</text>
+  <text x="775" y="340" class="small" text-anchor="middle">measurement support</text>
+  <text x="775" y="360" class="small" text-anchor="middle">/ observability</text>
+
+  <rect x="895" y="282" width="180" height="100" class="box"/>
+  <text x="985" y="315" class="h2" text-anchor="middle">A−</text>
+  <text x="985" y="340" class="small" text-anchor="middle">optional independent</text>
+  <text x="985" y="360" class="small" text-anchor="middle">absence evidence</text>
+
+  <!-- Process-to-evidence arrows -->
+  <path d="M420 205 L145 282" class="arr"/>
+  <path d="M420 205 L355 282" class="arr"/>
+  <path d="M680 205 L565 282" class="arr"/>
+  <path d="M990 205 L775 282" class="dash"/>
+
+  <!-- Forbidden shortcuts -->
+  <text x="1100" y="305" class="small" text-anchor="middle">Forbidden shortcuts</text>
+  <path d="M156 390 L985 390" class="bad"/>
+  <line x1="550" y1="379" x2="570" y2="401" class="x"/>
+  <line x1="570" y1="379" x2="550" y2="401" class="x"/>
+  <text x="560" y="420" class="small" text-anchor="middle">low T ≠ A−</text>
+  <text x="775" y="420" class="small" text-anchor="middle">O ≠ 1−N</text>
+  <text x="565" y="440" class="small" text-anchor="middle">N ≠ 1−T</text>
+
+  <!-- Decision layer -->
+  <text x="55" y="485" class="h2">3. Decision layer</text>
+  <rect x="95" y="510" width="200" height="92" class="soft"/>
+  <text x="195" y="548" class="h2" text-anchor="middle">B</text>
+  <text x="195" y="575" class="small" text-anchor="middle">baseline</text>
+
+  <rect x="355" y="510" width="200" height="92" class="box"/>
+  <text x="455" y="548" class="h2" text-anchor="middle">T</text>
+  <text x="455" y="575" class="small" text-anchor="middle">target-supported</text>
+
+  <rect x="615" y="510" width="200" height="92" class="box"/>
+  <text x="715" y="548" class="h2" text-anchor="middle">N</text>
+  <text x="715" y="575" class="small" text-anchor="middle">nuisance-supported</text>
+
+  <rect x="875" y="510" width="200" height="92" class="u"/>
+  <text x="975" y="548" class="h2" text-anchor="middle">U</text>
+  <text x="975" y="573" class="small" text-anchor="middle">abstain / undetermined</text>
+  <text x="975" y="592" class="small" text-anchor="middle">retain reason provenance</text>
+
+  <path d="M145 382 L455 510" class="arr"/>
+  <path d="M355 382 L455 510" class="dash"/>
+  <path d="M565 382 L715 510" class="arr"/>
+  <path d="M775 382 L975 510" class="dash"/>
+  <path d="M985 382 L455 510" class="dash"/>
+
+  <!-- Development / safeguards -->
+  <text x="55" y="655" class="h2">4. Development safeguards</text>
+  <rect x="55" y="675" width="1090" height="58" class="soft"/>
+  <text x="600" y="699" class="txt" text-anchor="middle">definition defect → representation defect → no-support / unresolved status → process coupling</text>
+  <text x="600" y="721" class="small" text-anchor="middle">freeze before measurement • retain failed generations • calibrate tolerated false certainty rather than inherited raw score</text>
+</svg>

@@ -1,0 +1,50 @@
+{
+  "schema": "tnoa-mee-submission-package-v1",
+  "target_journal": "Methods in Ecology and Evolution",
+  "article_type": "Standard Article / methods paper",
+  "journal_guidance_checked_date": "2026-08-27",
+  "scientific_source_manifest": "paper_manifest.json",
+  "scientific_submission_blockers": 0,
+  "open_source_license": {
+    "path": "LICENSE",
+    "license": "MIT",
+    "status": "present"
+  },
+  "anonymous_manuscript": {
+    "front_matter": "submission/MEE_FRONT_MATTER.md",
+    "audited_body": "manuscript/TNOA_P1_DRAFT.md",
+    "builder": "scripts/build_mee_anonymous_manuscript.py",
+    "expected_output": "submission/generated/MEE_ANONYMOUS_MANUSCRIPT.md",
+    "numbered_abstract_1_to_4": true,
+    "data_code_peer_review_statement": true,
+    "internal_c_tags_removed_from_review_copy": true,
+    "public_owner_strings_forbidden": true,
+    "email_addresses_forbidden": true
+  },
+  "title_page": {
+    "template": "submission/TITLE_PAGE_TEMPLATE.md",
+    "separate_upload_required": true,
+    "author_metadata_complete": false
+  },
+  "peer_review_code_data": {
+    "instructions": "submission/ANONYMOUS_PEER_REVIEW_PACKAGE.md",
+    "private_or_reviewer_only_location_required": true,
+    "public_owner_identifying_url_allowed_in_anonymous_manuscript": false,
+    "locked_scientific_generation_rerun_required_for_routine_review": false
+  },
+  "figures": {
+    "conceptual_figure_1": "figures/fig1_tnoa_architecture.svg",
+    "quantitative_figure_builder": "scripts/build_paper_figures.py",
+    "quantitative_package_status": "source-guarded and visually audited"
+  },
+  "submission_checklist": "submission/MEE_SUBMISSION_CHECKLIST.md",
+  "remaining_initial_upload_tasks": [
+    "assemble journal-formatted single-column double-line-spaced manuscript with continuous page and line numbering",
+    "confirm final word count including references against current MEE guidance",
+    "complete author names, affiliations, contributions, acknowledgements and submission metadata on separate title page",
+    "prepare anonymized reviewer ZIP or private-for-peer-review archive and run identity scan",
+    "perform final reference formatting/completeness pass in the journal-formatted manuscript",
+    "rerun manuscript claim audit after any material formatting edits"
+  ],
+  "scientific_claim_boundary_unchanged": true
+}
