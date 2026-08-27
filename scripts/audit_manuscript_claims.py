@@ -2,10 +2,9 @@
 """Fail-closed claim scan for the instantiated TNOA Paper-1 draft.
 
 The scanner blocks known priority overclaims and requires internal C-ID provenance
-for central numerical claims in the Abstract and Results. Repeated explanatory
-mentions in Methods/Discussion do not need duplicate C-ID comments as long as the
-registered claim has at least one tagged occurrence and every Abstract/Results
-occurrence is tagged.
+for every registered numerical claim occurrence. A claim tag may sit in the same
+Markdown paragraph or in an immediately adjacent standalone HTML-comment paragraph;
+this supports display-equation blocks without weakening provenance requirements.
 """
 from __future__ import annotations
 
@@ -50,6 +49,8 @@ QUALIFICATION_CHECKS = (
     (r"Pi2\s*~=\s*1|Pi2≈1|\\Pi_2\\approx1|\\Pi_2=1", "C2", "Pi2 ridge result"),
 )
 
+COMMENT_ONLY = re.compile(r"^<!--\s*(C\d+(?:\s+C\d+)*)\s*-->$")
+
 
 def fail(message: str) -> None:
     raise SystemExit(f"TNOA manuscript claim audit failed: {message}")
@@ -59,13 +60,16 @@ def paragraphs(text: str) -> list[str]:
     return [chunk.strip() for chunk in re.split(r"\n\s*\n", text) if chunk.strip()]
 
 
-def section_text(text: str, start: str, end: str | None) -> str:
-    if start not in text:
-        return ""
-    tail = text.split(start, 1)[1]
-    if end and end in tail:
-        tail = tail.split(end, 1)[0]
-    return tail
+def has_claim_tag(ps: list[str], index: int, claim_id: str) -> bool:
+    if claim_id in ps[index]:
+        return True
+    for neighbor in (index - 1, index + 1):
+        if neighbor < 0 or neighbor >= len(ps):
+            continue
+        match = COMMENT_ONLY.fullmatch(ps[neighbor])
+        if match and claim_id in match.group(1).split():
+            return True
+    return False
 
 
 def main() -> None:
@@ -80,34 +84,26 @@ def main() -> None:
             fail(f"forbidden priority/claim phrase present: {phrase!r}")
 
     ps = paragraphs(text)
-    abstract = section_text(text, "## Abstract", "## 1. Introduction")
-    results = section_text(text, "## 3. Results", "## 4. Discussion")
-    high_stakes_ps = paragraphs(abstract) + paragraphs(results)
 
     for token, claim_id in NUMERIC_CLAIM_REQUIREMENTS.items():
-        matched = [p for p in ps if token in p]
-        if not matched:
+        matched_indices = [i for i, p in enumerate(ps) if token in p]
+        if not matched_indices:
             fail(f"expected central numerical claim token missing: {token}")
-        if not any(claim_id in p for p in matched):
-            fail(f"numerical claim {token} has no {claim_id}-tagged occurrence")
-        for paragraph in high_stakes_ps:
-            if token in paragraph and claim_id not in paragraph:
+        for index in matched_indices:
+            if not has_claim_tag(ps, index, claim_id):
                 fail(
-                    f"Abstract/Results occurrence of numerical claim {token} lacks {claim_id} traceability"
+                    f"numerical claim {token} lacks {claim_id} traceability in its paragraph or adjacent standalone tag"
                 )
 
     for pattern, claim_id, label in QUALIFICATION_CHECKS:
-        all_matches = [p for p in ps if re.search(pattern, p)]
-        if all_matches and not any(claim_id in p for p in all_matches):
-            fail(f"{label} has no {claim_id}-tagged occurrence")
-        for paragraph in high_stakes_ps:
+        for index, paragraph in enumerate(ps):
             if re.search(pattern, paragraph):
                 empirical = any(
                     word in paragraph.lower()
                     for word in ("result", "rate", "failed", "not supported", "surface", "contrast")
                 )
-                if empirical and claim_id not in paragraph:
-                    fail(f"Abstract/Results {label} lacks {claim_id} traceability")
+                if empirical and not has_claim_tag(ps, index, claim_id):
+                    fail(f"{label} lacks {claim_id} traceability in an empirical paragraph")
 
     if "not a universal ecological frequency" not in lower and "not a universal" not in lower:
         fail("draft must retain an explicit non-universality qualification")
