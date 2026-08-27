@@ -1,5 +1,5 @@
 {
-  "schema": "tnoa-mee-submission-package-v3",
+  "schema": "tnoa-mee-submission-package-v4",
   "target_journal": "Methods in Ecology and Evolution",
   "article_type": "Standard Article / methods paper",
   "journal_guidance_checked_date": "2026-08-27",
@@ -35,6 +35,28 @@
     "missing_citation_keys": 0,
     "unused_bibliography_entries": 6,
     "interpretation": "Conservative machine estimate is comfortably below the 8000-word ceiling; final publisher-formatted word count still requires recheck."
+  },
+  "formatted_docx": {
+    "canonical_source": "submission/generated/MEE_INITIAL_SUBMISSION_SOURCE.md",
+    "builder": "scripts/build_mee_submission_docx.py",
+    "validator": "scripts/validate_mee_submission_docx.py",
+    "requirements": "requirements-submission.txt",
+    "formatting_provenance": "submission/MEE_FORMATTING_PROVENANCE.md",
+    "expected_output": "submission/generated/TNOA_MEE_ANONYMOUS_INITIAL_SUBMISSION.docx",
+    "validation_report": "submission/generated/docx_validation.json",
+    "csl_repository": "citation-style-language/styles",
+    "csl_commit": "2a4430b7cadae7cc88012537c5ceaed76d1d9938",
+    "csl_parent_style": "apa.csl",
+    "csl_blob_sha1": "9bc45ef6289bb2f933a0fd9a44640baa34a3191e",
+    "single_column": true,
+    "double_spacing": true,
+    "continuous_line_numbering": true,
+    "page_numbering": true,
+    "anonymous_core_metadata": true,
+    "citations_and_references_rendered_by_citeproc": true,
+    "ci_validation_required": true,
+    "publisher_visual_review_required": true,
+    "scientific_content_changed_by_formatting": false
   },
   "title_page": {
     "template": "submission/TITLE_PAGE_TEMPLATE.md",
@@ -79,13 +101,12 @@
   },
   "submission_checklist": "submission/MEE_SUBMISSION_CHECKLIST.md",
   "remaining_initial_upload_tasks": [
-    "convert the assembled source to a single-column double-line-spaced upload document with continuous page and line numbering",
-    "recheck final formatted word count using the publisher-facing document",
+    "recheck final formatted word count using the publisher-facing DOCX and submission system conventions",
     "complete author names, affiliations, corresponding-author details, CRediT contributions and acknowledgements on the separate title page",
     "complete funding and competing-interest statements on the separate title page",
     "build the validated anonymous reviewer ZIP with final author/institution literals supplied to the identity scanner and upload it to the private reviewer-only location",
-    "perform final visual inspection of the code-assembled multi-panel figures and final reference-style rendering",
-    "rerun manuscript claim audit after any material formatting edits"
+    "perform final visual inspection of the formatted DOCX, code-assembled multi-panel figures and final reference-style rendering",
+    "rerun manuscript claim audit after any material manuscript revision or formatting edit that changes text"
   ],
   "scientific_claim_boundary_unchanged": true
 }

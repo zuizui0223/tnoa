@@ -14,9 +14,10 @@ This checklist translates the current MEE author guidance into concrete TNOA upl
 - [x] `scripts/build_mee_initial_submission_source.py` assembles one anonymous source with the standard `Materials and Methods` heading, figure callouts and Figure 1–4/S2 captions.
 - [x] `scripts/audit_initial_submission_readiness.py` checks structure, citation-key completeness and a conservative word-count estimate including bibliography text in CI.
 - [x] CI run `33039903388` estimated 4,953 words including a conservative bibliography-field estimate; all 12 cited bibliography keys resolved with zero missing citations. Six unused bibliography entries remain non-blocking and do not represent missing citations.
-- [ ] Convert the assembled source to a single-column, double-line-spaced upload document with continuous page and line numbering.
-- [ ] Recheck the final publisher-facing word count, including references, after conversion. The 4,953-word CI estimate is a guard, not the publisher's final count.
-- [ ] Confirm figure/table caption placement after conversion to the final upload format.
+- [x] `scripts/build_mee_submission_docx.py` converts the canonical anonymous source to a single-column Word upload candidate with citeproc-rendered references, double spacing, continuous line numbering, page numbering and anonymous document metadata.
+- [x] `scripts/validate_mee_submission_docx.py` inspects the Word XML fail-closed for title/section content, rendered citations/references, anonymity, double spacing, continuous line numbering and page numbering. The CSL parent style is pinned and hash-checked in CI.
+- [ ] Recheck the final publisher-facing word count, including references, in the generated DOCX/submission system. The repository counts remain guards, not the publisher's final count.
+- [ ] Open the generated DOCX in Word or a compatible viewer and confirm equation rendering, page/line numbering, typography, page breaks and figure-caption placement.
 
 ## Double-anonymous review
 
@@ -70,14 +71,15 @@ This checklist translates the current MEE author guidance into concrete TNOA upl
 
 - [x] Every citation key used by the active MEE submission source resolves in `references.bib` (12 cited keys, zero missing in CI run `33039903388`).
 - [x] Six BibTeX entries are currently unused by the active manuscript; they are retained because `references.bib` also supports the broader prior-art audit and are not missing-reference errors.
-- [ ] Final publisher-style visual inspection of rendered references after manuscript conversion.
+- [x] DOCX conversion renders citations and the References section through Pandoc citeproc using the pinned APA parent CSL recorded in `submission/MEE_FORMATTING_PROVENANCE.md`.
+- [ ] Final publisher-style visual inspection of rendered references in the generated DOCX.
 
 ## Scientific claim gate
 
 - [x] Final targeted prior-art audit completed.
 - [x] Final manuscript claim audit completed for the current working draft.
 - [x] No field-accuracy, field-prevalence, calibrated-absence or universal-Pi3 claim is licensed.
-- [ ] Re-run claim audit after any material manuscript revision or journal-format rewrite.
+- [ ] Re-run claim audit after any material manuscript revision or formatting change that changes text.
 
 ## Final upload gate
 
