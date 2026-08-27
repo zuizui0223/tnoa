@@ -18,3 +18,7 @@ jobs:
         run: python scripts/validate_paper_manifest.py
       - name: Audit manuscript claim boundaries
         run: python scripts/audit_manuscript_claims.py
+      - name: Validate MEE submission package
+        run: python scripts/validate_mee_submission_package.py
+      - name: Build anonymous MEE manuscript source
+        run: python scripts/build_mee_anonymous_manuscript.py
