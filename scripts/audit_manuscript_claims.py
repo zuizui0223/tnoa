@@ -108,6 +108,8 @@ def main() -> None:
         "performance claim",
         "does not claim priority",
         "design coverage and provenance",
+        "we do not estimate field flower-visitor accuracy",
+        "do not transfer automatically to another device",
     )
     for phrase in required_phrases:
         if phrase not in lower:

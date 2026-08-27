@@ -199,7 +199,7 @@
     "plan": "docs/FIGURE_PLAN.md",
     "validation_document": "docs/MEE_FIGURE_VALIDATION.md",
     "figure_data": "derived/mee_figure_data.json",
-    "figure_data_git_blob_sha1": "30fb0e470b37b70726fba9c52a30eb24d76c9748",
+    "figure_data_git_blob_sha1": "74fdac2a049c6c13833bb31f7a4ff0b7228a44a6",
     "validator": "scripts/validate_mee_figure_data.py",
     "builder": "scripts/build_mee_figures.py",
     "requirements": "requirements-figures.txt",

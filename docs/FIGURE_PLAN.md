@@ -28,9 +28,9 @@ Primary quantitative result: C6 -> C7.
 
 A. Development failure: the revised nuisance representation retains ranking while the inherited raw threshold `0.55` fails the registered coverage rule.
 
-B. Diagnosis: a pooled false-attribution calibration fails family-wise control.
+B. Score-scale diagnosis across registered Pi5 levels: spatial, temporal and combined components do not share a stable boundary at the inherited threshold.
 
-C. Frozen result: family-wise calibration at `alpha=0.05`, showing held-out false nuisance attribution for each registered negative family and the prespecified error-rate line.
+C. Error-control comparison: pooled calibration fails the coupled-negative `alpha=0.05` gate, whereas family-wise calibration passes it.
 
 ### Main message
 
@@ -50,8 +50,6 @@ A. Distribution or ECDF of naive binary target-prevalence bias across the 3,003 
 
 B. Paired distribution of compatible target-prevalence widths with full B/T/N/U versus target/not-target coarsening.
 
-C. Optional axis-slice summary showing where the four-state record remains informative and where both encodings are weak, including the Pi3=0 boundary.
-
 ### Main message
 
 Preserving observation-process states constrains the downstream known-truth target-prevalence estimand more tightly than binary coarsening in the registered synthetic experiment.
@@ -66,19 +64,13 @@ Secondary quantitative result.
 
 ### Panels
 
-A. U composition under equal weighting: no-supported-evidence versus overlap/attribution.
+A. Pi1 reason decomposition: no-support peaks at Pi1=1 and then declines while overlap/attribution continues to increase.
 
 B. Bounded-reweighting sensitivity: minimum possible overlap/attribution share of U as `kappa` increases.
-
-C. Pi1 reason decomposition: no-support peaks at Pi1=1 and then declines while overlap/attribution continues to increase.
 
 ### Main message
 
 Unresolved observations are dominated by coexistence/attribution in the registered design and within the tested weighting class. Extending the observation window can exchange evidence shortage for attribution ambiguity; the exact pooled total-U curve is not a headline result.
-
-## Supplementary Figure S1 — Preregistered Pi2 hypothesis and its rejection
-
-Retain the Pi1×Pi2 surface and the registered contrast. Emphasize that the narrow matched-timescale ridge was not supported and that the small pooled Pi2=1 contrast is weighting-sensitive.
 
 ## Supplementary Figure S2 — Uneven effective separation of registered axes
 
@@ -93,29 +85,7 @@ Plot the post-freeze marginal axis-separation audit:
 
 This is not an intrinsic-dimension estimate.
 
-## Supplementary Figure S3 — Structural Pi3/C13 diagnostic
-
-Retain the historical Pi3 plot only as a design diagnostic. Explicitly show
-
-`0.3569 = 0.2 * 1.0 + 0.8 * 0.196125`.
-
-Do not use zero false positives or 0.3569 as performance evidence.
-
-## Supplementary Figure S4 — Method-generation falsification ledger
-
-Include:
-
-- Pi2 narrow-ridge prediction: not supported;
-- target diagnostic: invalidated after truth-leakage audit;
-- corrected observation-safe audit;
-- target freeze;
-- nuisance inherited-threshold failure;
-- score-scale diagnosis;
-- pooled family-wise calibration failure;
-- family-wise risk freeze;
-- final frozen phase-surface measurement;
-- post-freeze estimand/weighting audit;
-- post-freeze structural-axis audit.
+The preregistered Pi2 negative result, structural Pi3/C13 diagnostic and method-generation falsification ledger remain in the manuscript-facing audit documents and may be presented as supplementary tables or text. They are not outputs of the current eight-panel MEE figure builder.
 
 ## Rendering and provenance rules
 

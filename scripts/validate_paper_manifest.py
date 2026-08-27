@@ -150,7 +150,7 @@ def main() -> None:
         fail("MEE figure package status drifted")
     for key in ("plan", "validation_document", "figure_data", "validator", "builder", "requirements"):
         require_file(str(figures.get(key, "")), f"figure package {key}")
-    if figures.get("figure_data_git_blob_sha1") != "30fb0e470b37b70726fba9c52a30eb24d76c9748":
+    if figures.get("figure_data_git_blob_sha1") != "74fdac2a049c6c13833bb31f7a4ff0b7228a44a6":
         fail("MEE figure-data Git blob drifted")
     if len(figures.get("primary_panels", [])) != 7 or figures.get("supplementary_panels") != ["figS2_axis_separation"]:
         fail("MEE figure panel contract drifted")

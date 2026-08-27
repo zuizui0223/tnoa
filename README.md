@@ -143,6 +143,8 @@ It may claim:
 - locked simulation/benchmark evidence for the resulting decision geometry;
 - negative-result-preserving development;
 - false-certainty risk contracts;
+- downstream information preservation for a known-truth synthetic target-prevalence estimand;
+- weighting robustness only within the tested bounded-reweighting class;
 - broad conceptual transferability of the architecture.
 
 It must not claim without external validation:
@@ -161,7 +163,8 @@ Field deployment and V15 empirical validation are external validation, not prere
 
 ### Manuscript
 
-- [`manuscript/TNOA_P1_DRAFT.md`](manuscript/TNOA_P1_DRAFT.md) — full working Paper-1 draft.
+- [`manuscript/TNOA_MEE_DRAFT.md`](manuscript/TNOA_MEE_DRAFT.md) — active MEE-focused working draft.
+- [`manuscript/TNOA_P1_DRAFT.md`](manuscript/TNOA_P1_DRAFT.md) — retained historical Paper-1 draft.
 - [`docs/METHOD_PAPER_BLUEPRINT.md`](docs/METHOD_PAPER_BLUEPRINT.md) — manuscript architecture and current figure order.
 
 ### Scientific framing and audit
@@ -174,13 +177,16 @@ Field deployment and V15 empirical validation are external validation, not prere
 - [`docs/TRANSFERABILITY_TABLE.md`](docs/TRANSFERABILITY_TABLE.md) — cross-domain conceptual mapping.
 - [`docs/CLAIM_BOUNDARY.md`](docs/CLAIM_BOUNDARY.md) — allowed and forbidden Paper-1 claims.
 - [`docs/CLAIM_TRACEABILITY.md`](docs/CLAIM_TRACEABILITY.md) — C1–C15 claim-to-artifact ledger.
-- [`docs/FINAL_CLAIM_AUDIT.md`](docs/FINAL_CLAIM_AUDIT.md) — audit of the instantiated draft.
+- [`docs/FINAL_CLAIM_AUDIT.md`](docs/FINAL_CLAIM_AUDIT.md) — retained audit of the historical draft.
 
 ### Figures and reproducibility
 
 - [`docs/FIGURE_PLAN.md`](docs/FIGURE_PLAN.md) — quantitative figure contract.
-- [`docs/FIGURE_VALIDATION.md`](docs/FIGURE_VALIDATION.md) — source-lock and visual render audit.
-- [`scripts/build_paper_figures.py`](scripts/build_paper_figures.py) — locked-source figure builder.
+- [`docs/MEE_FIGURE_VALIDATION.md`](docs/MEE_FIGURE_VALIDATION.md) — active MEE figure provenance and interpretation guard.
+- [`derived/mee_figure_data.json`](derived/mee_figure_data.json) — pinned MEE figure values and upstream provenance.
+- [`scripts/validate_mee_figure_data.py`](scripts/validate_mee_figure_data.py) — fail-closed MEE figure-data guard.
+- [`scripts/build_mee_figures.py`](scripts/build_mee_figures.py) — MEE-priority panel builder.
+- [`docs/FIGURE_VALIDATION.md`](docs/FIGURE_VALIDATION.md) and [`scripts/build_paper_figures.py`](scripts/build_paper_figures.py) — retained historical figure package.
 - [`scripts/validate_paper_manifest.py`](scripts/validate_paper_manifest.py) — repository manifest guard.
 - [`scripts/audit_manuscript_claims.py`](scripts/audit_manuscript_claims.py) — manuscript claim scanner.
 - [`reproduce/README.md`](reproduce/README.md) — reproduction policy.
@@ -189,6 +195,6 @@ Field deployment and V15 empirical validation are external validation, not prere
 
 ## Current status
 
-**Scientific Paper-1 package assembled and audited.** The repository now contains the full working manuscript, targeted final prior-art audit, C1–C15 claim traceability, locked quantitative figure builder/render audit, reproducibility guards, and a final claim audit. `paper_manifest.json` records **zero unresolved scientific submission blockers** for the current draft.
+**MEE-focused scientific package assembled and claim-guarded.** The active draft, C1–C15 plus D1–D2 traceability, pinned MEE figure data/builder, runnable observation-state API and post-freeze audits are registered in `paper_manifest.json`, which records **zero unresolved MEE scientific blockers**. The earlier Paper-1 draft and figure package remain in place as historical records.
 
 Remaining work before actual journal upload is editorial/production work: finalize conceptual Figure 1, convert the Markdown draft to journal format, complete authorship/acknowledgement metadata, check final citation style, and rerun the claim audit after any material rewrite.

@@ -18,22 +18,25 @@ docs/
   CLAIM_BOUNDARY.md
   CLAIM_TRACEABILITY_ANONYMOUS.md
   FIGURE_PLAN.md
-  FIGURE_VALIDATION.md
+  MEE_FIGURE_VALIDATION.md
+derived/
+  mee_figure_data.json
+  mee_synthetic_consequences.json
+  structural_axis_audit.json
 reproduce/
   README_ANONYMOUS.md
 scripts/
   validate_paper_manifest.py
   audit_manuscript_claims.py
-  build_paper_figures.py
-locked_sources/
-  v14b_frozen_ternary_phase_figure_data.json
-  v14b_frozen_ternary_phase_surface_result.json
-  v14b_nuisance_familywise_risk_result.json
+  validate_mee_figure_data.py
+  validate_mee_synthetic_consequences.py
+  validate_structural_axis_audit.py
+  build_mee_figures.py
 figures/
   submission figure files
 ```
 
-The three `locked_sources` files must be byte-identical to the authoritative locked artifacts used by the source guards. Do not rebuild the 5.88M-world scientific generation simply to create the reviewer package.
+The three `derived` files must be byte-identical to the source-guarded repository versions. Their provenance records the immutable upstream workflow, artifact and result hashes. Do not rebuild the 5.88M-world scientific generation simply to create the reviewer package.
 
 ## Remove or replace for anonymity
 

@@ -112,7 +112,7 @@ Rather than search post hoc for a threshold on the final positive evaluation set
 
 After target and nuisance rules were frozen, the final measurement emitted B/T/N/U together with unresolved-reason provenance. Equal-grid/equal-regime summaries are retained for reproducibility, but they are not interpreted as ecological prevalence.
 
-To assess dependence on design weighting, we performed a post-freeze density-ratio sensitivity analysis on the immutable rows. Relative to the equal-grid/equal-regime design, each row weight could vary within `1/kappa` and `kappa`, subject to the mean weight remaining one. No observer or threshold was changed. We used this class to ask whether the dominance of overlap/attribution U, the `Pi1` total-U shape and the small `Pi2=1` contrast could be reversed by bounded reweighting. <!-- D1 -->
+To assess dependence on design weighting, we performed a post-freeze density-ratio sensitivity analysis on the immutable rows. Relative to the equal-grid/equal-regime design, each row weight could vary within `1/kappa` and `kappa`, subject to the mean weight remaining one. No observer or threshold was changed. We used this class to ask whether the dominance of overlap/attribution U, the `Pi1` total-U shape and the small `Pi2=1` contrast could be reversed by bounded reweighting. <!-- C2 D1 -->
 
 ### 2.7 Downstream synthetic target-prevalence estimand
 
@@ -176,11 +176,11 @@ The `Pi1` reason decomposition gives a narrower mechanistic illustration. From `
 
 The final experiment used six coordinates, but they did not behave as six equally effective response dimensions. `Pi3` had five registered numerical levels but only two distinct marginal B/T/N/U vectors: zero and positive. Its maximum total-variation shift between level means was `0.6431`. <!-- C12 D2 --> Corresponding maximum shifts were about `0.2665` for `Pi1`, `0.2402` for `Pi2`, `0.1608` for `Pi6`, `0.0728` for `Pi4` and `0.0214` for `Pi5`. <!-- D2 -->
 
-These results are descriptive marginal separations, not intrinsic-dimension estimates. They show why the number of simulated coordinates should be treated as design coverage rather than as evidence of six-dimensional ecological complexity.
+These results are descriptive marginal separations, not intrinsic-dimension estimates. They show why the number of simulated coordinates should be treated as design coverage rather than as evidence that all six registered coordinates are equally informative ecological dimensions.
 
 ### 3.6 The historical forced-binary miss rate is a design diagnostic, not performance
 
-The registered equal-grid comparator reports a target-present false-negative rate of `0.3569`. <!-- C13 --> The structural audit shows that this number is exactly reconstructed from the `Pi3` composition: false-negative rate is `1.0` at `Pi3=0` and `0.196125` at every registered positive `Pi3` level, so
+The registered equal-grid comparator reports a target-present false-negative rate of `0.3569`. <!-- C12 C13 --> The structural audit shows that this number is exactly reconstructed from the `Pi3` composition: false-negative rate is `1.0` at `Pi3=0` and `0.196125` at every registered positive `Pi3` level, so
 
 \[
 0.3569=0.2\times1.0+0.8\times0.196125.
@@ -198,7 +198,7 @@ The registered zero target false-positive rate likewise follows the frozen posit
 
 The main practical result is upstream of any particular occupancy, interaction or abundance model. Automated sensors create the observation record that downstream models receive. If a sensor stores unresolved, nuisance-dominated and baseline windows as the same biological non-detection, the downstream analyst cannot reconstruct the original observation process from the binary record alone.
 
-The known-truth experiment makes this information loss explicit. Preserving B/T/N/U did not magically identify target prevalence in every synthetic condition; the `Pi3=0` slice remains weak, as it should. But across the registered composition lattice, the refined observation record substantially constrained latent target prevalence relative to the binary coarsening. This is the ecological use case for TNOA: not “more abstention” for its own sake, but less irreversible coarsening before ecological inference.
+The known-truth experiment makes this information loss explicit. Preserving B/T/N/U did not magically identify target prevalence in every synthetic condition; the `Pi3=0` slice remains weak, as it should. <!-- C12 --> But across the registered composition lattice, the refined observation record substantially constrained latent target prevalence relative to the binary coarsening. This is the ecological use case for TNOA: not “more abstention” for its own sake, but less irreversible coarsening before ecological inference.
 
 ### 4.2 Error criteria transfer more naturally than raw score thresholds
 

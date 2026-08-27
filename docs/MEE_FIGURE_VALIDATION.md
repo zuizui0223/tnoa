@@ -24,7 +24,7 @@ The downstream estimand, weighting and Pi1/axis summaries derive from the immuta
 
 ## Validation
 
-`python scripts/validate_mee_figure_data.py` fails closed if the primary numerical sequence, source workflow IDs, estimand summaries, weighting result, effective-axis result or C13 identity drift.
+`python scripts/validate_mee_figure_data.py` fails closed if the primary numerical sequence or provenance drifts. It cross-checks the estimand quantiles and summaries against `derived/mee_synthetic_consequences.json`, the Pi1/axis/C13 values against `derived/structural_axis_audit.json`, and workflow/artifact/result identifiers against `paper_manifest.json`.
 
 `python scripts/build_mee_figures.py` generates each quantitative panel as SVG and 300-dpi PNG from the same data. CI smoke-builds the complete panel set.
 
