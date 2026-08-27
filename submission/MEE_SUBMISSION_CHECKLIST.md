@@ -59,12 +59,18 @@ This checklist translates the current MEE author guidance into concrete TNOA upl
 
 ## Figures
 
-- [x] Quantitative Figures 2–4 and Supplementary Figure S2 have pinned data, a fail-closed validator and a CI smoke-tested builder.
+- [x] Quantitative Figure 2–4 component panels and Supplementary Figure S2 have pinned data, a fail-closed validator and a CI smoke-tested builder.
+- [x] `scripts/build_mee_composite_figures.py` assembles final Figure 2 (3 panels), Figure 3 (2 panels), Figure 4 (2 panels) and Supplementary Figure S2 directly from the same pinned figure data.
+- [x] Composite output includes SVG + 300-dpi PNG and a provenance sidecar; no manual data-geometry editing is required.
 - [x] Conceptual Figure 1 source is stored as `figures/fig1_tnoa_architecture.svg`.
 - [x] Figure 1–4 and Supplementary Figure S2 captions are assembled into the canonical anonymous submission source.
-- [ ] Final editorial pass on Figure 1 typography only; do not alter its scientific semantics without re-audit.
-- [ ] Visually inspect and assemble the final MEE multi-panel layouts without changing plotted data geometry.
-- [ ] Generate final submission-resolution raster/vector files from authoritative sources.
+- [ ] Final human visual inspection of Figure 1 and the code-assembled multi-panel figures for typography, label collisions and journal sizing; do not alter data geometry manually.
+
+## References
+
+- [x] Every citation key used by the active MEE submission source resolves in `references.bib` (12 cited keys, zero missing in CI run `33039903388`).
+- [x] Six BibTeX entries are currently unused by the active manuscript; they are retained because `references.bib` also supports the broader prior-art audit and are not missing-reference errors.
+- [ ] Final publisher-style visual inspection of rendered references after manuscript conversion.
 
 ## Scientific claim gate
 
