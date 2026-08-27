@@ -1,5 +1,5 @@
 {
-  "schema": "tnoa-mee-submission-package-v1",
+  "schema": "tnoa-mee-submission-package-v2",
   "target_journal": "Methods in Ecology and Evolution",
   "article_type": "Standard Article / methods paper",
   "journal_guidance_checked_date": "2026-08-27",
@@ -28,7 +28,16 @@
   },
   "peer_review_code_data": {
     "instructions": "submission/ANONYMOUS_PEER_REVIEW_PACKAGE.md",
+    "bundle_builder": "scripts/build_anonymous_review_bundle.py",
+    "bundle_validator": "scripts/validate_anonymous_review_bundle.py",
+    "ci_artifact_name": "tnoa-anonymous-review-bundle",
+    "pinned_source_A_commit": "f3b266897f3e9139e6c3fe9ce6b645e25371e092",
+    "pinned_source_B_commit": "1664a190cec47142e8d14cc5157302a7af18d019",
+    "deterministic_zip": true,
+    "zip_sha256_receipt": true,
+    "identity_scan": true,
     "private_or_reviewer_only_location_required": true,
+    "ci_artifact_is_final_reviewer_location": false,
     "public_owner_identifying_url_allowed_in_anonymous_manuscript": false,
     "locked_scientific_generation_rerun_required_for_routine_review": false
   },
@@ -42,7 +51,7 @@
     "assemble journal-formatted single-column double-line-spaced manuscript with continuous page and line numbering",
     "confirm final word count including references against current MEE guidance",
     "complete author names, affiliations, contributions, acknowledgements and submission metadata on separate title page",
-    "prepare anonymized reviewer ZIP or private-for-peer-review archive and run identity scan",
+    "generate the final anonymous reviewer bundle from the submission commit and place it in a private/reviewer-only upload location",
     "perform final reference formatting/completeness pass in the journal-formatted manuscript",
     "rerun manuscript claim audit after any material formatting edits"
   ],
