@@ -21,8 +21,13 @@ FORBIDDEN_PHRASES = (
     "universal ecological snr threshold",
     "field-validated accuracy",
     "field validated accuracy",
+    "field translation pathway is validated",
+    "validated field translation",
+    "field-calibrated tnoa",
     "six-dimensional ecological complexity",
     "tnoa achieves zero false positives",
+    "pollipi",
+    "insepi",
 )
 
 NUMERIC_CLAIM_REQUIREMENTS = {
@@ -81,7 +86,7 @@ def main() -> None:
 
     for phrase in FORBIDDEN_PHRASES:
         if phrase in lower:
-            fail(f"forbidden priority/claim phrase present: {phrase!r}")
+            fail(f"forbidden priority/claim/anonymity phrase present: {phrase!r}")
 
     ps = paragraphs(text)
     for token, claim_id in NUMERIC_CLAIM_REQUIREMENTS.items():
@@ -110,6 +115,8 @@ def main() -> None:
         "design coverage and provenance",
         "we do not estimate field flower-visitor accuracy",
         "do not transfer automatically to another device",
+        "implementation guidance, not field validation",
+        "no field result from such a deployment is used as evidence in paper 1",
     )
     for phrase in required_phrases:
         if phrase not in lower:
