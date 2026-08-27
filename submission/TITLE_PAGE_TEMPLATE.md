@@ -1,10 +1,10 @@
 # Separate title page — Methods in Ecology and Evolution
 
-> Keep this file out of the anonymous manuscript. Complete the placeholders only at final submission.
+> Keep this file out of the anonymous manuscript. Author-identifying fields remain placeholders until final submission.
 
 ## Manuscript title
 
-When should an ecological sensor refuse to decide? Target–nuisance–observability–abstention for process-preserving ecological sensing
+Preserving unresolved observations in automated ecological sensing: a target–nuisance–observability framework
 
 ## Authors
 
@@ -43,15 +43,15 @@ Use the CRediT taxonomy where appropriate. Every listed author should be explici
 
 ### Initial-submission wording
 
-Code, locked simulation result summaries, provenance manifests and figure-generation scripts will be provided to editors and reviewers through an anonymized reviewer-only package or private-for-peer-review repository/archive. Public identifying repository locations are withheld from the anonymous manuscript during double-anonymous review.
+Code, the minimal reusable implementation, locked simulation-result summaries, post-freeze derived analyses, provenance manifests and figure-generation scripts will be available to editors and reviewers through the validated anonymized reviewer-only package or an equivalent private-for-peer-review archive. Public owner-identifying repository locations are withheld during double-anonymous review. The reviewer package retains immutable workflow, artifact and result hashes needed to audit the frozen scientific record.
 
 ### Acceptance wording — replace when archival DOI/accession exists
 
-Code and data/results required to reproduce the published analyses and figures are available from [archive/repository] at [DOI/accession]. The source code is released under the MIT License.
+Code and data/results required to reproduce the published analyses and figures are available from [persistent archive/repository] at [DOI/accession]. The source code is released under the MIT License. The permanent archive contains the manuscript-facing code, derived analysis summaries, figure inputs/scripts and documentation needed to reproduce the reported results without replacing the historically frozen one-shot artifacts.
 
 ## Data sources statement
 
-The quantitative Paper-1 results derive from locked synthetic simulation generations and their immutable result/receipt artifacts. No field biological dataset is used to support the Paper-1 quantitative claims. Source-generation provenance is documented in the archived paper manifest.
+The quantitative results reported in this manuscript derive from registered closed-world synthetic simulation generations and their immutable result/receipt artifacts, together with deterministic post-freeze analyses of those frozen outputs. No field biological dataset is used to support the manuscript's quantitative claims. Source-generation provenance is documented in the paper manifest and reviewer archive.
 
 ## Conflict of interest / competing interests
 
@@ -59,8 +59,8 @@ The quantitative Paper-1 results derive from locked synthetic simulation generat
 
 ## Funding
 
-[Complete if applicable.]
+[Complete if applicable; otherwise state that no specific funding supported this work if accurate.]
 
 ## Ethics statement
 
-Paper 1 reports closed-world synthetic methodological experiments and does not add a new organismal field experiment. If journal submission requires an explicit ethics statement, state the applicable status accurately and separately from any later V15 empirical work.
+The quantitative study reported in this manuscript is based on closed-world synthetic methodological experiments and software/provenance artifacts. It does not report a new organismal, human-subject or field-site experiment. Any later empirical validation is outside the scope of this manuscript and must carry its own applicable ethical and permitting statements.
