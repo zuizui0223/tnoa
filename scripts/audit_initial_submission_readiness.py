@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Audit MEE initial-submission readiness that can be checked without author metadata.
 
-The audit is intentionally conservative. It checks manuscript structure, citation
-coverage, a reproducible word-count estimate including bibliography text, and
-submission-package invariants. It does not replace the journal's own word counter
-after conversion to the final upload format.
+The audit is intentionally conservative. It checks the generated anonymous
+submission source, citation coverage, a reproducible word-count estimate including
+bibliography text, and reviewer-package invariants. It does not replace the
+journal's own word counter after conversion to the final upload format.
 """
 from __future__ import annotations
 
@@ -13,8 +13,7 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-BODY = ROOT / "manuscript" / "TNOA_MEE_DRAFT.md"
-FRONT = ROOT / "submission" / "MEE_FRONT_MATTER.md"
+SOURCE = ROOT / "submission" / "generated" / "MEE_INITIAL_SUBMISSION_SOURCE.md"
 BIB = ROOT / "references.bib"
 SUBMISSION = ROOT / "submission" / "submission_manifest.json"
 REPORT = ROOT / "submission" / "generated" / "initial_submission_readiness.json"
@@ -59,16 +58,18 @@ def bibliography_words(text: str) -> int:
 
 
 def main() -> None:
-    for path in (BODY, FRONT, BIB, SUBMISSION):
+    for path in (SOURCE, BIB, SUBMISSION):
         if not path.is_file():
             fail(f"missing required source: {path.relative_to(ROOT)}")
 
-    body = BODY.read_text(encoding="utf-8")
-    front = FRONT.read_text(encoding="utf-8")
+    source = SOURCE.read_text(encoding="utf-8")
     bib = BIB.read_text(encoding="utf-8")
     submission = json.loads(SUBMISSION.read_text(encoding="utf-8"))
 
-    required_body = (
+    required_sections = (
+        "## Abstract",
+        "## Data/Code for peer review statement",
+        "## Keywords",
         "## 1. Introduction",
         "## 2. Materials and Methods",
         "## 3. Results",
@@ -77,30 +78,30 @@ def main() -> None:
         "## Data and code availability",
         "## Figure captions",
     )
-    for heading in required_body:
-        if heading not in body:
+    for heading in required_sections:
+        if heading not in source:
             fail(f"required manuscript section missing: {heading}")
 
     for label in ("**1.**", "**2.**", "**3.**", "**4.**"):
-        if label not in front:
+        if label not in source:
             fail(f"numbered abstract item missing: {label}")
-    if "## Data/Code for peer review statement" not in front:
-        fail("front matter lacks Data/Code for peer review statement")
-    if "## Keywords" not in front:
-        fail("front matter lacks Keywords")
+    for caption in ("**Figure 1.", "**Figure 2.", "**Figure 3.", "**Figure 4.", "**Supplementary Figure S2."):
+        if caption not in source:
+            fail(f"figure caption missing: {caption}")
+    for callout in ("*See Figure 2a–c.*", "*See Figure 3a–b.*", "*See Figure 4a–b.*", "*See Supplementary Figure S2.*"):
+        if callout not in source:
+            fail(f"figure callout missing: {callout}")
 
-    cited = set(CITATION_RE.findall(body + "\n" + front))
+    cited = set(CITATION_RE.findall(source))
     bibkeys = set(BIBKEY_RE.findall(bib))
     missing = sorted(cited - bibkeys)
     if missing:
         fail(f"citation keys missing from references.bib: {missing}")
     unused = sorted(bibkeys - cited)
 
-    front_visible = front.split("## Manuscript structure after this front matter", 1)[0]
-    front_count = visible_words(front_visible)
-    body_count = visible_words(body)
+    source_count = visible_words(source)
     ref_count = bibliography_words(bib)
-    estimated_total = front_count + body_count + ref_count
+    estimated_total = source_count + ref_count
     if estimated_total > MAX_STANDARD_ARTICLE_WORDS:
         fail(
             f"estimated Standard Article word count {estimated_total} exceeds "
@@ -118,8 +119,7 @@ def main() -> None:
         "journal": "Methods in Ecology and Evolution",
         "guidance_checked_date": GUIDANCE_CHECKED,
         "word_count": {
-            "front_matter_visible_words": front_count,
-            "body_visible_words": body_count,
+            "assembled_source_visible_words": source_count,
             "bibliography_field_words_estimate": ref_count,
             "estimated_total_including_references": estimated_total,
             "conservative_ceiling": MAX_STANDARD_ARTICLE_WORDS,
@@ -136,6 +136,7 @@ def main() -> None:
             "data_code_peer_review_statement": True,
             "standard_sections": True,
             "figure_captions_present": True,
+            "figure_callouts_present": True,
             "citation_keys_resolve": True,
             "scientific_submission_blockers_zero": True,
             "anonymous_reviewer_bundle_ci_validated": True,
