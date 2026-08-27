@@ -31,16 +31,17 @@ This checklist translates the current MEE author guidance into concrete TNOA upl
 
 ## Title page — separate upload
 
-Complete only in the separate title-page file:
-
-- [ ] manuscript title;
-- [ ] full author names;
-- [ ] institutions and addresses;
-- [ ] acknowledgements;
-- [ ] author contributions / CRediT statement;
-- [ ] data availability statement;
-- [ ] data sources statement where appropriate;
-- [ ] corresponding-author information required by the submission system.
+- [x] Manuscript title is synchronized with the active MEE manuscript.
+- [x] Initial-submission Data Availability Statement is prepared, with permanent DOI/accession wording reserved for acceptance.
+- [x] Data sources statement is prepared and explicitly limits quantitative evidence to the locked synthetic/post-freeze record.
+- [x] Paper-scope ethics wording is prepared and states that this manuscript does not report a new organismal, human-subject or field-site experiment.
+- [ ] Full author names.
+- [ ] Institutions and addresses.
+- [ ] Corresponding-author information required by the submission system.
+- [ ] Author contributions / CRediT statement.
+- [ ] Acknowledgements.
+- [ ] Funding statement.
+- [ ] Conflict of interest / competing interests statement.
 
 ## Code and data
 
