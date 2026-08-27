@@ -88,6 +88,46 @@ def main() -> None:
     if anon.get("word_count_conservative_ceiling") != 8000:
         fail("conservative Standard Article word-count ceiling drifted")
 
+    title_state = payload.get("title_page", {})
+    if title_state.get("template") != "submission/TITLE_PAGE_TEMPLATE.md":
+        fail("title-page template path drifted")
+    if title_state.get("separate_upload_required") is not True:
+        fail("title page must remain a separate upload")
+    for key in (
+        "manuscript_title_complete",
+        "data_availability_initial_wording_complete",
+        "data_sources_statement_complete",
+        "scope_ethics_statement_complete",
+    ):
+        if title_state.get(key) is not True:
+            fail(f"non-author title-page field {key} must remain complete")
+    for key in (
+        "author_metadata_complete",
+        "author_contributions_complete",
+        "acknowledgements_complete",
+        "funding_and_competing_interests_complete",
+    ):
+        if title_state.get(key) is not False:
+            fail(f"author-specific title-page field {key} must remain explicitly incomplete until supplied")
+
+    front = (ROOT / "submission" / "MEE_FRONT_MATTER.md").read_text(encoding="utf-8")
+    title_page = (ROOT / "submission" / "TITLE_PAGE_TEMPLATE.md").read_text(encoding="utf-8")
+    active_title = front.splitlines()[0].removeprefix("# ").strip()
+    title_marker = "## Manuscript title\n\n"
+    if title_marker not in title_page:
+        fail("title page lacks manuscript-title section")
+    title_value = title_page.split(title_marker, 1)[1].split("\n\n", 1)[0].strip()
+    if title_value != active_title:
+        fail(f"title-page manuscript title is out of sync with active MEE title: {title_value!r}")
+    for phrase in (
+        "validated anonymized reviewer-only package",
+        "persistent archive/repository",
+        "No field biological dataset is used",
+        "does not report a new organismal, human-subject or field-site experiment",
+    ):
+        if phrase not in title_page:
+            fail(f"title-page non-author wording missing: {phrase}")
+
     peer = payload.get("peer_review_code_data", {})
     expected_peer = {
         "bundle_builder": "scripts/build_anonymous_review_bundle.py",
@@ -127,7 +167,6 @@ def main() -> None:
         if figures.get(key) != expected:
             fail(f"MEE figure package {key} drifted")
 
-    front = (ROOT / "submission" / "MEE_FRONT_MATTER.md").read_text(encoding="utf-8")
     for label in ("**1.**", "**2.**", "**3.**", "**4.**"):
         if label not in front:
             fail(f"numbered abstract label missing: {label}")
@@ -155,6 +194,7 @@ def main() -> None:
         "single-column double-line-spaced",
         "final formatted word count",
         "author names, affiliations",
+        "funding and competing-interest",
         "author/institution literals",
         "reference-style",
         "claim audit",
@@ -170,8 +210,8 @@ def main() -> None:
             fail(f"Figure 1 semantic layer missing: {token}")
 
     print(
-        "MEE submission package OK: scientific blockers 0, initial-submission assembler/readiness audit registered, "
-        "active MEE draft/figures aligned, anonymous review bundle v2 registered"
+        "MEE submission package OK: scientific blockers 0; manuscript/readiness/reviewer bundle aligned; "
+        "non-author title-page fields complete; author-specific metadata still explicitly pending"
     )
 
 
