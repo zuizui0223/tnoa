@@ -31,6 +31,15 @@
     "word_count_conservative_ceiling": 8000,
     "final_formatted_word_count_must_be_rechecked": true
   },
+  "readiness_snapshot": {
+    "ci_run_id": 33039903388,
+    "status": "PASS",
+    "estimated_total_words_including_bibliography_fields": 4953,
+    "cited_bibliography_keys_resolved": 12,
+    "missing_citation_keys": 0,
+    "unused_bibliography_entries": 6,
+    "interpretation": "Conservative machine estimate is comfortably below the 8000-word ceiling; final publisher-formatted word count still requires recheck."
+  },
   "title_page": {
     "template": "submission/TITLE_PAGE_TEMPLATE.md",
     "separate_upload_required": true,
