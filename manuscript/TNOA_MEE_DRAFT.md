@@ -62,7 +62,15 @@ The repository includes a minimal Python API and CSV command-line interface that
 
 This separation is deliberate. A camera, acoustic model or rule-based observer may produce very different raw score scales. The reusable object is the process-preserving observation mapping, while score calibration remains a domain-specific measurement problem. An unobservable window cannot silently become baseline; simultaneous positive target and nuisance support is retained as unresolved under the minimal exclusive-decision output; and a local coupled response without attribution remains unresolved. The implementation and example input are documented in `docs/REUSABLE_IMPLEMENTATION.md`.
 
-### 2.3 Registered synthetic design
+### 2.3 Fail-closed field translation sequence
+
+A real sensor should not move directly from uncalibrated detector scores to the calibrated support flags consumed by the reusable layer. We therefore separate measurement acquisition, field calibration and decision/control. During a pre-calibration deployment, the system may log raw direct-target, nuisance, observability and coupled-response diagnostics, but the corresponding calibrated-support fields remain unavailable. These windows stay unresolved with explicit calibration-pending provenance, and the TNOA layer does not alter the primary acquisition schedule. A detector's generic `noise` or `not-target` output is not automatically converted to positive nuisance support, and a local response does not become target evidence without independent attribution.
+
+Field calibration then requires truth that is defined independently of the algorithm under calibration. For event-sensing systems we distinguish biological-event truth, target-coupled-response truth, exogenous nuisance truth and primary-stream observability truth. If the primary stream cannot resolve hidden presence or absence, a separate reference channel is needed for truth establishment and is not supplied to the tested observer. Reference truth that remains unresolved is retained as unresolved rather than converted to absence.
+
+Calibration and validation should also respect the dependence structure of the data. Consecutive frames from one observation block are not independent replicates, so development and held-out material should be separated at a grouping level such as recording day × focal scene or individual × recording block. Evidence channels are calibrated on development groups against declared error criteria, the calibration manifest is frozen, and new days/scenes are then scored held-out. Only after those semantics are validated should reason-specific TNOA states be allowed to change adaptive acquisition. This sequence is implementation guidance; no field result from such a deployment is used as evidence in Paper 1. The complete sensor-agnostic pathway is documented in `docs/FIELD_TRANSLATION_PATHWAY.md`.
+
+### 2.4 Registered synthetic design
 
 We evaluated the observation mapping in a closed synthetic design defined by six dimensionless coordinates:
 
@@ -96,25 +104,25 @@ The registered latent regimes were baseline, target only, nuisance only, target 
 
 The final frozen surface covered 30,625 registered coordinate combinations and 5,880,000 synthetic worlds. <!-- C8 --> These counts describe design coverage and provenance; they are not used as evidence magnitude.
 
-### 2.4 Freeze, falsification and retained failures
+### 2.5 Freeze, falsification and retained failures
 
 Development was separated into generations. Definitions, observers and decision criteria were frozen before each one-shot or held-out evaluation. Failed hypotheses were retained rather than overwritten.
 
 A preregistered expectation that unresolved observations would form a narrow ridge near matched target and nuisance timescales (`Pi2` approximately 1) was not supported in the earlier or refined synthetic generations. <!-- C2 --> A target-separability diagnostic was invalidated after code audit identified latent truth leakage; the corrected observation-safe audit excluded those features. Direct-visible target+nuisance worlds remained separable under the corrected representation, while indirect-only coupled-response worlds without an attribution channel remained unresolved. <!-- C3 C4 -->
 
-### 2.5 From nuisance score ranking to a prespecified error-rate criterion
+### 2.6 From nuisance score ranking to a prespecified error-rate criterion
 
 Nuisance development exposed a different failure mode. A revised nuisance representation retained strong ordering between nuisance and non-nuisance worlds, but the historical raw threshold `0.55` no longer produced the intended positive coverage. <!-- C6 --> The problem was therefore not simply loss of nuisance information; the numerical meaning of the score boundary had changed with the representation.
 
 Rather than search post hoc for a threshold on the final positive evaluation set, we specified a family-wise false-attribution criterion of `alpha=0.05`. Negative calibration families were treated separately because a pooled quantile failed to control the error within each family. The resulting frozen rule was then evaluated held-out. It produced false nuisance attribution of `0` in the target-only negative family and approximately `0.04444` in the target+nuisance+coupling negative family, both within the prespecified criterion. <!-- C7 --> These are closed-world validation rates, not field false-positive rates.
 
-### 2.6 Frozen observation surface and weighting sensitivity
+### 2.7 Frozen observation surface and weighting sensitivity
 
 After target and nuisance rules were frozen, the final measurement emitted B/T/N/U together with unresolved-reason provenance. Equal-grid/equal-regime summaries are retained for reproducibility, but they are not interpreted as ecological prevalence.
 
 To assess dependence on design weighting, we performed a post-freeze density-ratio sensitivity analysis on the immutable rows. Relative to the equal-grid/equal-regime design, each row weight could vary within `1/kappa` and `kappa`, subject to the mean weight remaining one. No observer or threshold was changed. We used this class to ask whether the dominance of overlap/attribution U, the `Pi1` total-U shape and the small `Pi2=1` contrast could be reversed by bounded reweighting. <!-- C2 D1 -->
 
-### 2.7 Downstream synthetic target-prevalence estimand
+### 2.8 Downstream synthetic target-prevalence estimand
 
 We next asked whether preserving B/T/N/U changes what can be inferred about a downstream ecological quantity. The estimand was the known latent target prevalence across the six registered synthetic regimes.
 
@@ -134,13 +142,13 @@ For the four-state observation, we computed the minimum and maximum `theta` over
 
 We evaluated a deterministic simplex lattice with regime proportions in increments of 0.1, giving 3,003 synthetic compositions. The lattice is a design for sensitivity analysis, not an ecological prior. We also repeated the comparison within all 34 registered single-axis slices. As a deliberately naive comparator, we treated the TARGET observation proportion itself as a binary estimate of latent target prevalence. <!-- D1 -->
 
-### 2.8 Structural interpretation audit
+### 2.9 Structural interpretation audit
 
 A second post-freeze audit asked how strongly the six registered coordinates separate the final observation distribution. For each coordinate, we averaged B/T/N/U over the remaining axes and non-baseline latent regimes, counted distinct marginal decision vectors at numerical tolerance `1e-10`, and calculated the maximum total-variation distance between level-mean observation distributions. These summaries describe this frozen design; they are not estimates of intrinsic ecological dimensionality. <!-- D2 -->
 
 The same audit decomposed the historical forced-binary false-negative summary by `Pi3` to determine how much of that number is determined by the registered grid composition. <!-- C13 D2 -->
 
-### 2.9 Scope and claim boundary
+### 2.10 Scope and claim boundary
 
 All numerical results in this paper are closed-world methodological results. We do not estimate field flower-visitor accuracy, field nuisance rates, field target prevalence, biological absence or pollination effectiveness. Numerical score thresholds, the exact `Pi3` boundary and the synthetic emission matrix do not transfer automatically to another device, site, taxon or sensor domain. The field question is whether real evidence channels can be measured and calibrated without changing the logical distinctions preserved here.
 
@@ -218,15 +226,17 @@ Two failures are particularly informative. First, the preregistered `Pi2` matche
 
 The structural-axis audit adds another constraint. The frozen `Pi3` result is largely a zero-versus-positive channel-availability rule, and `Pi4`/`Pi5` weakly separate the marginal decision distribution. The paper therefore does not use the nominal size of the grid as a substitute for effective experimental variation.
 
-### 4.5 What is reusable and what must be recalibrated
+### 4.5 What is reusable, what must be recalibrated and how to transfer it
 
-The repository now separates a reusable observation-state layer from domain-specific observers. The Python API accepts calibrated support flags and returns B/T/N/U plus unresolved-reason provenance. This makes the method directly runnable without pretending that PolliPi thresholds or the synthetic nuisance representation are universal.
+The repository separates a reusable observation-state layer from domain-specific observers. The Python API accepts calibrated support flags and returns B/T/N/U plus unresolved-reason provenance. This makes the method directly runnable without pretending that source-system raw thresholds or the synthetic nuisance representation are universal.
 
-A camera-trap application might define T as positive focal-species evidence, N as positive evidence for motion or visibility processes that mimic or mask detection, and O as adequate camera geometry and image support. A passive-acoustic application could define T as focal-call support, N as masking or overlapping non-target sound and O as sufficient microphone/temporal support. Each application must validate its own evidence adapters and error criteria.
+Operationally, a new deployment should begin in shadow mode rather than with TNOA controlling the sensor. The primary record is preserved, raw evidence channels are logged separately, and pre-calibration windows remain unresolved. Independent truth is then collected without exposing algorithm outputs to annotators, channel-specific error criteria are calibrated on grouped development data, and the resulting calibration manifest is frozen before new days/scenes are scored. Adaptive actions become a later layer, enabled only after the observation semantics themselves have held up under held-out validation. This ordering prevents the capture policy from changing the evidence-generating process before the meaning of its observation states has been established.
+
+A camera-trap application might define T as positive focal-species evidence, N as positive evidence for motion or visibility processes that mimic or mask detection, and O as adequate camera geometry and image support. A passive-acoustic application could define T as focal-call support, N as masking or overlapping non-target sound and O as sufficient microphone/temporal support. An interaction camera can additionally retain a local biological response as C until independent attribution supports a target link. The raw features and calibration rules change across systems, but the fail-closed sequence does not. Each application must validate its own evidence adapters and error criteria.
 
 ### 4.6 Limitations
 
-Paper 1 remains a closed-world methods study. The synthetic generator was built to expose observation-process distinctions, not to reproduce all natural camera scenes. The downstream target-prevalence result uses the frozen synthetic emission matrix and a deterministic composition lattice; it is not an empirical estimator of visitation rate. The bounded weighting analysis explores a defined sensitivity class rather than an ecological prior distribution.
+Paper 1 remains a closed-world methods study. The synthetic generator was built to expose observation-process distinctions, not to reproduce all natural camera scenes. The downstream target-prevalence result uses the frozen synthetic emission matrix and a deterministic composition lattice; it is not an empirical estimator of visitation rate. The bounded weighting analysis explores a defined sensitivity class rather than an ecological prior distribution. The staged field-translation pathway is implementation guidance, not field validation.
 
 The exact zero/positive `Pi3` split is structural. The six registered coordinates have uneven effective separation, and the historical C13 comparator rate is design-compositional. No independently validated target-absence channel is assumed. Finally, the prior-art review is targeted rather than systematic. Accordingly, we claim an integrated observation interface and experimentally documented consequences, not historical priority for abstention, imperfect detection, sensor fusion or uncertainty representation.
 
@@ -242,7 +252,7 @@ The broader methodological recommendation is therefore practical: calibrate obse
 
 ## Data and code availability
 
-The repository contains the manuscript-facing provenance package, immutable result identifiers, post-freeze derived analyses, figure scripts, claim guards and a minimal reusable Python implementation. The reusable API and CSV CLI are documented in `docs/REUSABLE_IMPLEMENTATION.md` and demonstrated with `examples/minimal_evidence.csv`. Historical one-shot results remain tied to their original workflow runs and artifact hashes; later software checks do not replace the frozen scientific record.
+The repository contains the manuscript-facing provenance package, immutable result identifiers, post-freeze derived analyses, figure scripts, claim guards and a minimal reusable Python implementation. The reusable API and CSV CLI are documented in `docs/REUSABLE_IMPLEMENTATION.md` and demonstrated with `examples/minimal_evidence.csv`; the fail-closed sensor-to-field calibration sequence is documented in `docs/FIELD_TRANSLATION_PATHWAY.md`. Historical one-shot results remain tied to their original workflow runs and artifact hashes; later software checks do not replace the frozen scientific record.
 
 ## Author contributions
 
