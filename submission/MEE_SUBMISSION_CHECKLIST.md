@@ -10,7 +10,7 @@ This checklist translates the current MEE author guidance into concrete TNOA upl
 - [x] The earlier `manuscript/TNOA_P1_DRAFT.md` remains unchanged as the historical draft.
 - [x] Numbered 1–4 abstract text is prepared in `submission/MEE_FRONT_MATTER.md`.
 - [x] The numbered abstract was compressed from about 391 repository-counted words to below the journal's 350-word target, and `scripts/validate_mee_submission_package.py` now fails if the abstract exceeds 350 words.
-- [x] Keywords are prepared.
+- [x] Eight keywords are prepared, unique and alphabetized; `tests/test_submission_front_matter.py` enforces the maximum-eight and alphabetical-order rules.
 - [x] Data/Code for peer review statement is prepared.
 - [x] `scripts/build_mee_initial_submission_source.py` assembles one anonymous source with the standard `Materials and Methods` heading, figure callouts and Figure 1–4/S2 captions.
 - [x] `scripts/audit_initial_submission_readiness.py` checks structure, citation-key completeness and a conservative word-count estimate including bibliography text in CI.
@@ -98,4 +98,4 @@ Do not upload until all unchecked items above that apply to the initial submissi
 
 ## Journal guidance checked
 
-This checklist was aligned to the MEE author guidance retrieved on 2026-08-27. Current guidance requires a single-column, double-line-spaced Standard Article within the 7000–8000-word range/ceiling (including references), continuous line and page numbering, a separate title page, a running headline of no more than 45 characters, a numbered 1–4 abstract aiming not to exceed 350 words, anonymized code/data available for peer review, and an inclusion statement during submission. Re-check the live author guidelines immediately before upload.
+This checklist was aligned to the MEE author guidance retrieved on 2026-08-27. Current guidance requires a single-column, double-line-spaced Standard Article within the 7000–8000-word range/ceiling (including references), continuous line and page numbering, a separate title page, a running headline of no more than 45 characters, a numbered 1–4 abstract aiming not to exceed 350 words, at most eight keywords in alphabetical order, anonymized code/data available for peer review, and an inclusion statement during submission. Re-check the live author guidelines immediately before upload.
