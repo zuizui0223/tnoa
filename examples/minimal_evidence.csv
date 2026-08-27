@@ -1,0 +1,7 @@
+site,condition,deviation_observed,target_supported,nuisance_supported,observable,coupled_response_supported,attribution_supported
+A,calm,0,0,0,1,0,0
+A,visit,1,1,0,1,0,0
+A,wind_and_visit,1,1,1,1,0,0
+A,indirect_only,1,0,0,1,1,0
+B,nuisance,1,0,1,1,0,0
+B,unobservable,0,0,0,0,0,0
