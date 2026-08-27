@@ -13,8 +13,9 @@ This checklist translates the current MEE author guidance into concrete TNOA upl
 - [x] Data/Code for peer review statement is prepared.
 - [x] `scripts/build_mee_initial_submission_source.py` assembles one anonymous source with the standard `Materials and Methods` heading, figure callouts and Figure 1–4/S2 captions.
 - [x] `scripts/audit_initial_submission_readiness.py` checks structure, citation-key completeness and a conservative word-count estimate including bibliography text in CI.
+- [x] CI run `33039903388` estimated 4,953 words including a conservative bibliography-field estimate; all 12 cited bibliography keys resolved with zero missing citations. Six unused bibliography entries remain non-blocking and do not represent missing citations.
 - [ ] Convert the assembled source to a single-column, double-line-spaced upload document with continuous page and line numbering.
-- [ ] Recheck the final publisher-facing word count, including references, after conversion. The CI estimate is a guard, not the publisher's final count.
+- [ ] Recheck the final publisher-facing word count, including references, after conversion. The 4,953-word CI estimate is a guard, not the publisher's final count.
 - [ ] Confirm figure/table caption placement after conversion to the final upload format.
 
 ## Double-anonymous review
