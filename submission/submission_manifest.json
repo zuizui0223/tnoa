@@ -20,6 +20,8 @@
     "numbered_abstract_1_to_4": true,
     "abstract_word_ceiling": 350,
     "abstract_word_guard_required": true,
+    "keywords_maximum": 8,
+    "keywords_alphabetical_required": true,
     "data_code_peer_review_statement": true,
     "materials_and_methods_heading_normalized_in_submission_source": true,
     "figure_callouts_and_captions_added_in_submission_source": true,
