@@ -36,6 +36,7 @@ REQUIRED = {
     "docs/MEE_SYNTHETIC_CONSEQUENCES.md",
     "docs/STRUCTURAL_RESULT_AUDIT.md",
     "docs/REUSABLE_IMPLEMENTATION.md",
+    "docs/FIELD_TRANSLATION_PATHWAY.md",
     "docs/MEE_VOCABULARY_MAP.md",
     "derived/mee_figure_data.json",
     "derived/mee_synthetic_consequences.json",
@@ -150,6 +151,10 @@ def main() -> None:
             fail("MEE figure-data schema drifted")
         if fig_data["provenance"]["v14b_phase_surface"]["surface_sha256"] != "1d2c7c1f8f7370aad3cdde4d9d9d47bf318b2a057b6f788d3a48df9ea8d16c34":
             fail("phase-surface scientific provenance drifted")
+
+        pathway = zf.read("docs/FIELD_TRANSLATION_PATHWAY.md")
+        if b"implementation template" not in pathway or b"not a Paper-1 empirical result" not in pathway:
+            fail("field translation guide lost its prospective/non-field-validation boundary")
 
     print(
         "Anonymous MEE review bundle OK: "
