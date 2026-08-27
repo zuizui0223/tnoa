@@ -15,6 +15,7 @@ HEX64 = re.compile(r"^[0-9a-f]{64}$")
 REQUIRED_REPO_FILES = (
     "README.md",
     "paper_manifest.json",
+    "pyproject.toml",
     "references.bib",
     "requirements-figures.txt",
     "requirements-analysis.txt",
@@ -33,10 +34,20 @@ REQUIRED_REPO_FILES = (
     "docs/FIGURE_PLAN.md",
     "docs/FIGURE_VALIDATION.md",
     "docs/MEE_SYNTHETIC_CONSEQUENCES.md",
+    "docs/STRUCTURAL_RESULT_AUDIT.md",
+    "docs/REUSABLE_IMPLEMENTATION.md",
     "derived/mee_synthetic_consequences.json",
+    "derived/structural_axis_audit.json",
+    "tnoa/__init__.py",
+    "tnoa/core.py",
+    "tnoa/cli.py",
+    "examples/minimal_evidence.csv",
+    "tests/test_minimal_api.py",
     "scripts/build_paper_figures.py",
     "scripts/analyze_mee_synthetic_consequences.py",
     "scripts/validate_mee_synthetic_consequences.py",
+    "scripts/analyze_structural_axis_audit.py",
+    "scripts/validate_structural_axis_audit.py",
     "scripts/audit_manuscript_claims.py",
 )
 
@@ -101,16 +112,13 @@ def main() -> None:
         result_sha = row.get("result_sha256")
         if result_sha is not None and not HEX64.fullmatch(str(result_sha)):
             fail(f"{result_id}: result_sha256 must be 64-hex when present")
-        source_path = str(row.get("source_path", ""))
-        if not source_path.startswith("benchmarks/"):
+        if not str(row.get("source_path", "")).startswith("benchmarks/"):
             fail(f"{result_id}: source_path must point to an InsePi benchmark artifact")
 
     final = by_id["v14b_final_ternary_phase_surface"]
     summary = final.get("registered_summary", {})
-    if summary.get("coordinate_count") != 30625:
-        fail("final coordinate_count must remain 30625")
-    if summary.get("world_count") != 5880000:
-        fail("final world_count must remain 5880000")
+    if summary.get("coordinate_count") != 30625 or summary.get("world_count") != 5880000:
+        fail("final frozen design dimensions drifted")
     if summary.get("observer_retuned") is not False:
         fail("final observer_retuned must remain false")
 
@@ -121,19 +129,22 @@ def main() -> None:
         "universal_pi3_law",
         "universal_optimal_abstention",
         "component_level_priority",
+        "c13_performance_claim",
+        "six_axes_equal_effective_dimensions_claim",
     ):
         if boundary.get(key) is not False:
             fail(f"claim boundary {key} must remain false for Paper 1")
-    if boundary.get("closed_world_method_claims") is not True:
-        fail("closed_world_method_claims must remain true")
-    if boundary.get("synthetic_known_truth_estimand_claims") is not True:
-        fail("Paper 1 must explicitly permit the synthetic known-truth estimand")
-    if boundary.get("weighting_robustness_only_within_tested_class") is not True:
-        fail("weighting robustness must remain limited to the tested class")
+    for key in (
+        "closed_world_method_claims",
+        "synthetic_known_truth_estimand_claims",
+        "weighting_robustness_only_within_tested_class",
+    ):
+        if boundary.get(key) is not True:
+            fail(f"claim boundary {key} must remain true")
 
     literature = payload.get("literature_positioning", {})
     if literature.get("status") != "targeted_final_prior_art_audit_complete_not_systematic_review":
-        fail("literature positioning must record completed targeted audit without claiming systematic review")
+        fail("literature positioning status drifted")
     for key in (
         "evidence_map",
         "final_prior_art_audit",
@@ -157,36 +168,62 @@ def main() -> None:
     ):
         require_file(str(reproducibility.get(key, "")), f"reproducibility path {key}")
 
-    derived = payload.get("derived_analyses", {}).get("mee_synthetic_consequences", {})
-    if derived.get("status") != "post_freeze_deterministic_derivation_no_observer_retuning":
+    derived_all = payload.get("derived_analyses", {})
+    mee = derived_all.get("mee_synthetic_consequences", {})
+    if mee.get("status") != "post_freeze_deterministic_derivation_no_observer_retuning":
         fail("MEE derived analysis must remain explicitly post-freeze")
-    if derived.get("source_workflow_run_id") != 32932634622:
-        fail("MEE derived analysis source workflow drifted")
-    if derived.get("source_artifact_id") != 9593775550:
-        fail("MEE derived analysis source artifact drifted")
-    if derived.get("source_phase_surface_sha256") != final.get("result_sha256"):
+    if mee.get("source_workflow_run_id") != 32932634622 or mee.get("source_artifact_id") != 9593775550:
+        fail("MEE derived source provenance drifted")
+    if mee.get("source_phase_surface_sha256") != final.get("result_sha256"):
         fail("MEE derived analysis must point to the final frozen phase surface")
     for key in ("script", "result", "requirements", "validation", "documentation"):
-        require_file(str(derived.get(key, "")), f"derived-analysis path {key}")
-    if derived.get("field_claims_allowed") is not False:
-        fail("post-freeze synthetic derivation must not authorize field claims")
+        require_file(str(mee.get(key, "")), f"MEE derived-analysis path {key}")
+    if mee.get("field_claims_allowed") is not False:
+        fail("post-freeze MEE derivation must not authorize field claims")
+
+    structural = derived_all.get("structural_axis_audit", {})
+    if structural.get("status") != "post_freeze_deterministic_derivation_no_observer_retuning":
+        fail("structural audit must remain explicitly post-freeze")
+    if structural.get("source_workflow_run_id") != 32932634622:
+        fail("structural audit source workflow drifted")
+    if structural.get("source_phase_surface_sha256") != final.get("result_sha256"):
+        fail("structural audit must point to the final frozen phase surface")
+    for key in ("script", "result", "validation", "documentation"):
+        require_file(str(structural.get(key, "")), f"structural-audit path {key}")
+    if structural.get("field_claims_allowed") is not False:
+        fail("structural audit must not authorize field claims")
+    structural_summary = structural.get("summary", {})
+    if structural_summary.get("pi3_distinct_marginal_decision_vectors") != 2:
+        fail("Pi3 effective-level audit drifted")
+    if structural_summary.get("c13_design_identity") != "0.2*1.0 + 0.8*0.196125":
+        fail("C13 design identity drifted")
+
+    software = payload.get("reusable_implementation", {})
+    if software.get("status") != "minimal_reusable_api_and_cli_implemented":
+        fail("minimal reusable implementation not registered")
+    for key in ("python_api", "cli", "documentation", "example", "tests", "packaging"):
+        require_file(str(software.get(key, "")), f"reusable implementation path {key}")
+    if software.get("universal_raw_thresholds_shipped") is not False:
+        fail("minimal API must not ship universal raw thresholds")
+    if software.get("field_calibration_claimed") is not False:
+        fail("minimal API must not claim field calibration")
 
     figures = payload.get("figure_package", {})
     if figures.get("status") != "initial_paper_grade_quantitative_set_rendered_and_visually_audited":
-        fail("figure_package status must record the render-audited quantitative set")
+        fail("figure_package status drifted")
     for key in ("builder", "plan", "validation", "requirements"):
         require_file(str(figures.get(key, "")), f"figure-package path {key}")
     if figures.get("insepi_source_commit") != repos["insepi"]["main_commit_at_seed"]:
-        fail("figure-package InsePi commit must match the pinned paper source commit")
+        fail("figure-package InsePi commit must match pinned source")
     if figures.get("locked_phase_surface_sha256") != final.get("result_sha256"):
-        fail("figure-package phase-surface SHA must match the final locked result")
+        fail("figure-package phase-surface SHA drifted")
     expected_blobs = figures.get("source_git_blob_sha1", {})
     for name in ("figure_data", "surface_result", "nuisance_risk"):
         if not HEX40.fullmatch(str(expected_blobs.get(name, ""))):
-            fail(f"figure-package source Git blob missing/invalid: {name}")
+            fail(f"figure source Git blob missing/invalid: {name}")
     stems = figures.get("quantitative_figure_stems", [])
     if len(stems) != 4 or len(set(stems)) != 4:
-        fail("figure-package must define four unique historical quantitative figure stems")
+        fail("historical figure package must retain four unique stems until final rewrite")
     if figures.get("manual_data_geometry_editing_allowed") is not False:
         fail("manual data-geometry editing must remain forbidden")
     if figures.get("field_claims_from_figures_allowed") is not False:
@@ -194,26 +231,31 @@ def main() -> None:
 
     manuscript = payload.get("manuscript_package", {})
     if manuscript.get("status") != "full_working_draft_instantiated_and_claim_audited":
-        fail("manuscript package must be instantiated and claim-audited")
+        fail("manuscript package status drifted")
     for key in ("draft", "blueprint", "final_claim_audit"):
         require_file(str(manuscript.get(key, "")), f"manuscript path {key}")
     if manuscript.get("internal_result_provenance_tags") != "C1-C15":
-        fail("historical manuscript must retain C1-C15 internal result provenance tags until the MEE rewrite is instantiated")
+        fail("historical manuscript must retain C1-C15 until final MEE rewrite")
 
-    blockers = payload.get("submission_blockers")
-    if blockers != []:
-        fail("generic scientific submission_blockers must remain empty after frozen-result audits")
+    if payload.get("submission_blockers") != []:
+        fail("generic scientific submission_blockers must remain empty")
 
     readiness = payload.get("target_journal_readiness", {})
     if readiness.get("target") != "Methods in Ecology and Evolution":
-        fail("target_journal_readiness must name Methods in Ecology and Evolution")
+        fail("target journal readiness drifted")
     completed = readiness.get("completed", [])
-    for item in ("downstream synthetic ecological estimand", "equal-grid weighting sensitivity"):
+    for item in (
+        "downstream synthetic ecological estimand",
+        "equal-grid weighting sensitivity",
+        "Pi1 reason-decomposition and structural-axis audit",
+        "C13 design-composition audit",
+        "minimal reusable implementation callable on calibrated evidence outputs",
+    ):
         if item not in completed:
             fail(f"missing completed MEE item: {item}")
     remaining = readiness.get("remaining_blockers", [])
-    if not isinstance(remaining, list) or not remaining:
-        fail("MEE-specific remaining blockers must stay explicit")
+    if remaining != ["ecological-statistical vocabulary and result-hierarchy rewrite of the working manuscript"]:
+        fail("MEE remaining blocker should now be only the manuscript rewrite")
 
     editorial = payload.get("editorial_tasks_before_upload")
     if not isinstance(editorial, list) or not editorial:
@@ -222,9 +264,8 @@ def main() -> None:
     print(
         "TNOA manifest OK: "
         f"{len(locked)} locked results, "
-        f"{len(payload.get('retained_failures', []))} retained failures, "
-        "post-freeze MEE derivation pinned, "
-        f"{len(remaining)} MEE-specific blockers remaining"
+        "2 post-freeze derived audits, reusable API+CLI, "
+        "1 MEE-specific manuscript blocker remaining"
     )
 
 
