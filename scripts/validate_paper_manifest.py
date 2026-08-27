@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""Validate TNOA Paper-1 manifest and repository-level provenance contracts.
-
-This script checks only information committed inside the TNOA repository. It does
-not silently fetch or rerun PolliPi/InsePi scientific generations. External source
-verification remains an explicit reproduction step documented in reproduce/README.md.
-"""
+"""Validate TNOA Paper-1 manifest and repository-level provenance contracts."""
 from __future__ import annotations
 
 import json
@@ -22,6 +17,7 @@ REQUIRED_REPO_FILES = (
     "paper_manifest.json",
     "references.bib",
     "requirements-figures.txt",
+    "requirements-analysis.txt",
     "manuscript/TNOA_P1_DRAFT.md",
     "docs/CONCEPTUAL_FRAMEWORK.md",
     "docs/NOVELTY_POSITIONING.md",
@@ -36,7 +32,11 @@ REQUIRED_REPO_FILES = (
     "docs/METHOD_PAPER_BLUEPRINT.md",
     "docs/FIGURE_PLAN.md",
     "docs/FIGURE_VALIDATION.md",
+    "docs/MEE_SYNTHETIC_CONSEQUENCES.md",
+    "derived/mee_synthetic_consequences.json",
     "scripts/build_paper_figures.py",
+    "scripts/analyze_mee_synthetic_consequences.py",
+    "scripts/validate_mee_synthetic_consequences.py",
     "scripts/audit_manuscript_claims.py",
 )
 
@@ -115,18 +115,21 @@ def main() -> None:
         fail("final observer_retuned must remain false")
 
     boundary = payload.get("paper_claim_boundary", {})
-    required_false = (
+    for key in (
         "field_accuracy",
         "field_absence_certification",
         "universal_pi3_law",
         "universal_optimal_abstention",
         "component_level_priority",
-    )
-    for key in required_false:
+    ):
         if boundary.get(key) is not False:
             fail(f"claim boundary {key} must remain false for Paper 1")
     if boundary.get("closed_world_method_claims") is not True:
         fail("closed_world_method_claims must remain true")
+    if boundary.get("synthetic_known_truth_estimand_claims") is not True:
+        fail("Paper 1 must explicitly permit the synthetic known-truth estimand")
+    if boundary.get("weighting_robustness_only_within_tested_class") is not True:
+        fail("weighting robustness must remain limited to the tested class")
 
     literature = payload.get("literature_positioning", {})
     if literature.get("status") != "targeted_final_prior_art_audit_complete_not_systematic_review":
@@ -154,6 +157,20 @@ def main() -> None:
     ):
         require_file(str(reproducibility.get(key, "")), f"reproducibility path {key}")
 
+    derived = payload.get("derived_analyses", {}).get("mee_synthetic_consequences", {})
+    if derived.get("status") != "post_freeze_deterministic_derivation_no_observer_retuning":
+        fail("MEE derived analysis must remain explicitly post-freeze")
+    if derived.get("source_workflow_run_id") != 32932634622:
+        fail("MEE derived analysis source workflow drifted")
+    if derived.get("source_artifact_id") != 9593775550:
+        fail("MEE derived analysis source artifact drifted")
+    if derived.get("source_phase_surface_sha256") != final.get("result_sha256"):
+        fail("MEE derived analysis must point to the final frozen phase surface")
+    for key in ("script", "result", "requirements", "validation", "documentation"):
+        require_file(str(derived.get(key, "")), f"derived-analysis path {key}")
+    if derived.get("field_claims_allowed") is not False:
+        fail("post-freeze synthetic derivation must not authorize field claims")
+
     figures = payload.get("figure_package", {})
     if figures.get("status") != "initial_paper_grade_quantitative_set_rendered_and_visually_audited":
         fail("figure_package status must record the render-audited quantitative set")
@@ -169,7 +186,7 @@ def main() -> None:
             fail(f"figure-package source Git blob missing/invalid: {name}")
     stems = figures.get("quantitative_figure_stems", [])
     if len(stems) != 4 or len(set(stems)) != 4:
-        fail("figure-package must define four unique quantitative figure stems")
+        fail("figure-package must define four unique historical quantitative figure stems")
     if figures.get("manual_data_geometry_editing_allowed") is not False:
         fail("manual data-geometry editing must remain forbidden")
     if figures.get("field_claims_from_figures_allowed") is not False:
@@ -181,21 +198,33 @@ def main() -> None:
     for key in ("draft", "blueprint", "final_claim_audit"):
         require_file(str(manuscript.get(key, "")), f"manuscript path {key}")
     if manuscript.get("internal_result_provenance_tags") != "C1-C15":
-        fail("manuscript must retain C1-C15 internal result provenance tags")
+        fail("historical manuscript must retain C1-C15 internal result provenance tags until the MEE rewrite is instantiated")
 
     blockers = payload.get("submission_blockers")
     if blockers != []:
-        fail("scientific submission_blockers must be empty after final prior-art and claim audits")
+        fail("generic scientific submission_blockers must remain empty after frozen-result audits")
+
+    readiness = payload.get("target_journal_readiness", {})
+    if readiness.get("target") != "Methods in Ecology and Evolution":
+        fail("target_journal_readiness must name Methods in Ecology and Evolution")
+    completed = readiness.get("completed", [])
+    for item in ("downstream synthetic ecological estimand", "equal-grid weighting sensitivity"):
+        if item not in completed:
+            fail(f"missing completed MEE item: {item}")
+    remaining = readiness.get("remaining_blockers", [])
+    if not isinstance(remaining, list) or not remaining:
+        fail("MEE-specific remaining blockers must stay explicit")
+
     editorial = payload.get("editorial_tasks_before_upload")
     if not isinstance(editorial, list) or not editorial:
-        fail("editorial tasks must remain explicit rather than being called scientific blockers")
+        fail("editorial tasks must remain explicit")
 
     print(
         "TNOA manifest OK: "
         f"{len(locked)} locked results, "
         f"{len(payload.get('retained_failures', []))} retained failures, "
-        f"{len(stems)} quantitative figures, "
-        "0 scientific submission blockers"
+        "post-freeze MEE derivation pinned, "
+        f"{len(remaining)} MEE-specific blockers remaining"
     )
 
 
