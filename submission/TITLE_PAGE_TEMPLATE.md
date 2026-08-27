@@ -6,6 +6,10 @@
 
 Preserving unresolved observations in automated ecological sensing: a target–nuisance–observability framework
 
+## Running headline
+
+Preserving unresolved observations
+
 ## Authors
 
 - [Author 1 full name]
@@ -38,6 +42,10 @@ Use the CRediT taxonomy where appropriate. Every listed author should be explici
 - Writing — original draft: [ ]
 - Writing — review & editing: [ ]
 - Data curation / project administration / supervision / funding acquisition, if applicable: [ ]
+
+## Statement on inclusion
+
+The study reported here develops and evaluates a general methodological framework using registered synthetic experiments and software/provenance artifacts. It does not report region-specific field sampling or stakeholder-derived data, so no region-specific inclusion actions were applicable to the quantitative study reported in this manuscript. Any subsequent empirical validation should document region-appropriate collaboration, opportunities for intellectual input and outcome-sharing separately.
 
 ## Data Availability Statement
 

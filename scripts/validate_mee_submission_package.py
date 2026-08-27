@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "submission" / "submission_manifest.json"
+WORD_RE = re.compile(r"[A-Za-z0-9]+(?:[’'\-][A-Za-z0-9]+)*")
 
 REQUIRED = (
     "LICENSE",
@@ -15,6 +17,7 @@ REQUIRED = (
     "submission/TITLE_PAGE_TEMPLATE.md",
     "submission/ANONYMOUS_PEER_REVIEW_PACKAGE.md",
     "submission/MEE_FORMATTING_PROVENANCE.md",
+    "submission/MEE_EDITORIAL_PITCH.md",
     "submission/submission_manifest.json",
     "scripts/build_mee_initial_submission_source.py",
     "scripts/audit_initial_submission_readiness.py",
@@ -51,8 +54,8 @@ def main() -> None:
         fail("LICENSE is not the expected MIT license text")
 
     payload = json.loads(MANIFEST.read_text(encoding="utf-8"))
-    if payload.get("schema") != "tnoa-mee-submission-package-v4":
-        fail("submission manifest must be v4 after DOCX formatting automation")
+    if payload.get("schema") != "tnoa-mee-submission-package-v5":
+        fail("submission manifest must be v5 after final non-author title-page guidance")
     if payload.get("target_journal") != "Methods in Ecology and Evolution":
         fail("target journal drifted")
     if payload.get("scientific_submission_blockers") != 0:
@@ -79,6 +82,7 @@ def main() -> None:
             fail(f"anonymous manuscript field {key} drifted")
     for key in (
         "numbered_abstract_1_to_4",
+        "abstract_word_guard_required",
         "data_code_peer_review_statement",
         "materials_and_methods_heading_normalized_in_submission_source",
         "figure_callouts_and_captions_added_in_submission_source",
@@ -91,6 +95,8 @@ def main() -> None:
             fail(f"anonymous manuscript invariant {key} must remain true")
     if anon.get("word_count_conservative_ceiling") != 8000:
         fail("conservative Standard Article word-count ceiling drifted")
+    if anon.get("abstract_word_ceiling") != 350:
+        fail("MEE abstract word ceiling drifted from 350")
 
     formatted = payload.get("formatted_docx", {})
     expected_formatted = {
@@ -141,6 +147,8 @@ def main() -> None:
         fail("title page must remain a separate upload")
     for key in (
         "manuscript_title_complete",
+        "running_headline_complete",
+        "inclusion_statement_complete",
         "data_availability_initial_wording_complete",
         "data_sources_statement_complete",
         "scope_ethics_statement_complete",
@@ -157,6 +165,13 @@ def main() -> None:
             fail(f"author-specific title-page field {key} must remain explicitly incomplete until supplied")
 
     front = (ROOT / "submission" / "MEE_FRONT_MATTER.md").read_text(encoding="utf-8")
+    if "## Abstract" not in front or "## Keywords" not in front:
+        fail("front matter lacks Abstract/Keywords boundaries")
+    abstract_text = front.split("## Abstract", 1)[1].split("## Keywords", 1)[0]
+    abstract_words = WORD_RE.findall(abstract_text)
+    if len(abstract_words) > int(anon["abstract_word_ceiling"]):
+        fail(f"MEE abstract exceeds 350-word guard: {len(abstract_words)} words")
+
     title_page = (ROOT / "submission" / "TITLE_PAGE_TEMPLATE.md").read_text(encoding="utf-8")
     active_title = front.splitlines()[0].removeprefix("# ").strip()
     title_marker = "## Manuscript title\n\n"
@@ -165,14 +180,54 @@ def main() -> None:
     title_value = title_page.split(title_marker, 1)[1].split("\n\n", 1)[0].strip()
     if title_value != active_title:
         fail(f"title-page manuscript title is out of sync with active MEE title: {title_value!r}")
+
+    running_marker = "## Running headline\n\n"
+    if running_marker not in title_page:
+        fail("title page lacks running-headline section")
+    running_value = title_page.split(running_marker, 1)[1].split("\n\n", 1)[0].strip()
+    if running_value != title_state.get("running_headline"):
+        fail("title-page running headline drifted from submission manifest")
+    max_chars = int(title_state.get("running_headline_max_characters", 0))
+    if max_chars != 45 or not running_value or len(running_value) > max_chars:
+        fail(f"running headline must be non-empty and <=45 characters; got {len(running_value)}")
+
     for phrase in (
         "validated anonymized reviewer-only package",
         "persistent archive/repository",
         "No field biological dataset is used",
         "does not report a new organismal, human-subject or field-site experiment",
+        "no region-specific inclusion actions were applicable",
     ):
         if phrase not in title_page:
             fail(f"title-page non-author wording missing: {phrase}")
+
+    editorial = payload.get("editorial_pitch", {})
+    if editorial.get("path") != "submission/MEE_EDITORIAL_PITCH.md":
+        fail("editorial-pitch path drifted")
+    if editorial.get("cover_letter_required_by_journal") is not False:
+        fail("cover letter must remain registered as optional, not required")
+    for key in (
+        "optional_cover_letter_draft_prepared",
+        "pre_submission_enquiry_draft_prepared",
+        "method_gap_independent_of_focal_taxon",
+        "simulation_benchmark_evidence_highlighted",
+        "broad_cross_sensor_applicability_highlighted",
+        "workflow_only_positioning_rejected",
+        "closed_world_boundary_stated",
+    ):
+        if editorial.get(key) is not True:
+            fail(f"editorial pitch invariant {key} must remain true")
+    pitch = (ROOT / "submission" / "MEE_EDITORIAL_PITCH.md").read_text(encoding="utf-8")
+    for phrase in (
+        "Why this is a methods paper rather than a workflow",
+        "Across 3,003 known-truth latent-regime compositions",
+        "Breadth beyond the motivating sensing system",
+        "closed-world",
+        "Optional covering-letter draft",
+        "Short pre-submission-enquiry version",
+    ):
+        if phrase not in pitch:
+            fail(f"editorial pitch missing required positioning: {phrase}")
 
     peer = payload.get("peer_review_code_data", {})
     expected_peer = {
@@ -259,8 +314,8 @@ def main() -> None:
             fail(f"Figure 1 semantic layer missing: {token}")
 
     print(
-        "MEE submission package OK: scientific blockers 0; manuscript, DOCX, reviewer bundle and figures aligned; "
-        "author-specific metadata and final human upload checks remain explicit"
+        "MEE submission package OK: scientific blockers 0; manuscript, DOCX, reviewer bundle, figures and non-author title-page guidance aligned; "
+        f"abstract={len(abstract_words)} words; author-specific metadata and final human upload checks remain explicit"
     )
 
 

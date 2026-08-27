@@ -5,11 +5,12 @@ This checklist translates the current MEE author guidance into concrete TNOA upl
 ## Manuscript package
 
 - [x] Working paper is a Standard Article-scale methods manuscript rather than an Applications/Practical Tools note.
-- [x] Scientific scope is closed-world methods; V15 field validation remains external.
+- [x] Scientific scope is closed-world methods; field validation remains external.
 - [x] Active MEE working draft exists at `manuscript/TNOA_MEE_DRAFT.md`.
 - [x] The earlier `manuscript/TNOA_P1_DRAFT.md` remains unchanged as the historical draft.
 - [x] Numbered 1–4 abstract text is prepared in `submission/MEE_FRONT_MATTER.md`.
-- [x] Keywords are prepared.
+- [x] The numbered abstract was compressed from about 391 repository-counted words to below the journal's 350-word target, and `scripts/validate_mee_submission_package.py` now fails if the abstract exceeds 350 words.
+- [x] Eight keywords are prepared, unique and alphabetized; `tests/test_submission_front_matter.py` enforces the maximum-eight and alphabetical-order rules.
 - [x] Data/Code for peer review statement is prepared.
 - [x] `scripts/build_mee_initial_submission_source.py` assembles one anonymous source with the standard `Materials and Methods` heading, figure callouts and Figure 1–4/S2 captions.
 - [x] `scripts/audit_initial_submission_readiness.py` checks structure, citation-key completeness and a conservative word-count estimate including bibliography text in CI.
@@ -33,9 +34,11 @@ This checklist translates the current MEE author guidance into concrete TNOA upl
 ## Title page — separate upload
 
 - [x] Manuscript title is synchronized with the active MEE manuscript.
+- [x] Running headline is prepared as `Preserving unresolved observations` and is within the journal's 45-character limit.
 - [x] Initial-submission Data Availability Statement is prepared, with permanent DOI/accession wording reserved for acceptance.
 - [x] Data sources statement is prepared and explicitly limits quantitative evidence to the locked synthetic/post-freeze record.
 - [x] Paper-scope ethics wording is prepared and states that this manuscript does not report a new organismal, human-subject or field-site experiment.
+- [x] A submission-stage inclusion statement is prepared for the synthetic-only methodological scope, explicitly noting that no region-specific field sampling or stakeholder-derived data are reported.
 - [ ] Full author names.
 - [ ] Institutions and addresses.
 - [ ] Corresponding-author information required by the submission system.
@@ -43,6 +46,14 @@ This checklist translates the current MEE author guidance into concrete TNOA upl
 - [ ] Acknowledgements.
 - [ ] Funding statement.
 - [ ] Conflict of interest / competing interests statement.
+
+## Editor-facing positioning
+
+- [x] `submission/MEE_EDITORIAL_PITCH.md` prepares an optional cover-letter draft and a short pre-submission-enquiry version.
+- [x] The pitch leads with a methodological gap independent of the motivating taxon/system.
+- [x] The pitch distinguishes the tested methodological contribution from a workflow that merely links existing tools.
+- [x] Simulation/benchmark evidence, broad cross-sensor applicability, usable code and the closed-world field boundary are explicit.
+- [ ] Decide at submission whether to use the optional covering letter and/or send a pre-submission enquiry.
 
 ## Code and data
 
@@ -87,4 +98,4 @@ Do not upload until all unchecked items above that apply to the initial submissi
 
 ## Journal guidance checked
 
-This checklist was aligned to the MEE author guidance retrieved on 2026-08-27. Current guidance requires a single-column, double-line-spaced Standard Article within the 7000–8000-word range/ceiling (including references), continuous line and page numbering, a separate title page, a numbered 1–4 abstract, and anonymized code/data available for peer review. Re-check the live author guidelines immediately before upload.
+This checklist was aligned to the MEE author guidance retrieved on 2026-08-27. Current guidance requires a single-column, double-line-spaced Standard Article within the 7000–8000-word range/ceiling (including references), continuous line and page numbering, a separate title page, a running headline of no more than 45 characters, a numbered 1–4 abstract aiming not to exceed 350 words, at most eight keywords in alphabetical order, anonymized code/data available for peer review, and an inclusion statement during submission. Re-check the live author guidelines immediately before upload.
