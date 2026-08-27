@@ -1,5 +1,5 @@
 {
-  "schema": "tnoa-mee-submission-package-v4",
+  "schema": "tnoa-mee-submission-package-v5",
   "target_journal": "Methods in Ecology and Evolution",
   "article_type": "Standard Article / methods paper",
   "journal_guidance_checked_date": "2026-08-27",
@@ -62,6 +62,11 @@
     "template": "submission/TITLE_PAGE_TEMPLATE.md",
     "separate_upload_required": true,
     "manuscript_title_complete": true,
+    "running_headline_complete": true,
+    "running_headline": "Preserving unresolved observations",
+    "running_headline_max_characters": 45,
+    "inclusion_statement_complete": true,
+    "inclusion_statement_scope": "synthetic-only methodological study with no region-specific field sampling or stakeholder-derived data",
     "data_availability_initial_wording_complete": true,
     "data_sources_statement_complete": true,
     "scope_ethics_statement_complete": true,
@@ -69,6 +74,17 @@
     "author_contributions_complete": false,
     "acknowledgements_complete": false,
     "funding_and_competing_interests_complete": false
+  },
+  "editorial_pitch": {
+    "path": "submission/MEE_EDITORIAL_PITCH.md",
+    "cover_letter_required_by_journal": false,
+    "optional_cover_letter_draft_prepared": true,
+    "pre_submission_enquiry_draft_prepared": true,
+    "method_gap_independent_of_focal_taxon": true,
+    "simulation_benchmark_evidence_highlighted": true,
+    "broad_cross_sensor_applicability_highlighted": true,
+    "workflow_only_positioning_rejected": true,
+    "closed_world_boundary_stated": true
   },
   "peer_review_code_data": {
     "instructions": "submission/ANONYMOUS_PEER_REVIEW_PACKAGE.md",
