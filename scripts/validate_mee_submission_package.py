@@ -16,6 +16,8 @@ REQUIRED = (
     "submission/ANONYMOUS_PEER_REVIEW_PACKAGE.md",
     "submission/submission_manifest.json",
     "scripts/build_mee_anonymous_manuscript.py",
+    "scripts/build_anonymous_review_bundle.py",
+    "scripts/validate_anonymous_review_bundle.py",
     "figures/fig1_tnoa_architecture.svg",
 )
 
@@ -34,6 +36,8 @@ def main() -> None:
         fail("LICENSE is not the expected MIT license text")
 
     payload = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    if payload.get("schema") != "tnoa-mee-submission-package-v2":
+        fail("submission manifest schema must be v2")
     if payload.get("target_journal") != "Methods in Ecology and Evolution":
         fail("target journal drifted")
     if payload.get("scientific_submission_blockers") != 0:
@@ -54,6 +58,17 @@ def main() -> None:
         fail("anonymous code/data package must use reviewer-only/private location")
     if peer.get("public_owner_identifying_url_allowed_in_anonymous_manuscript") is not False:
         fail("anonymous manuscript cannot expose owner-identifying repository URL")
+    if peer.get("deterministic_zip") is not True or peer.get("zip_sha256_receipt") is not True:
+        fail("reviewer package must be deterministic and receipt-hashed")
+    if peer.get("identity_scan") is not True:
+        fail("reviewer package identity scan must remain enabled")
+    if peer.get("ci_artifact_is_final_reviewer_location") is not False:
+        fail("public-repo CI artifact cannot be treated as the final reviewer location")
+
+    for key in ("bundle_builder", "bundle_validator"):
+        path = peer.get(key)
+        if not path or not (ROOT / path).is_file():
+            fail(f"peer-review bundle path missing: {key}")
 
     front = (ROOT / "submission" / "MEE_FRONT_MATTER.md").read_text(encoding="utf-8")
     for label in ("**1.**", "**2.**", "**3.**", "**4.**"):
@@ -67,7 +82,10 @@ def main() -> None:
         if token not in svg:
             fail(f"Figure 1 semantic layer missing: {token}")
 
-    print("MEE submission package OK: license, anonymous front matter, title-page split, peer-review plan and Figure 1 registered")
+    print(
+        "MEE submission package OK: license, anonymous manuscript, title-page split, "
+        "deterministic reviewer bundle path and Figure 1 registered"
+    )
 
 
 if __name__ == "__main__":
