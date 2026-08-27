@@ -28,6 +28,8 @@ Selective classification, reject-option methods, set-valued prediction, open-set
 
 The narrower contribution here is an observation-state interface tailored to ecological sensing. Target and nuisance are represented as positive, non-complementary process supports; measurement support is represented separately; a target-coupled response requires independent attribution before it is promoted to target evidence; and biological absence requires evidence distinct from low target support. When available evidence does not support a unique observation statement, the record remains unresolved rather than being coerced to absence.
 
+Accordingly, we evaluate TNOA as a tested method rather than as a conceptual workflow. One operational experiment asks whether a nuisance decision can retain a declared error meaning after its numerical score representation changes. A second asks how much downstream information about a known ecological estimand is lost when the process-preserving observation record is deterministically coarsened to target/not-target. Falsified predictions and post-freeze sensitivity analyses then constrain, rather than expand, those methodological claims.
+
 ### 1.4 Questions
 
 We evaluate four questions. First, can an operational nuisance decision remain meaningful when the numerical representation of nuisance changes, or must the decision boundary be tied to a prespecified error criterion rather than an inherited raw threshold? Second, does preserving the richer observation record retain information about a downstream ecological estimand that is lost under binary coarsening? Third, does the preregistered prediction of a narrow ambiguity ridge at matched target and nuisance timescales survive a frozen synthetic test? Fourth, which features of the resulting unresolved observations are robust to alternative weighting of the registered design?
@@ -138,9 +140,11 @@ Let `z=(0,1,0,1,1,1)` indicate which registered regimes contain the target. The 
 \theta=pz.
 \]
 
-For the four-state observation, we computed the minimum and maximum `theta` over all non-negative regime mixtures summing to one that reproduce the retained B/T/N/U distribution. For the binary coarsening, only TARGET versus not-TARGET was retained and the same compatible-mixture calculation was repeated. The difference between the upper and lower compatible `theta` values is the identification width. Because the binary record is a deterministic coarsening of B/T/N/U, it cannot contain more information than the four-state record; the empirical question is how large the loss is in the registered experiment.
+For the four-state observation, we computed the minimum and maximum `theta` over all non-negative regime mixtures summing to one that reproduce the retained B/T/N/U distribution. For the binary coarsening, only TARGET versus not-TARGET was retained and the same compatible-mixture calculation was repeated. The difference between the upper and lower compatible `theta` values is the identification width.
 
-We evaluated a deterministic simplex lattice with regime proportions in increments of 0.1, giving 3,003 synthetic compositions. The lattice is a design for sensitivity analysis, not an ecological prior. We also repeated the comparison within all 34 registered single-axis slices. As a deliberately naive comparator, we treated the TARGET observation proportion itself as a binary estimate of latent target prevalence. <!-- D1 -->
+Because the binary record is a deterministic function of B/T/N/U, every latent mixture compatible with the four-state record is also compatible with the binary record. The four-state compatible set is therefore nested within the binary compatible set, so its identification interval cannot be wider. This nesting is a mathematical property of the two representations, not an empirical performance result. The registered experiment estimates the **magnitude** of the information lost under coarsening: how much wider the binary-compatible interval becomes over the tested latent-regime compositions and axis slices. <!-- D1 -->
+
+We evaluated a deterministic simplex lattice with regime proportions in increments of 0.1, giving 3,003 synthetic compositions. The lattice is a design for sensitivity analysis, not an ecological prior. We also repeated the width comparison within all 34 registered single-axis slices. As a deliberately naive secondary comparator, we treated the TARGET observation proportion itself as a binary estimate of latent target prevalence. <!-- D1 -->
 
 ### 2.9 Structural interpretation audit
 
@@ -164,11 +168,11 @@ The prespecified family-wise false-attribution criterion resolved this closed-wo
 
 ### 3.2 Binary coarsening discarded information about synthetic target prevalence
 
-Across the 3,003 registered regime compositions, the naive TARGET/not-TARGET estimate underestimated known latent target prevalence in `99.63%` of compositions; the median bias was approximately `-0.238` prevalence units. <!-- D1 --> This is not a field bias estimate: it describes the registered synthetic observation process across the composition lattice.
+The non-worsening direction is fixed by construction: because TARGET/not-TARGET is a deterministic coarsening of B/T/N/U, retaining the four-state record cannot produce a wider compatible set than discarding distinctions. The empirical result is the size of that advantage in the registered observation process. Across the 3,003 registered regime compositions, the median identification width was approximately `0.030` with B/T/N/U retained versus `0.266` after binary coarsening. Among compositions with non-zero binary width, the median relative reduction was approximately `84.45%`. <!-- D1 --> The same nesting relation held across all 34 registered single-axis slices, while the amount of narrowing varied with the slice.
 
-More importantly, retaining B/T/N/U substantially narrowed the set of latent target prevalences compatible with the observation. The median identification width was approximately `0.030` with the four observation states versus `0.266` after binary coarsening. Among compositions with non-zero binary width, the median relative reduction was approximately `84.45%`. <!-- D1 --> The four-state record was never wider than its binary coarsening, and the same ordering held across all 34 registered single-axis slices.
+As a secondary diagnostic, the deliberately naive TARGET/not-TARGET prevalence estimate underestimated known latent target prevalence in `99.63%` of compositions, with median bias approximately `-0.238` prevalence units. <!-- D1 --> This is not a field bias estimate and is not the main information-preservation claim; it describes the registered synthetic emission process and comparator.
 
-This result changes the interpretation of unresolved observations. Their value is not that every U should later be converted into a target event. Their value is that retaining observation-process distinctions prevents the sensor from destroying information before an ecological model is fitted.
+This result changes the interpretation of unresolved observations. Their value is not that every U should later be converted into a target event. Their value is that retaining observation-process distinctions prevents the sensor from destroying potentially useful information before an ecological model is fitted.
 
 ### 3.3 The preregistered matched-timescale ambiguity ridge was not supported
 
@@ -206,7 +210,7 @@ The registered zero target false-positive rate likewise follows the frozen posit
 
 The main practical result is upstream of any particular occupancy, interaction or abundance model. Automated sensors create the observation record that downstream models receive. If a sensor stores unresolved, nuisance-dominated and baseline windows as the same biological non-detection, the downstream analyst cannot reconstruct the original observation process from the binary record alone.
 
-The known-truth experiment makes this information loss explicit. Preserving B/T/N/U did not magically identify target prevalence in every synthetic condition; the `Pi3=0` slice remains weak, as it should. <!-- C12 --> But across the registered composition lattice, the refined observation record substantially constrained latent target prevalence relative to the binary coarsening. This is the ecological use case for TNOA: not “more abstention” for its own sake, but less irreversible coarsening before ecological inference.
+The direction of the information comparison is structural, not a discovered performance advantage: a deterministic coarsening cannot make the retained observation more informative than the record from which it was derived. What the known-truth experiment contributes is the scale of the consequence in the registered observation process. Median compatible target-prevalence width increased from about `0.030` with B/T/N/U retained to `0.266` after binary coarsening, while some boundary slices remained weak under both representations. <!-- D1 --> This is the ecological use case for TNOA: not “more abstention” for its own sake, but avoiding a quantitatively large irreversible coarsening before ecological inference in conditions where the discarded distinctions matter.
 
 ### 4.2 Error criteria transfer more naturally than raw score thresholds
 
