@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "submission" / "submission_manifest.json"
+WORD_RE = re.compile(r"[A-Za-z0-9]+(?:[’'\-][A-Za-z0-9]+)*")
 
 REQUIRED = (
     "LICENSE",
@@ -80,6 +82,7 @@ def main() -> None:
             fail(f"anonymous manuscript field {key} drifted")
     for key in (
         "numbered_abstract_1_to_4",
+        "abstract_word_guard_required",
         "data_code_peer_review_statement",
         "materials_and_methods_heading_normalized_in_submission_source",
         "figure_callouts_and_captions_added_in_submission_source",
@@ -92,6 +95,8 @@ def main() -> None:
             fail(f"anonymous manuscript invariant {key} must remain true")
     if anon.get("word_count_conservative_ceiling") != 8000:
         fail("conservative Standard Article word-count ceiling drifted")
+    if anon.get("abstract_word_ceiling") != 350:
+        fail("MEE abstract word ceiling drifted from 350")
 
     formatted = payload.get("formatted_docx", {})
     expected_formatted = {
@@ -160,6 +165,13 @@ def main() -> None:
             fail(f"author-specific title-page field {key} must remain explicitly incomplete until supplied")
 
     front = (ROOT / "submission" / "MEE_FRONT_MATTER.md").read_text(encoding="utf-8")
+    if "## Abstract" not in front or "## Keywords" not in front:
+        fail("front matter lacks Abstract/Keywords boundaries")
+    abstract_text = front.split("## Abstract", 1)[1].split("## Keywords", 1)[0]
+    abstract_words = WORD_RE.findall(abstract_text)
+    if len(abstract_words) > int(anon["abstract_word_ceiling"]):
+        fail(f"MEE abstract exceeds 350-word guard: {len(abstract_words)} words")
+
     title_page = (ROOT / "submission" / "TITLE_PAGE_TEMPLATE.md").read_text(encoding="utf-8")
     active_title = front.splitlines()[0].removeprefix("# ").strip()
     title_marker = "## Manuscript title\n\n"
@@ -303,7 +315,7 @@ def main() -> None:
 
     print(
         "MEE submission package OK: scientific blockers 0; manuscript, DOCX, reviewer bundle, figures and non-author title-page guidance aligned; "
-        "author-specific metadata and final human upload checks remain explicit"
+        f"abstract={len(abstract_words)} words; author-specific metadata and final human upload checks remain explicit"
     )
 
 
