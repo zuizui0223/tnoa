@@ -22,9 +22,10 @@ jobs:
         run: python scripts/validate_structural_axis_audit.py
       - name: Validate MEE figure data
         run: python scripts/validate_mee_figure_data.py
+      - name: Install figure dependencies
+        run: python -m pip install -r requirements-figures.txt
       - name: Smoke-build MEE figure panels
         run: |
-          python -m pip install -r requirements-figures.txt
           python scripts/build_mee_figures.py --output-dir /tmp/tnoa_mee_figures
           test "$(find /tmp/tnoa_mee_figures -maxdepth 1 -name '*.png' | wc -l)" -eq 8
           test "$(find /tmp/tnoa_mee_figures -maxdepth 1 -name '*.svg' | wc -l)" -eq 8
@@ -42,3 +43,34 @@ jobs:
         run: python scripts/validate_mee_submission_package.py
       - name: Build anonymous MEE manuscript source
         run: python scripts/build_mee_anonymous_manuscript.py
+      - name: Checkout pinned Source A for reviewer-bundle validation
+        uses: actions/checkout@v4
+        with:
+          repository: zuizui0223/pollipi
+          ref: f3b266897f3e9139e6c3fe9ce6b645e25371e092
+          path: review_sources/source_A
+          persist-credentials: false
+      - name: Checkout pinned Source B for reviewer-bundle validation
+        uses: actions/checkout@v4
+        with:
+          repository: zuizui0223/insepi
+          ref: 1664a190cec47142e8d14cc5157302a7af18d019
+          path: review_sources/source_B
+          persist-credentials: false
+      - name: Build and validate deterministic anonymous reviewer bundle
+        run: |
+          python scripts/build_anonymous_review_bundle.py \
+            --source-a-root review_sources/source_A \
+            --source-b-root review_sources/source_B \
+            --output-dir /tmp/tnoa_review_bundle
+          test -s /tmp/tnoa_review_bundle/TNOA_MEE_ANONYMOUS_REVIEW_BUNDLE.zip
+          test -s /tmp/tnoa_review_bundle/TNOA_MEE_ANONYMOUS_REVIEW_BUNDLE.receipt.json
+          python scripts/validate_anonymous_review_bundle.py /tmp/tnoa_review_bundle/TNOA_MEE_ANONYMOUS_REVIEW_BUNDLE.zip
+      - name: Upload reviewer-bundle validation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tnoa-anonymous-review-bundle-validation
+          path: |
+            /tmp/tnoa_review_bundle/TNOA_MEE_ANONYMOUS_REVIEW_BUNDLE.zip
+            /tmp/tnoa_review_bundle/TNOA_MEE_ANONYMOUS_REVIEW_BUNDLE.receipt.json
+          retention-days: 7

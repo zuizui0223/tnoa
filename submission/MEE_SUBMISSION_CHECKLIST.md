@@ -19,7 +19,10 @@ This checklist translates the current MEE author guidance into concrete TNOA upl
 
 - [x] Author-identifying material is separated into `submission/TITLE_PAGE_TEMPLATE.md`.
 - [x] Anonymous code/data-review instructions are separated into `submission/ANONYMOUS_PEER_REVIEW_PACKAGE.md`.
-- [ ] Before upload, remove author names, institutions, acknowledgements, repository-owner names, email addresses, ORCIDs and identifying file metadata from the anonymous reviewer package.
+- [x] Deterministic anonymous reviewer-bundle builder and standalone validator are implemented.
+- [x] CI builds the bundle from the active MEE package plus pinned Source-A/Source-B checkouts and runs the recursive identity/hash checks.
+- [ ] After the title page is complete, rebuild the final ZIP with every author/institution identifying literal supplied through repeated `--forbid-literal` arguments.
+- [ ] Review any remaining ORCID, acknowledgement or file-metadata identifiers that are not representable as simple text literals.
 - [ ] Use a private-for-peer-review archive/link or reviewer-only uploaded ZIP, not the public owner-identifying repository URL in the anonymous manuscript.
 
 ## Title page — separate upload
@@ -42,8 +45,11 @@ Complete only in the separate title-page file:
 - [x] Claim-to-artifact traceability exists.
 - [x] MEE-priority figure data, validation, generation code and source guards exist.
 - [x] Reproduction entry point exists in `reproduce/README.md`.
-- [ ] Prepare anonymized reviewer ZIP/private archive containing the manuscript-facing code, manifest, required locked JSON artifacts or reviewer-accessible equivalents, README and license.
-- [ ] Verify the review package contains every script/file needed to reproduce the paper figures and manuscript inferences that are claimed reproducible from archived artifacts.
+- [x] Anonymous reviewer ZIP construction is automated by `scripts/build_anonymous_review_bundle.py`.
+- [x] The bundle contains the active anonymous manuscript, C/D-tagged audit source, three derived analyses, current figure data/builder, reusable API/CLI, pinned upstream result summaries, scientific source snapshot, README and license.
+- [x] `scripts/validate_anonymous_review_bundle.py` verifies file hashes, active MEE schemas, source commits, figure inventory and identity leakage.
+- [ ] Build the final reviewer ZIP after all author/title-page metadata are known and retain its external receipt SHA-256.
+- [ ] Upload that final validated ZIP to the journal's reviewer-only/private location. The public CI artifact is validation only.
 - [ ] At acceptance, replace private review locations with permanent public archival accession/DOI(s).
 
 ## Figures

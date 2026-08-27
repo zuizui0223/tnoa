@@ -1,5 +1,5 @@
 {
-  "schema": "tnoa-mee-submission-package-v1",
+  "schema": "tnoa-mee-submission-package-v2",
   "target_journal": "Methods in Ecology and Evolution",
   "article_type": "Standard Article / methods paper",
   "journal_guidance_checked_date": "2026-08-27",
@@ -30,9 +30,19 @@
   },
   "peer_review_code_data": {
     "instructions": "submission/ANONYMOUS_PEER_REVIEW_PACKAGE.md",
+    "bundle_builder": "scripts/build_anonymous_review_bundle.py",
+    "bundle_validator": "scripts/validate_anonymous_review_bundle.py",
+    "bundle_schema": "tnoa-anonymous-review-bundle-v2",
+    "expected_zip": "TNOA_MEE_ANONYMOUS_REVIEW_BUNDLE.zip",
+    "expected_receipt": "TNOA_MEE_ANONYMOUS_REVIEW_BUNDLE.receipt.json",
+    "status": "deterministic bundle builder implemented and CI-validated against pinned upstream source checkouts",
+    "source_A_commit": "f3b266897f3e9139e6c3fe9ce6b645e25371e092",
+    "source_B_commit": "1664a190cec47142e8d14cc5157302a7af18d019",
     "private_or_reviewer_only_location_required": true,
     "public_owner_identifying_url_allowed_in_anonymous_manuscript": false,
-    "locked_scientific_generation_rerun_required_for_routine_review": false
+    "locked_scientific_generation_rerun_required_for_routine_review": false,
+    "final_author_institution_literals_must_be_scanned_at_upload": true,
+    "ci_bundle_artifact_is_validation_only_not_final_delivery_location": true
   },
   "figures": {
     "conceptual_figure_1": "figures/fig1_tnoa_architecture.svg",
@@ -49,7 +59,7 @@
     "assemble journal-formatted single-column double-line-spaced manuscript with continuous page and line numbering",
     "confirm final word count including references against current MEE guidance",
     "complete author names, affiliations, contributions, acknowledgements and submission metadata on separate title page",
-    "prepare anonymized reviewer ZIP or private-for-peer-review archive and run identity scan",
+    "build the validated anonymous reviewer ZIP with final author/institution literals supplied to the identity scanner and upload it to the private reviewer-only location",
     "perform final reference formatting/completeness pass in the journal-formatted manuscript",
     "rerun manuscript claim audit after any material formatting edits"
   ],
