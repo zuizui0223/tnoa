@@ -1,6 +1,6 @@
 # MEE figure validation
 
-The MEE-priority figures are generated from `derived/mee_figure_data.json` by `scripts/build_mee_figures.py`. The figure-data file is a deterministic reduction of immutable or locked sources; no observer is refit and no threshold is selected during plotting.
+The MEE-priority figures use one pinned numerical source, `derived/mee_figure_data.json`. `scripts/build_mee_figures.py` renders the audit-friendly component panels; `scripts/build_mee_composite_figures.py` assembles submission-facing Figure 2, Figure 3, Figure 4 and Supplementary Figure S2 from those same values. The figure-data file is a deterministic reduction of immutable or locked sources; no observer is refit and no threshold is selected during plotting.
 
 ## Figure 2 provenance: threshold failure -> diagnosis -> family-wise error control
 
@@ -22,11 +22,20 @@ The downstream estimand, weighting and Pi1/axis summaries derive from the immuta
 
 `derived/mee_synthetic_consequences.json` and `derived/structural_axis_audit.json` retain the full post-freeze analytical summaries. `derived/mee_figure_data.json` stores only the reduced values needed to reproduce the manuscript figures.
 
-## Validation
+## Validation layers
 
 `python scripts/validate_mee_figure_data.py` fails closed if the primary numerical sequence or provenance drifts. It cross-checks the estimand quantiles and summaries against `derived/mee_synthetic_consequences.json`, the Pi1/axis/C13 values against `derived/structural_axis_audit.json`, and workflow/artifact/result identifiers against `paper_manifest.json`.
 
-`python scripts/build_mee_figures.py` generates each quantitative panel as SVG and 300-dpi PNG from the same data. CI smoke-builds the complete panel set.
+`python scripts/build_mee_figures.py` generates eight component panels as SVG and 300-dpi PNG. These are the audit/reproduction layer and remain useful even if journal layout changes.
+
+`python scripts/build_mee_composite_figures.py` generates four submission-facing composite figures from the same pinned JSON:
+
+- `Figure2_nuisance_calibration` — three panels;
+- `Figure3_downstream_estimand` — two panels;
+- `Figure4_unresolved_reasons` — two panels;
+- `FigureS2_axis_separation` — one panel.
+
+Each is emitted as SVG and 300-dpi PNG together with `composite_figure_provenance.json`. The composite sidecar explicitly records `layout_only=true` and `manual_data_geometry_editing_required=false`. CI smoke-builds and uploads these outputs for short-retention visual inspection.
 
 ## Visual interpretation guard
 
@@ -38,3 +47,7 @@ The following are not permitted as visual headlines:
 - the exact Pi1 total-U curve as a weighting-robust law.
 
 The intended hierarchy is Figure 2 risk-calibration evidence, Figure 3 downstream ecological-estimand information preservation, Figure 4 unresolved-reason structure, then design/falsification diagnostics in the supplement.
+
+## Final human-only visual check
+
+Before upload, inspect the code-assembled composite SVG/PNG files for typography, panel-label placement, line/legend overlap and journal sizing. Any correction must remain a reproducible layout/code change; do not manually alter plotted data geometry in a graphics editor.

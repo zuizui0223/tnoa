@@ -5,11 +5,7 @@
   "journal_guidance_checked_date": "2026-08-27",
   "scientific_source_manifest": "paper_manifest.json",
   "scientific_submission_blockers": 0,
-  "open_source_license": {
-    "path": "LICENSE",
-    "license": "MIT",
-    "status": "present"
-  },
+  "open_source_license": {"path": "LICENSE", "license": "MIT", "status": "present"},
   "anonymous_manuscript": {
     "front_matter": "submission/MEE_FRONT_MATTER.md",
     "audited_body": "manuscript/TNOA_MEE_DRAFT.md",
@@ -75,8 +71,11 @@
     "quantitative_figure_data": "derived/mee_figure_data.json",
     "quantitative_figure_validator": "scripts/validate_mee_figure_data.py",
     "quantitative_figure_builder": "scripts/build_mee_figures.py",
+    "composite_builder": "scripts/build_mee_composite_figures.py",
     "quantitative_figure_requirements": "requirements-figures.txt",
-    "quantitative_package_status": "source-guarded, validated and CI smoke-built; final submission layout remains editorial"
+    "panel_package_status": "source-guarded, validated and CI smoke-built",
+    "composite_package_status": "Figure 2, Figure 3, Figure 4 and Supplementary Figure S2 layouts are code-assembled from the same pinned figure data; final human visual inspection remains required",
+    "manual_data_geometry_editing_required": false
   },
   "submission_checklist": "submission/MEE_SUBMISSION_CHECKLIST.md",
   "remaining_initial_upload_tasks": [
@@ -85,7 +84,7 @@
     "complete author names, affiliations, corresponding-author details, CRediT contributions and acknowledgements on the separate title page",
     "complete funding and competing-interest statements on the separate title page",
     "build the validated anonymous reviewer ZIP with final author/institution literals supplied to the identity scanner and upload it to the private reviewer-only location",
-    "perform final visual reference-style and multi-panel-figure inspection",
+    "perform final visual inspection of the code-assembled multi-panel figures and final reference-style rendering",
     "rerun manuscript claim audit after any material formatting edits"
   ],
   "scientific_claim_boundary_unchanged": true
