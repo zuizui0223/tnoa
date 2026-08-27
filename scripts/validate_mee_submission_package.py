@@ -14,10 +14,14 @@ REQUIRED = (
     "submission/MEE_FRONT_MATTER.md",
     "submission/TITLE_PAGE_TEMPLATE.md",
     "submission/ANONYMOUS_PEER_REVIEW_PACKAGE.md",
+    "submission/MEE_FORMATTING_PROVENANCE.md",
     "submission/submission_manifest.json",
     "scripts/build_mee_initial_submission_source.py",
     "scripts/audit_initial_submission_readiness.py",
     "scripts/build_mee_anonymous_manuscript.py",
+    "scripts/build_mee_submission_docx.py",
+    "scripts/validate_mee_submission_docx.py",
+    "requirements-submission.txt",
     "scripts/build_anonymous_review_bundle.py",
     "scripts/validate_anonymous_review_bundle.py",
     "scripts/audit_manuscript_claims.py",
@@ -47,8 +51,8 @@ def main() -> None:
         fail("LICENSE is not the expected MIT license text")
 
     payload = json.loads(MANIFEST.read_text(encoding="utf-8"))
-    if payload.get("schema") != "tnoa-mee-submission-package-v3":
-        fail("submission manifest must be v3 after initial-submission assembly implementation")
+    if payload.get("schema") != "tnoa-mee-submission-package-v4":
+        fail("submission manifest must be v4 after DOCX formatting automation")
     if payload.get("target_journal") != "Methods in Ecology and Evolution":
         fail("target journal drifted")
     if payload.get("scientific_submission_blockers") != 0:
@@ -87,6 +91,48 @@ def main() -> None:
             fail(f"anonymous manuscript invariant {key} must remain true")
     if anon.get("word_count_conservative_ceiling") != 8000:
         fail("conservative Standard Article word-count ceiling drifted")
+
+    formatted = payload.get("formatted_docx", {})
+    expected_formatted = {
+        "canonical_source": "submission/generated/MEE_INITIAL_SUBMISSION_SOURCE.md",
+        "builder": "scripts/build_mee_submission_docx.py",
+        "validator": "scripts/validate_mee_submission_docx.py",
+        "requirements": "requirements-submission.txt",
+        "formatting_provenance": "submission/MEE_FORMATTING_PROVENANCE.md",
+        "expected_output": "submission/generated/TNOA_MEE_ANONYMOUS_INITIAL_SUBMISSION.docx",
+        "validation_report": "submission/generated/docx_validation.json",
+        "csl_repository": "citation-style-language/styles",
+        "csl_commit": "2a4430b7cadae7cc88012537c5ceaed76d1d9938",
+        "csl_parent_style": "apa.csl",
+        "csl_blob_sha1": "9bc45ef6289bb2f933a0fd9a44640baa34a3191e",
+    }
+    for key, expected in expected_formatted.items():
+        if formatted.get(key) != expected:
+            fail(f"formatted DOCX field {key} drifted")
+    for key in (
+        "single_column",
+        "double_spacing",
+        "continuous_line_numbering",
+        "page_numbering",
+        "anonymous_core_metadata",
+        "citations_and_references_rendered_by_citeproc",
+        "ci_validation_required",
+        "publisher_visual_review_required",
+    ):
+        if formatted.get(key) is not True:
+            fail(f"formatted DOCX invariant {key} must remain true")
+    if formatted.get("scientific_content_changed_by_formatting") is not False:
+        fail("DOCX formatting must remain non-scientific")
+
+    formatting_provenance = (ROOT / "submission" / "MEE_FORMATTING_PROVENANCE.md").read_text(encoding="utf-8")
+    for token in (
+        "2a4430b7cadae7cc88012537c5ceaed76d1d9938",
+        "9bc45ef6289bb2f933a0fd9a44640baa34a3191e",
+        "continuous line numbering",
+        "Anonymous",
+    ):
+        if token not in formatting_provenance:
+            fail(f"formatting provenance missing pinned invariant: {token}")
 
     title_state = payload.get("title_page", {})
     if title_state.get("template") != "submission/TITLE_PAGE_TEMPLATE.md":
@@ -162,6 +208,7 @@ def main() -> None:
         "quantitative_figure_validator": "scripts/validate_mee_figure_data.py",
         "quantitative_figure_builder": "scripts/build_mee_figures.py",
         "quantitative_figure_requirements": "requirements-figures.txt",
+        "composite_builder": "scripts/build_mee_composite_figures.py",
     }
     for key, expected in expected_figures.items():
         if figures.get(key) != expected:
@@ -191,11 +238,11 @@ def main() -> None:
 
     remaining = payload.get("remaining_initial_upload_tasks", [])
     required_remaining_phrases = (
-        "single-column double-line-spaced",
         "final formatted word count",
         "author names, affiliations",
         "funding and competing-interest",
         "author/institution literals",
+        "visual inspection",
         "reference-style",
         "claim audit",
     )
@@ -203,6 +250,8 @@ def main() -> None:
     for phrase in required_remaining_phrases:
         if phrase not in joined:
             fail(f"remaining initial-upload task missing concept: {phrase}")
+    if "convert the assembled source" in joined:
+        fail("DOCX conversion is still incorrectly listed as a remaining task")
 
     svg = (ROOT / "figures" / "fig1_tnoa_architecture.svg").read_text(encoding="utf-8")
     for token in ("World / process layer", "Evidence layer", "Decision layer", "Development safeguards"):
@@ -210,8 +259,8 @@ def main() -> None:
             fail(f"Figure 1 semantic layer missing: {token}")
 
     print(
-        "MEE submission package OK: scientific blockers 0; manuscript/readiness/reviewer bundle aligned; "
-        "non-author title-page fields complete; author-specific metadata still explicitly pending"
+        "MEE submission package OK: scientific blockers 0; manuscript, DOCX, reviewer bundle and figures aligned; "
+        "author-specific metadata and final human upload checks remain explicit"
     )
 
 
