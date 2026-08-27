@@ -55,6 +55,27 @@ jobs:
         run: python scripts/audit_initial_submission_readiness.py
       - name: Audit active-manuscript versus prior-art reference scope
         run: python scripts/audit_reference_scope.py
+      - name: Checkout pinned CSL styles for submission formatting
+        uses: actions/checkout@v4
+        with:
+          repository: citation-style-language/styles
+          ref: 2a4430b7cadae7cc88012537c5ceaed76d1d9938
+          path: csl_styles
+          persist-credentials: false
+      - name: Install submission-formatting dependencies
+        run: python -m pip install -r requirements-submission.txt
+      - name: Verify pinned APA CSL blob
+        run: |
+          test "$(git hash-object csl_styles/apa.csl)" = "9bc45ef6289bb2f933a0fd9a44640baa34a3191e"
+      - name: Build and validate anonymous MEE DOCX
+        run: |
+          mkdir -p /tmp/tnoa_mee_docx
+          python scripts/build_mee_submission_docx.py \
+            --csl csl_styles/apa.csl \
+            --output /tmp/tnoa_mee_docx/TNOA_MEE_ANONYMOUS_INITIAL_SUBMISSION.docx
+          python scripts/validate_mee_submission_docx.py \
+            /tmp/tnoa_mee_docx/TNOA_MEE_ANONYMOUS_INITIAL_SUBMISSION.docx
+          test -s submission/generated/docx_validation.json
       - name: Checkout pinned Source A for reviewer-bundle validation
         uses: actions/checkout@v4
         with:
@@ -94,6 +115,14 @@ jobs:
             submission/generated/MEE_INITIAL_SUBMISSION_SOURCE.md
             submission/generated/initial_submission_readiness.json
             submission/generated/reference_scope_audit.json
+          retention-days: 7
+      - name: Upload anonymous MEE DOCX validation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tnoa-mee-anonymous-docx-validation
+          path: |
+            /tmp/tnoa_mee_docx/TNOA_MEE_ANONYMOUS_INITIAL_SUBMISSION.docx
+            submission/generated/docx_validation.json
           retention-days: 7
       - name: Upload final MEE multi-panel figure validation artifact
         uses: actions/upload-artifact@v4
