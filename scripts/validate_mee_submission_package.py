@@ -15,6 +15,8 @@ REQUIRED = (
     "submission/TITLE_PAGE_TEMPLATE.md",
     "submission/ANONYMOUS_PEER_REVIEW_PACKAGE.md",
     "submission/submission_manifest.json",
+    "scripts/build_mee_initial_submission_source.py",
+    "scripts/audit_initial_submission_readiness.py",
     "scripts/build_mee_anonymous_manuscript.py",
     "scripts/build_anonymous_review_bundle.py",
     "scripts/validate_anonymous_review_bundle.py",
@@ -45,8 +47,8 @@ def main() -> None:
         fail("LICENSE is not the expected MIT license text")
 
     payload = json.loads(MANIFEST.read_text(encoding="utf-8"))
-    if payload.get("schema") != "tnoa-mee-submission-package-v2":
-        fail("submission manifest must be v2 after reviewer-bundle implementation")
+    if payload.get("schema") != "tnoa-mee-submission-package-v3":
+        fail("submission manifest must be v3 after initial-submission assembly implementation")
     if payload.get("target_journal") != "Methods in Ecology and Evolution":
         fail("target journal drifted")
     if payload.get("scientific_submission_blockers") != 0:
@@ -57,20 +59,34 @@ def main() -> None:
         fail("scientific source manifest drifted")
 
     anon = payload.get("anonymous_manuscript", {})
-    if anon.get("audited_body") != "manuscript/TNOA_MEE_DRAFT.md":
-        fail("anonymous manuscript must use the active MEE draft")
-    if anon.get("historical_body_retained") != "manuscript/TNOA_P1_DRAFT.md":
-        fail("historical Paper-1 draft retention is not registered")
-    if anon.get("claim_audit") != "scripts/audit_manuscript_claims.py":
-        fail("MEE claim audit drifted")
-    if anon.get("builder") != "scripts/build_mee_anonymous_manuscript.py":
-        fail("anonymous manuscript builder drifted")
-    if anon.get("numbered_abstract_1_to_4") is not True:
-        fail("numbered 1-4 abstract is not registered")
-    if anon.get("public_owner_strings_forbidden") is not True:
-        fail("anonymous manuscript must forbid public owner strings")
-    if anon.get("email_addresses_forbidden") is not True:
-        fail("anonymous manuscript must forbid email addresses")
+    expected_anon = {
+        "audited_body": "manuscript/TNOA_MEE_DRAFT.md",
+        "historical_body_retained": "manuscript/TNOA_P1_DRAFT.md",
+        "claim_audit": "scripts/audit_manuscript_claims.py",
+        "initial_submission_builder": "scripts/build_mee_initial_submission_source.py",
+        "initial_submission_output": "submission/generated/MEE_INITIAL_SUBMISSION_SOURCE.md",
+        "readiness_audit": "scripts/audit_initial_submission_readiness.py",
+        "readiness_report": "submission/generated/initial_submission_readiness.json",
+        "anonymous_builder": "scripts/build_mee_anonymous_manuscript.py",
+        "anonymous_output": "submission/generated/MEE_ANONYMOUS_MANUSCRIPT.md",
+    }
+    for key, expected in expected_anon.items():
+        if anon.get(key) != expected:
+            fail(f"anonymous manuscript field {key} drifted")
+    for key in (
+        "numbered_abstract_1_to_4",
+        "data_code_peer_review_statement",
+        "materials_and_methods_heading_normalized_in_submission_source",
+        "figure_callouts_and_captions_added_in_submission_source",
+        "internal_c_tags_removed_from_review_copy",
+        "public_owner_strings_forbidden",
+        "email_addresses_forbidden",
+        "final_formatted_word_count_must_be_rechecked",
+    ):
+        if anon.get(key) is not True:
+            fail(f"anonymous manuscript invariant {key} must remain true")
+    if anon.get("word_count_conservative_ceiling") != 8000:
+        fail("conservative Standard Article word-count ceiling drifted")
 
     peer = payload.get("peer_review_code_data", {})
     expected_peer = {
@@ -135,18 +151,28 @@ def main() -> None:
         fail("anonymous reviewer package still points to the historical figure builder")
 
     remaining = payload.get("remaining_initial_upload_tasks", [])
-    if any("prepare anonymized reviewer ZIP" in str(item) for item in remaining):
-        fail("reviewer ZIP is implemented; remaining task should be final literal scan/private upload, not initial preparation")
-    if not any("--forbid-literal" not in str(item) and "author/institution literals" in str(item) for item in remaining):
-        # Keep the actual upload task human-readable rather than embedding command syntax.
-        fail("remaining upload tasks must retain final author/institution literal scan")
+    required_remaining_phrases = (
+        "single-column double-line-spaced",
+        "final formatted word count",
+        "author names, affiliations",
+        "author/institution literals",
+        "reference-style",
+        "claim audit",
+    )
+    joined = "\n".join(str(item) for item in remaining)
+    for phrase in required_remaining_phrases:
+        if phrase not in joined:
+            fail(f"remaining initial-upload task missing concept: {phrase}")
 
     svg = (ROOT / "figures" / "fig1_tnoa_architecture.svg").read_text(encoding="utf-8")
     for token in ("World / process layer", "Evidence layer", "Decision layer", "Development safeguards"):
         if token not in svg:
             fail(f"Figure 1 semantic layer missing: {token}")
 
-    print("MEE submission package OK: scientific blockers 0, active MEE draft/figures aligned, anonymous review bundle v2 registered")
+    print(
+        "MEE submission package OK: scientific blockers 0, initial-submission assembler/readiness audit registered, "
+        "active MEE draft/figures aligned, anonymous review bundle v2 registered"
+    )
 
 
 if __name__ == "__main__":
