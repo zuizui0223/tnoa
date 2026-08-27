@@ -10,15 +10,51 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout TNOA paper package
+        uses: actions/checkout@v4
+
+      - name: Checkout pinned Source A target observer
+        uses: actions/checkout@v4
+        with:
+          repository: zuizui0223/pollipi
+          ref: f3b266897f3e9139e6c3fe9ce6b645e25371e092
+          path: _review_source_a
+
+      - name: Checkout pinned Source B closed-world implementation
+        uses: actions/checkout@v4
+        with:
+          repository: zuizui0223/insepi
+          ref: 1664a190cec47142e8d14cc5157302a7af18d019
+          path: _review_source_b
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+
       - name: Validate TNOA paper manifest
         run: python scripts/validate_paper_manifest.py
+
       - name: Audit manuscript claim boundaries
         run: python scripts/audit_manuscript_claims.py
+
       - name: Validate MEE submission package
         run: python scripts/validate_mee_submission_package.py
+
       - name: Build anonymous MEE manuscript source
         run: python scripts/build_mee_anonymous_manuscript.py
+
+      - name: Build and validate anonymous reviewer bundle
+        run: >-
+          python scripts/build_anonymous_review_bundle.py
+          --source-a-root _review_source_a
+          --source-b-root _review_source_b
+          --output-dir submission/generated/review_bundle
+
+      - name: Upload validated anonymous reviewer bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: tnoa-anonymous-review-bundle
+          path: |
+            submission/generated/review_bundle/TNOA_P1_ANONYMOUS_REVIEW_BUNDLE.zip
+            submission/generated/review_bundle/TNOA_P1_ANONYMOUS_REVIEW_BUNDLE.receipt.json
+          if-no-files-found: error
