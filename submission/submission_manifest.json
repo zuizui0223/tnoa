@@ -74,7 +74,7 @@
     "validation_document": "docs/MEE_FIGURE_VALIDATION.md",
     "quantitative_figure_data": "derived/mee_figure_data.json",
     "quantitative_figure_validator": "scripts/validate_mee_figure_data.py",
-    "panel_builder": "scripts/build_mee_figures.py",
+    "quantitative_figure_builder": "scripts/build_mee_figures.py",
     "composite_builder": "scripts/build_mee_composite_figures.py",
     "quantitative_figure_requirements": "requirements-figures.txt",
     "panel_package_status": "source-guarded, validated and CI smoke-built",
