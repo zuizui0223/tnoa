@@ -6,7 +6,8 @@ This checklist translates the current MEE author guidance into concrete TNOA upl
 
 - [x] Working paper is a Standard Article-scale methods manuscript rather than an Applications/Practical Tools note.
 - [x] Scientific scope is closed-world methods; V15 field validation remains external.
-- [x] Full working draft exists at `manuscript/TNOA_P1_DRAFT.md`.
+- [x] Active MEE working draft exists at `manuscript/TNOA_MEE_DRAFT.md`.
+- [x] The earlier `manuscript/TNOA_P1_DRAFT.md` remains unchanged as the historical draft.
 - [x] Numbered 1–4 abstract text is prepared in `submission/MEE_FRONT_MATTER.md`.
 - [x] Keywords are prepared.
 - [x] Data/Code for peer review statement is prepared.
@@ -39,7 +40,7 @@ Complete only in the separate title-page file:
 - [x] Open-source `LICENSE` is present in the TNOA repository.
 - [x] Locked scientific results are pinned by execution commit, artifact digest and result hash in `paper_manifest.json`.
 - [x] Claim-to-artifact traceability exists.
-- [x] Figure-generation code and source guards exist.
+- [x] MEE-priority figure data, validation, generation code and source guards exist.
 - [x] Reproduction entry point exists in `reproduce/README.md`.
 - [ ] Prepare anonymized reviewer ZIP/private archive containing the manuscript-facing code, manifest, required locked JSON artifacts or reviewer-accessible equivalents, README and license.
 - [ ] Verify the review package contains every script/file needed to reproduce the paper figures and manuscript inferences that are claimed reproducible from archived artifacts.
@@ -47,9 +48,10 @@ Complete only in the separate title-page file:
 
 ## Figures
 
-- [x] Quantitative Figures 2–5 have a source-guarded builder and documented visual audit.
+- [x] Quantitative Figures 2–4 and Supplementary Figure S2 have pinned data, a fail-closed validator and a CI smoke-tested builder.
 - [x] Conceptual Figure 1 source is stored as `figures/fig1_tnoa_architecture.svg`.
 - [ ] Final editorial pass on Figure 1 typography only; do not alter its scientific semantics without re-audit.
+- [ ] Visually inspect and assemble the final MEE multi-panel layouts without changing plotted data geometry.
 - [ ] Generate final submission-resolution raster/vector files from authoritative sources.
 
 ## Scientific claim gate

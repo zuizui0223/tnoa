@@ -8,6 +8,7 @@ From the repository root:
 
 ```bash
 python scripts/validate_paper_manifest.py
+python scripts/validate_mee_figure_data.py
 python scripts/audit_manuscript_claims.py
 python scripts/validate_mee_submission_package.py
 ```
@@ -56,7 +57,12 @@ The reviewer package should be private/reviewer-only during double-anonymous rev
 ## 6. Figures
 
 - Figure 1 conceptual source: `figures/fig1_tnoa_architecture.svg`.
-- Quantitative Figures 2–5: generate from the source-guarded builder described in `docs/FIGURE_PLAN.md`.
+- Quantitative Figures 2–4 and Supplementary Figure S2: validate and generate from the pinned MEE figure data:
+
+```bash
+python scripts/validate_mee_figure_data.py
+python scripts/build_mee_figures.py
+```
 
 Do not manually alter quantitative data geometry after generation.
 

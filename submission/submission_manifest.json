@@ -12,7 +12,9 @@
   },
   "anonymous_manuscript": {
     "front_matter": "submission/MEE_FRONT_MATTER.md",
-    "audited_body": "manuscript/TNOA_P1_DRAFT.md",
+    "audited_body": "manuscript/TNOA_MEE_DRAFT.md",
+    "historical_body_retained": "manuscript/TNOA_P1_DRAFT.md",
+    "claim_audit": "scripts/audit_manuscript_claims.py",
     "builder": "scripts/build_mee_anonymous_manuscript.py",
     "expected_output": "submission/generated/MEE_ANONYMOUS_MANUSCRIPT.md",
     "numbered_abstract_1_to_4": true,
@@ -34,8 +36,13 @@
   },
   "figures": {
     "conceptual_figure_1": "figures/fig1_tnoa_architecture.svg",
-    "quantitative_figure_builder": "scripts/build_paper_figures.py",
-    "quantitative_package_status": "source-guarded and visually audited"
+    "plan": "docs/FIGURE_PLAN.md",
+    "validation_document": "docs/MEE_FIGURE_VALIDATION.md",
+    "quantitative_figure_data": "derived/mee_figure_data.json",
+    "quantitative_figure_validator": "scripts/validate_mee_figure_data.py",
+    "quantitative_figure_builder": "scripts/build_mee_figures.py",
+    "quantitative_figure_requirements": "requirements-figures.txt",
+    "quantitative_package_status": "source-guarded, validated and CI smoke-built; final submission layout remains editorial"
   },
   "submission_checklist": "submission/MEE_SUBMISSION_CHECKLIST.md",
   "remaining_initial_upload_tasks": [

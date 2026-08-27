@@ -20,6 +20,15 @@ jobs:
         run: python scripts/validate_mee_synthetic_consequences.py
       - name: Validate structural axis audit
         run: python scripts/validate_structural_axis_audit.py
+      - name: Validate MEE figure data
+        run: python scripts/validate_mee_figure_data.py
+      - name: Smoke-build MEE figure panels
+        run: |
+          python -m pip install -r requirements-figures.txt
+          python scripts/build_mee_figures.py --output-dir /tmp/tnoa_mee_figures
+          test "$(find /tmp/tnoa_mee_figures -maxdepth 1 -name '*.png' | wc -l)" -eq 8
+          test "$(find /tmp/tnoa_mee_figures -maxdepth 1 -name '*.svg' | wc -l)" -eq 8
+          test -s /tmp/tnoa_mee_figures/figure_provenance.json
       - name: Test minimal reusable TNOA API
         run: python -m unittest discover -s tests -p 'test_*.py'
       - name: Smoke-test CSV CLI
