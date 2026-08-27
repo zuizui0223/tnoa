@@ -5,11 +5,7 @@
   "journal_guidance_checked_date": "2026-08-27",
   "scientific_source_manifest": "paper_manifest.json",
   "scientific_submission_blockers": 0,
-  "open_source_license": {
-    "path": "LICENSE",
-    "license": "MIT",
-    "status": "present"
-  },
+  "open_source_license": {"path": "LICENSE", "license": "MIT", "status": "present"},
   "anonymous_manuscript": {
     "front_matter": "submission/MEE_FRONT_MATTER.md",
     "audited_body": "manuscript/TNOA_MEE_DRAFT.md",
@@ -88,7 +84,7 @@
     "complete author names, affiliations, corresponding-author details, CRediT contributions and acknowledgements on the separate title page",
     "complete funding and competing-interest statements on the separate title page",
     "build the validated anonymous reviewer ZIP with final author/institution literals supplied to the identity scanner and upload it to the private reviewer-only location",
-    "perform final visual inspection of the code-assembled multi-panel figures and final reference style",
+    "perform final visual inspection of the code-assembled multi-panel figures and final reference-style rendering",
     "rerun manuscript claim audit after any material formatting edits"
   ],
   "scientific_claim_boundary_unchanged": true
