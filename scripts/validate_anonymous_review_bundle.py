@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Validate a built anonymous TNOA reviewer ZIP.
 
-The validator checks deterministic package structure, file hashes recorded in the
-internal bundle manifest, and a narrow identity-leak policy. Scientific project
-names may remain where method semantics require them, but public owner identifiers,
-email addresses and GitHub URLs are forbidden in the reviewer archive.
+The validator checks package structure, file hashes recorded in the internal bundle
+manifest, and identity leaks. Its own source file is excluded from content-token
+scanning because it necessarily contains the literal detection patterns; all other
+reviewer payload text is scanned.
 """
 from __future__ import annotations
 
@@ -21,6 +21,7 @@ FORBIDDEN_BYTES = (
     b"github.com/",
     b"raw.githubusercontent.com/",
 )
+SELF_PATH = "scripts/validate_anonymous_review_bundle.py"
 TEXT_SUFFIXES = {
     ".md", ".txt", ".py", ".json", ".bib", ".svg", ".yml", ".yaml", ".toml", ".csv"
 }
@@ -35,6 +36,7 @@ REQUIRED = {
     "figures/fig1_tnoa_architecture.svg",
     "scripts/build_paper_figures.py",
     "scripts/audit_manuscript_claims.py",
+    SELF_PATH,
     "source_A/target_evidence.py",
     "source_B/benchmarks/v14b_frozen_ternary_phase_figure_data.json",
     "source_B/benchmarks/v14b_frozen_ternary_phase_surface_result.json",
@@ -70,20 +72,19 @@ def main() -> None:
         for name, expected in recorded.items():
             if name not in names:
                 fail(f"manifest-recorded file missing from ZIP: {name}")
-            raw = zf.read(name)
-            actual = hashlib.sha256(raw).hexdigest()
+            actual = hashlib.sha256(zf.read(name)).hexdigest()
             if actual != expected:
                 fail(f"file SHA-256 mismatch for {name}")
 
-        # No unregistered payload files apart from the manifest itself.
         allowed = set(recorded) | {"bundle_manifest.json"}
         extras = names - allowed
         if extras:
             fail(f"unregistered files in ZIP: {sorted(extras)}")
 
         for name in sorted(names):
-            suffix = PurePosixPath(name).suffix.lower()
-            if suffix not in TEXT_SUFFIXES:
+            if name == SELF_PATH:
+                continue
+            if PurePosixPath(name).suffix.lower() not in TEXT_SUFFIXES:
                 continue
             raw = zf.read(name)
             lower = raw.lower()
