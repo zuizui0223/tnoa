@@ -21,7 +21,7 @@ The contribution is not the sequence of software components used during developm
 
 - A changed nuisance representation retained ranking while an inherited raw threshold lost its registered operating meaning.
 - A prespecified family-wise false-attribution criterion subsequently achieved the declared held-out control in the frozen synthetic benchmark.
-- Because binary is a deterministic coarsening of B/T/N/U, the richer representation is structurally guaranteed not to yield a wider compatible target-prevalence set. The empirical result is the magnitude: across 3,003 known-truth latent-regime compositions, median compatible width was about `0.030` with B/T/N/U retained versus `0.266` after binary coarsening.
+- Across 3,003 known-truth latent-regime compositions, binary is a deterministic coarsening of B/T/N/U, so the richer representation is structurally guaranteed not to yield a wider compatible target-prevalence set. The empirical result is the magnitude: median compatible width was about `0.030` with B/T/N/U retained versus `0.266` after binary coarsening.
 - A deliberately naive binary-prevalence comparator was negatively biased in 99.63% of the registered compositions (median about `-0.238`), but this is secondary to the identification-width result and is not a field bias estimate.
 - A preregistered matched-timescale ambiguity-ridge prediction failed and is reported as a negative result rather than rescued post hoc.
 - The repository contains a minimal reusable Python API/CLI and a fail-closed field-translation template showing how another sensing system can reach the calibrated support flags consumed by the decision layer.
