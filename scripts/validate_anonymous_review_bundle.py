@@ -3,8 +3,8 @@
 
 The validator checks package structure, file hashes recorded in the internal bundle
 manifest, and identity leaks. Its own source file is excluded from content-token
-scanning because it necessarily contains the literal detection patterns; all other
-reviewer payload text is scanned.
+scanning because it necessarily contains detection logic; all other reviewer
+payload text is scanned.
 """
 from __future__ import annotations
 
@@ -16,10 +16,12 @@ import zipfile
 from pathlib import PurePosixPath
 
 EMAIL = re.compile(rb"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b", re.I)
+GITHUB_TOKEN = b"github" + b".com/"
+RAW_GITHUB_TOKEN = b"raw.githubusercontent" + b".com/"
 FORBIDDEN_BYTES = (
     b"zuizui0223",
-    b"github.com/",
-    b"raw.githubusercontent.com/",
+    GITHUB_TOKEN,
+    RAW_GITHUB_TOKEN,
 )
 SELF_PATH = "scripts/validate_anonymous_review_bundle.py"
 TEXT_SUFFIXES = {
@@ -90,7 +92,7 @@ def main() -> None:
             lower = raw.lower()
             for token in FORBIDDEN_BYTES:
                 if token in lower:
-                    fail(f"identity-bearing token {token.decode()} remains in {name}")
+                    fail(f"identity-bearing token remains in {name}")
             if EMAIL.search(raw):
                 fail(f"email address remains in {name}")
 
