@@ -43,7 +43,7 @@ Conventional fusion generally aims to combine channels into a better estimate of
 ## Objection 5 — “U is just uncertainty quantification.”
 
 ### Required response
-U is not a scalar uncertainty estimate. It is a decision state produced by missing or competing evidential structure. TNOA distinguishes no-supported-evidence from overlap/attribution U, and V14c forbids calling all no-support cases information absence.
+U is not a scalar uncertainty estimate. It is a decision state produced by missing or competing evidential structure. TNOA distinguishes no-supported-evidence from overlap/attribution U, and the semantic clarification forbids calling all no-support cases information absence.
 
 ## Objection 6 — “The method is flower-visitor specific.”
 
@@ -56,16 +56,16 @@ The locked synthetic generator is visit-oriented, but the ontology is process-le
 MEE explicitly notes that workflows linking existing methods are generally not considered new methods.
 
 ### Required response
-Center experimentally tested consequences rather than the repository workflow:
+Center experimentally tested consequences rather than repository plumbing:
 
 - non-complementary positive T/N hypotheses;
 - separate O and optional A-;
 - process-preserving B/T/N/U observation map;
-- false-certainty risk contract;
+- prespecified false-attribution/error criterion;
 - frozen-generation contradiction protocol;
 - downstream information loss when B/T/N/U is coarsened before ecological estimation.
 
-PolliPi and InsePi are provenance/implementation sources, not the novelty claim by themselves.
+Upstream source repositories are provenance and implementation sources, not the novelty claim by themselves.
 
 ## Objection 8 — “The strong Pi3 boundary is tautological because direct evidence is defined structurally.”
 
@@ -100,10 +100,10 @@ The synthetic prevalence analysis is the main answer. Across the 3,003 registere
 ## Objection 11 — “Your nuisance result is just threshold tuning.”
 
 ### Required response
-This is the strongest development result. A redefined nuisance representation retained ranking while the inherited raw threshold failed its coverage rule. The repair was not post-hoc threshold search on positive test cases: a prefrozen family-wise false-certainty budget was calibrated on negative families and then evaluated held-out. A pooled quantile had itself failed family-wise control before family-specific calibration passed.
+This is the strongest development result. A redefined nuisance representation retained ranking while the inherited raw threshold failed its coverage rule. The repair was not post-hoc threshold search on positive test cases: a prefrozen family-wise false-attribution criterion was calibrated on negative families and then evaluated held-out. A pooled quantile had itself failed family-wise control before family-specific calibration passed.
 
 ### Evidence the manuscript must show
-Promote the PR #43 failure -> PR #44 diagnosis -> PR #46 risk-contract freeze sequence to a primary result, with the failure retained rather than rewritten away.
+Promote the failure → diagnosis → pooled-calibration failure → family-wise calibration pass sequence to a primary result, with the failure retained rather than rewritten away.
 
 ## Objection 12 — “The method was over-developed on the benchmark.”
 
@@ -164,13 +164,33 @@ Keep C13 only as a transparent comparator diagnostic. The downstream prevalence-
 ## Objection 16 — “Where is the method readers can actually run?”
 
 ### Required response
-TNOA now includes a minimal reusable Python API and CSV CLI. It accepts **already-calibrated positive-support flags**, maps them to B/T/N/U with reason provenance, and summarizes U rates by user-supplied ecological covariates. It deliberately does not ship universal raw-score thresholds.
+TNOA includes a minimal reusable Python API and CSV CLI. It accepts **already-calibrated positive-support flags**, maps them to B/T/N/U with reason provenance, and summarizes U rates by user-supplied ecological covariates. It deliberately does not ship universal raw-score thresholds.
 
 ### Evidence the manuscript must show
-The code/data statement and repository README should point to `tnoa/`, `docs/REUSABLE_IMPLEMENTATION.md`, `examples/minimal_evidence.csv`, and tests. The Methods should separate domain-specific support calibration from the reusable process-preserving decision layer.
+The code/data statement and repository documentation should point to `tnoa/`, `docs/REUSABLE_IMPLEMENTATION.md`, `examples/minimal_evidence.csv`, and tests. The Methods should separate domain-specific support calibration from the reusable process-preserving decision layer.
+
+## Objection 17 — “The API starts after calibration. How does a real ecologist get to those support flags without circularity?”
+
+### Why this objection matters
+A reusable decision function is not operationally useful if the paper leaves the most dangerous step—turning raw sensor outputs into T/N/O/C support—implicit. Copying synthetic or source-device thresholds would contradict the paper's own portability result.
+
+### Required response
+Provide a prospective **fail-closed field translation pathway**, not field-validation claims:
+
+1. keep an interpretable primary scientific record;
+2. log raw target, nuisance, observability and coupled-response diagnostics separately;
+3. before calibration, retain those windows as unresolved (`field_calibration_pending`) and leave TNOA acquisition actions inactive;
+4. establish independent biological-event, coupled-response, nuisance and observability truth, using a separate reference channel when the primary stream cannot resolve hidden presence/absence;
+5. blind annotators to algorithm scores/states;
+6. calibrate on recording-day × scene/individual × block development groups against declared error criteria;
+7. freeze the calibration manifest before held-out days/scenes are scored;
+8. enable reason-specific adaptive acquisition only after held-out observation semantics are validated.
+
+### Evidence the manuscript must show
+Methods must include the sequence at a concise level and Discussion must show camera-trap/acoustic/interaction examples. `docs/FIELD_TRANSLATION_PATHWAY.md` should provide the implementation detail. The manuscript must explicitly state that this is guidance, not Paper-1 empirical field evidence.
 
 ## Submission gate implied by this matrix
 
-Paper 1 should not be submitted to MEE until each objection above has a direct manuscript location, figure, table, code example or supplement rather than being answerable only from repository history.
+Each objection above now has a direct manuscript location, figure, quantitative audit, runnable code path or implementation document. The previous MEE-specific blockers—downstream ecological consequence, weighting sensitivity, structural-axis audit, reusable implementation and ecological-statistical vocabulary—are resolved in the current package.
 
-The downstream estimand, weighting analysis, structural-axis audit and minimal reusable implementation are now implemented. The remaining MEE-specific work is the ecological-statistical vocabulary rewrite and integration of the revised result hierarchy into the final manuscript/figure package.
+Remaining pre-upload work is production/user metadata rather than a missing scientific answer: validate the final formatted DOCX after any text change, complete author/title-page metadata, perform final human figure/reference rendering inspection, rebuild the final reviewer ZIP with author/institution literals in the identity scanner, and rerun the claim audit after material revision.
