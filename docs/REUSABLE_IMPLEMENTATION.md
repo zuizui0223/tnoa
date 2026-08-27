@@ -63,6 +63,20 @@ The annotated CSV receives:
 
 The summary JSON returns B/T/N/U rates and reason-resolved U rates by the requested ecological covariates.
 
+## Field translation begins before this API
+
+A real sensor cannot jump directly from raw detector outputs to the calibrated flags consumed above. The field-facing implementation should therefore be staged and fail closed:
+
+1. preserve an interpretable primary scientific record;
+2. log raw T/N/O/C diagnostics separately while calibrated support remains unavailable;
+3. retain those pre-calibration windows as `U / field_calibration_pending` and do not let TNOA alter capture behaviour;
+4. establish independent biological-event, coupled-response, nuisance and observability truth without exposing algorithm scores to annotators;
+5. calibrate on grouped development data against declared error criteria;
+6. freeze the calibration manifest before held-out days/scenes are scored;
+7. only after held-out validation allow reason-specific TNOA states to influence adaptive acquisition.
+
+The complete sensor-agnostic sequence, including camera-trap, acoustic and interaction-camera mappings, is documented in `docs/FIELD_TRANSLATION_PATHWAY.md`.
+
 ## What this implementation does not do
 
 It does not:
