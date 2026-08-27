@@ -12,7 +12,7 @@
 
 ## Keywords
 
-ecological sensing; observation model; imperfect detection; measurement error; partial identification; abstention; sensor calibration; automated monitoring
+abstention; automated monitoring; ecological sensing; imperfect detection; measurement error; observation model; partial identification; sensor calibration
 
 ## Data/Code for peer review statement
 
