@@ -43,7 +43,14 @@
   "title_page": {
     "template": "submission/TITLE_PAGE_TEMPLATE.md",
     "separate_upload_required": true,
-    "author_metadata_complete": false
+    "manuscript_title_complete": true,
+    "data_availability_initial_wording_complete": true,
+    "data_sources_statement_complete": true,
+    "scope_ethics_statement_complete": true,
+    "author_metadata_complete": false,
+    "author_contributions_complete": false,
+    "acknowledgements_complete": false,
+    "funding_and_competing_interests_complete": false
   },
   "peer_review_code_data": {
     "instructions": "submission/ANONYMOUS_PEER_REVIEW_PACKAGE.md",
@@ -75,7 +82,8 @@
   "remaining_initial_upload_tasks": [
     "convert the assembled source to a single-column double-line-spaced upload document with continuous page and line numbering",
     "recheck final formatted word count using the publisher-facing document",
-    "complete author names, affiliations, contributions, acknowledgements and submission metadata on separate title page",
+    "complete author names, affiliations, corresponding-author details, CRediT contributions and acknowledgements on the separate title page",
+    "complete funding and competing-interest statements on the separate title page",
     "build the validated anonymous reviewer ZIP with final author/institution literals supplied to the identity scanner and upload it to the private reviewer-only location",
     "perform final visual reference-style and multi-panel-figure inspection",
     "rerun manuscript claim audit after any material formatting edits"
