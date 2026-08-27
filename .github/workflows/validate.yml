@@ -18,6 +18,15 @@ jobs:
         run: python scripts/validate_paper_manifest.py
       - name: Validate post-freeze MEE synthetic consequence
         run: python scripts/validate_mee_synthetic_consequences.py
+      - name: Validate structural axis audit
+        run: python scripts/validate_structural_axis_audit.py
+      - name: Test minimal reusable TNOA API
+        run: python -m unittest discover -s tests -p 'test_*.py'
+      - name: Smoke-test CSV CLI
+        run: |
+          python -m tnoa.cli examples/minimal_evidence.csv /tmp/tnoa_annotated.csv --summary /tmp/tnoa_summary.json --group-by site,condition
+          test -s /tmp/tnoa_annotated.csv
+          test -s /tmp/tnoa_summary.json
       - name: Audit manuscript claim boundaries
         run: python scripts/audit_manuscript_claims.py
       - name: Validate MEE submission package
