@@ -1,19 +1,12 @@
 #!/usr/bin/env python3
-"""Fail-closed claim scan for the instantiated TNOA Paper-1 draft.
-
-The scanner blocks known priority overclaims and requires internal C-ID provenance
-for every registered numerical claim occurrence. A claim tag may sit in the same
-Markdown paragraph or in an immediately adjacent paragraph that begins with a C-ID
-HTML comment; this supports display-equation blocks without weakening provenance
-requirements.
-"""
+"""Fail-closed claim scan for the MEE-focused TNOA draft."""
 from __future__ import annotations
 
 import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DRAFT = ROOT / "manuscript" / "TNOA_P1_DRAFT.md"
+DRAFT = ROOT / "manuscript" / "TNOA_MEE_DRAFT.md"
 
 FORBIDDEN_PHRASES = (
     "tnoa is the first",
@@ -28,29 +21,35 @@ FORBIDDEN_PHRASES = (
     "universal ecological snr threshold",
     "field-validated accuracy",
     "field validated accuracy",
+    "six-dimensional ecological complexity",
+    "tnoa achieves zero false positives",
 )
 
 NUMERIC_CLAIM_REQUIREMENTS = {
     "30,625": "C8",
     "5,880,000": "C8",
-    "0.2302": "C9",
-    "0.4287": "C9",
-    "0.0877": "C9",
-    "0.2533": "C9",
+    "0.55": "C6",
+    "0.04444": "C7",
+    "3,003": "D1",
+    "99.63%": "D1",
+    "-0.238": "D1",
+    "0.030": "D1",
+    "0.266": "D1",
+    "84.45%": "D1",
     "0.02675": "C10",
     "0.22658": "C10",
+    "0.6431": "D2",
+    "0.0214": "D2",
     "0.3569": "C13",
-    "35.69%": "C13",
-    "0.04444": "C7",
-    "0.0444": "C7",
+    "0.196125": "C13",
 }
 
 QUALIFICATION_CHECKS = (
-    (r"Pi3=0|\\Pi_3=0", "C12", "Pi3 structural result"),
-    (r"Pi2\s*~=\s*1|Pi2≈1|\\Pi_2\\approx1|\\Pi_2=1", "C2", "Pi2 ridge result"),
+    (r"Pi3=0|\\Pi_3=0|`Pi3=0`", "C12", "Pi3 structural result"),
+    (r"Pi2\s*~=\s*1|Pi2≈1|\\Pi_2\\approx1|`Pi2=1`", "C2", "Pi2 ridge result"),
 )
 
-COMMENT_PREFIX = re.compile(r"^<!--\s*(C\d+(?:\s+C\d+)*)\s*-->")
+COMMENT_PREFIX = re.compile(r"^<!--\s*([CD]\d+(?:\s+[CD]\d+)*)\s*-->")
 
 
 def fail(message: str) -> None:
@@ -75,7 +74,7 @@ def has_claim_tag(ps: list[str], index: int, claim_id: str) -> bool:
 
 def main() -> None:
     if not DRAFT.is_file():
-        fail(f"missing manuscript draft: {DRAFT.relative_to(ROOT)}")
+        fail(f"missing MEE manuscript: {DRAFT.relative_to(ROOT)}")
 
     text = DRAFT.read_text(encoding="utf-8")
     lower = text.lower()
@@ -85,36 +84,37 @@ def main() -> None:
             fail(f"forbidden priority/claim phrase present: {phrase!r}")
 
     ps = paragraphs(text)
-
     for token, claim_id in NUMERIC_CLAIM_REQUIREMENTS.items():
-        matched_indices = [i for i, p in enumerate(ps) if token in p]
-        if not matched_indices:
+        matched = [i for i, paragraph in enumerate(ps) if token in paragraph]
+        if not matched:
             fail(f"expected central numerical claim token missing: {token}")
-        for index in matched_indices:
+        for index in matched:
             if not has_claim_tag(ps, index, claim_id):
-                fail(
-                    f"numerical claim {token} lacks {claim_id} traceability in its paragraph or adjacent leading tag"
-                )
+                fail(f"numerical claim {token} lacks {claim_id} traceability")
 
     for pattern, claim_id, label in QUALIFICATION_CHECKS:
         for index, paragraph in enumerate(ps):
             if re.search(pattern, paragraph):
                 empirical = any(
                     word in paragraph.lower()
-                    for word in ("result", "rate", "failed", "not supported", "surface", "contrast")
+                    for word in ("result", "rate", "failed", "not supported", "surface", "contrast", "vector")
                 )
                 if empirical and not has_claim_tag(ps, index, claim_id):
-                    fail(f"{label} lacks {claim_id} traceability in an empirical paragraph")
+                    fail(f"{label} lacks {claim_id} traceability")
 
-    if "not a universal ecological frequency" not in lower and "not a universal" not in lower:
-        fail("draft must retain an explicit non-universality qualification")
-    if "not a field" not in lower and "field accuracy" not in lower:
-        fail("draft must retain the field-validation boundary")
-    if "does not claim" not in lower:
-        fail("draft must explicitly disclaim component-level novelty")
+    required_phrases = (
+        "not a field bias estimate",
+        "not intrinsic-dimension estimates",
+        "not a performance claim",
+        "does not claim priority",
+        "design coverage and provenance",
+    )
+    for phrase in required_phrases:
+        if phrase not in lower:
+            fail(f"required qualification missing: {phrase!r}")
 
     print(
-        "TNOA manuscript claim scan OK: "
+        "TNOA MEE manuscript claim scan OK: "
         f"{len(ps)} paragraphs, {len(NUMERIC_CLAIM_REQUIREMENTS)} numeric provenance guards"
     )
 
