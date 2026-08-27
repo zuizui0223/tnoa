@@ -41,7 +41,7 @@ Before final submission packaging:
 
 ## Level 3 — reproduce the MEE post-freeze derivation
 
-The new ecological-estimand and weighting audit is a deterministic transformation of the immutable full V14b surface, not a new observer generation.
+The ecological-estimand and weighting audit is a deterministic transformation of the immutable full V14b surface, not a new observer generation.
 
 Install the analysis dependencies:
 
@@ -96,4 +96,6 @@ The eventual submission tag should contain:
 
 ## Current status
 
-The frozen scientific source stack, quantitative figure builder, claim guards and post-freeze MEE ecological-estimand/weighting analysis are implemented. Remaining MEE-specific work is to package a minimal reusable user-facing implementation, translate manuscript terminology toward ecological observation-model language, and integrate the new estimand result into the main figure/manuscript order.
+The MEE-focused scientific and reproducibility package is assembled and CI-validated. Implemented components include the frozen science/provenance stack, post-freeze downstream-estimand and weighting analyses, structural-axis audit, reusable Python API/CLI, sensor-agnostic fail-closed field-translation pathway, code-assembled quantitative/composite figures, anonymous initial-submission source, validated anonymous DOCX, and deterministic double-anonymous reviewer bundle. The active framing distinguishes deterministic coarsening guarantees from the empirical magnitude of information loss, and `paper_manifest.json` records zero remaining scientific blockers.
+
+Remaining pre-upload work is intentionally non-scientific and human-facing: complete author/title-page metadata, visually inspect the generated DOCX/figures/references, recheck the publisher-facing word count, rebuild the final reviewer ZIP with all author/institution literals supplied to the identity scanner, and rerun claim/package audits after any final text-changing edit.
