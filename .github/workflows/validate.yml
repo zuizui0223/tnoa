@@ -30,6 +30,12 @@ jobs:
           test "$(find /tmp/tnoa_mee_figures -maxdepth 1 -name '*.png' | wc -l)" -eq 8
           test "$(find /tmp/tnoa_mee_figures -maxdepth 1 -name '*.svg' | wc -l)" -eq 8
           test -s /tmp/tnoa_mee_figures/figure_provenance.json
+      - name: Build final MEE multi-panel figures
+        run: |
+          python scripts/build_mee_composite_figures.py --output-dir /tmp/tnoa_mee_composite
+          test "$(find /tmp/tnoa_mee_composite -maxdepth 1 -name '*.png' | wc -l)" -eq 4
+          test "$(find /tmp/tnoa_mee_composite -maxdepth 1 -name '*.svg' | wc -l)" -eq 4
+          test -s /tmp/tnoa_mee_composite/composite_figure_provenance.json
       - name: Test minimal reusable TNOA API
         run: python -m unittest discover -s tests -p 'test_*.py'
       - name: Smoke-test CSV CLI
@@ -85,4 +91,10 @@ jobs:
           path: |
             submission/generated/MEE_INITIAL_SUBMISSION_SOURCE.md
             submission/generated/initial_submission_readiness.json
+          retention-days: 7
+      - name: Upload final MEE multi-panel figure validation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tnoa-mee-composite-figures-validation
+          path: /tmp/tnoa_mee_composite/
           retention-days: 7
