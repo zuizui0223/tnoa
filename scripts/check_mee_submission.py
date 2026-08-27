@@ -18,6 +18,8 @@ REQUIRED = (
     "submission/MEE_TITLE_PAGE_TEMPLATE.md",
     "submission/MEE_ABSTRACT_AND_STATEMENTS.md",
     "submission/MEE_COVER_LETTER_DRAFT.md",
+    "submission/MEE_STATUS.md",
+    "scripts/assemble_mee_main.py",
     "figures/fig1_tnoa_architecture.svg",
     "docs/FINAL_PRIOR_ART_AUDIT.md",
     "docs/FINAL_CLAIM_AUDIT.md",
@@ -72,6 +74,12 @@ def main() -> None:
     for token in ("Process world", "Evidence channels", "Decision contract", "Forbidden shortcuts"):
         if token not in svg:
             fail(f"conceptual Figure 1 lacks required concept: {token}")
+
+    status = (ROOT / "submission/MEE_STATUS.md").read_text(encoding="utf-8")
+    if "scientific package complete" not in status:
+        fail("MEE status does not preserve the current scientific-readiness boundary")
+    if "author names and final author order" not in status:
+        fail("MEE status must keep author metadata as an explicit unresolved upload item")
 
     body_words = rough_word_count(manuscript)
     front_words = rough_word_count(front)
