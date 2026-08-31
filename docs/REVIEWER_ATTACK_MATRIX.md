@@ -48,7 +48,7 @@ This is the pre-submission attack surface for the MEE manuscript. It is not manu
 
 **Agree.** A deterministic coarsening is a garbling and cannot be more informative [@blackwell1953comparison].
 
-**Required manuscript response:** never-wider is structural, not performance. The empirical result is the **magnitude** of information loss: target-prevalence median width `0.02992` versus `0.26563` for generic B/T/N/U versus binary, and `0.00408` when U reason is retained in the post-freeze D3 ablation.
+**Required manuscript response:** never-wider is structural, not performance. The empirical result is the **magnitude and conditions** of information loss: target-prevalence median width `0.02992` versus `0.26563` for generic B/T/N/U versus binary, `0.00408` when U reason is retained, plus the D4 prevalence/weight sensitivity.
 
 ## 9. “Identification width is just partial identification.”
 
@@ -68,7 +68,7 @@ This is the pre-submission attack surface for the MEE manuscript. It is not manu
 
 **Required response:** representation changed, ranking survived, inherited `0.55` lost its operating meaning, pooled calibration failed, and the predeclared family-conditional calibration passed held-out. No positive held-out world was searched to choose the final threshold.
 
-**Transferable object:** the declared decision error semantics, not the raw threshold value. The broader calibration literature supports caution about score semantics under model/data change [@guo2017calibration; @ovadia2019shift].
+**Transferable object:** the declared decision error semantics, not the raw threshold value.
 
 ## 12. “D3 is post hoc.”
 
@@ -88,13 +88,15 @@ Reason-resolved U was never wider than generic U in all 34 registered slices for
 
 **Boundary:** this does not prove that arbitrary extra categories help. The added fields must have defensible measurement semantics.
 
-## 15. “The U rates depend on arbitrary phase-space weighting.”
+## 15. “The U rates and estimand results depend on arbitrary weighting.”
 
-**Agree.** Pooled rates are design-space summaries, not ecological prevalences.
+**Agree.** Pooled rates and uniform simplex summaries are design-space summaries, not ecological prevalences.
 
-**Current robust result:** overlap/attribution remains a majority of U through the tested density-ratio class to `kappa=10`; the exact Pi1 total-U shape and small Pi2 centre contrast are not robust enough for universal claims.
+**Phase-space result:** overlap/attribution remains a majority of U through the tested row-level density-ratio class to `kappa=10`; the exact Pi1 total-U shape and small Pi2 centre contrast are not robust enough for universal claims.
 
-**D3 boundary:** its 34 registered-axis slices are slice sensitivity, not arbitrary-weight robustness.
+**Composition result:** D4 directly reweights the 3,003 simplex compositions. At `kappa=10`, the worst-case weighted-mean fraction of binary width removed by B/T/N/U remains at least `57.5%`, and the additional reason-resolved-U gain remains at least `40.0%` of generic-U width.
+
+**Boundary:** neither bounded class is an ecological prior or arbitrary-distribution robustness guarantee.
 
 ## 16. “The strong Pi3 boundary is built in.”
 
@@ -116,10 +118,9 @@ Reason-resolved U was never wider than generic U in all 34 registered slices for
 
 **Required response:** do not rely on repository plumbing or a conjunction-of-components priority claim. Lead with tested consequences:
 
-- representation-change threshold failure and corrected family-conditional decision semantics;
-- D1 empirical information-loss magnitude;
-- preregistered Pi2 negative result;
-- D3 post-freeze progressive vocabulary ablation showing additional information in U reason provenance.
+- C6/C7 representation-change threshold failure and corrected family-conditional decision semantics;
+- D1/D3/D4 empirical information-loss magnitude and its prevalence/weight conditions;
+- preregistered Pi2 negative result.
 
 ## 21. “Where is the method readers can actually run?”
 
@@ -129,8 +130,24 @@ The repository provides a minimal Python API/CLI that consumes already-calibrate
 
 Use the fail-closed field translation pathway: preserve the primary record; log raw T/N/O/C diagnostics; remain `U / field_calibration_pending`; establish independent truth; calibrate on grouped development data; freeze; evaluate held-out; only then enable adaptive action. This is implementation guidance, not Paper-1 field validation.
 
+## 23. “Your global simplex median barely represents rare target events.”
+
+**Agree.** The 0.1-step simplex is strongly non-uniform in target prevalence: only `141/3003 = 4.70%` of compositions have known target prevalence `<=0.2`.
+
+**D4 result:** in that rare-target subset, median target-prevalence width is `0.07410` for binary target/not-target, `0.07386` for target/nuisance/other, `0.000175` for B/T/N/U and `0.0` to numerical tolerance for reason-resolved U. The advantage therefore does not disappear in the rare-target portion of this frozen design.
+
+**Boundary:** this does not estimate how rare field visits actually are and does not make the simplex an ecological prior.
+
+## 24. “A richer vocabulary costs more to annotate and calibrate. Is it still better at fixed budget?”
+
+**Agree that Paper 1 does not answer this.** D1/D3/D4 condition on a frozen, effectively known emission map. That is appropriate for isolating information loss caused by coarsening, but it does not compare information per annotation or per unit calibration cost.
+
+**Required limitation:** with finite calibration data, uncertainty in a richer emission map could offset part of the identification gain under a fixed validation budget.
+
+**Why no new simulation is added here:** a fair fixed-budget comparison would require new choices about annotation allocation, grouped dependence, rare-state sampling, smoothing/regularization and propagation of emission-matrix uncertainty. That is a distinct measurement-design study, not a harmless sensitivity extension of the frozen observer experiment.
+
 ## Submission gate implied by this matrix
 
-The central scientific attack surface is now explicit. The paper should survive valid prior-art objections by **surrendering primitive-level priority** and defending the tested upstream process-semantic observation contract plus measured coarsening consequences.
+The central scientific attack surface is explicit. The paper should survive valid prior-art and design-dependence objections by **surrendering primitive-level priority**, keeping C6/C7 as the first primary result, and defending the measured D1/D3/D4 information consequence with explicit prevalence and weighting boundaries.
 
-Remaining work after this matrix is production/user metadata and final human inspection, not a missing scientific result. Any later textual change must rerun claim, reference, DOCX and reviewer-bundle validation.
+Any later textual change must rerun claim, reference, DOCX and reviewer-bundle validation.
