@@ -1,55 +1,42 @@
 # TNOA Paper-1 reproducibility entry point
 
-TNOA does not rerun locked PolliPi/InsePi scientific generations by default. Reproduction is intentionally split into three levels.
+TNOA does not rerun locked upstream scientific generations by default. Reproduction is intentionally split into four levels.
 
 ## Level 1 — validate the TNOA paper package
 
-From the TNOA repository root:
+From the repository root:
 
 ```bash
 python scripts/validate_paper_manifest.py
 python scripts/validate_mee_synthetic_consequences.py
+python scripts/validate_observation_vocabulary_ablation.py
+python scripts/validate_structural_axis_audit.py
+python scripts/audit_manuscript_claims.py
 ```
 
-These checks verify that:
-
-- required paper/provenance files exist;
-- source commits and hashes have valid forms;
-- all required locked result IDs are represented;
-- the final 30,625-coordinate / 5,880,000-world summary has not drifted;
-- the post-freeze MEE ecological-estimand result remains pinned to the immutable V14b surface SHA;
-- Paper-1 claim boundaries still forbid field accuracy, field absence certification, a universal Pi3 law and universal optimal abstention;
-- the literature evidence map is explicitly labeled as an initial/targeted evidence map rather than a systematic review.
+These checks verify that frozen source provenance has not drifted, the post-freeze D1/D2/D3 results remain tied to the immutable V14b surface, D3 remains explicitly literature-audit-motivated and not preregistered, and Paper-1 claim boundaries still forbid field accuracy, formal distribution-free guarantees and primitive-level priority claims.
 
 The same guards run in GitHub Actions.
 
 ## Level 2 — verify authoritative external source artifacts
 
-The authoritative frozen scientific results remain in:
+The authoritative frozen scientific results remain in the two pinned source repositories recorded in `paper_manifest.json`. Before final submission packaging:
 
-- `zuizui0223/insepi`;
-- `zuizui0223/pollipi` for the portable direct target-evidence contract.
+1. check out the recorded source commits;
+2. verify every locked result against its execution commit, artifact digest and result/phase-surface SHA;
+3. verify the target-evidence adapter against its pinned Git blob SHA-1;
+4. generate manuscript figures only from locked/derived artifacts named in the manifest;
+5. do not rerun a historical one-shot generation merely to reproduce a figure if the immutable result artifact already exists.
 
-Before final submission packaging:
+## Level 3 — reproduce the original MEE post-freeze estimand/weighting audit
 
-1. clone both source repositories;
-2. check out the commits recorded in `paper_manifest.json` for source-interface provenance;
-3. verify each locked InsePi result against the execution commit, artifact digest and result/phase-surface SHA listed in the manifest;
-4. verify the PolliPi target-evidence adapter against the pinned Git blob SHA-1;
-5. generate manuscript figures only from the locked/derived artifacts named in the manifest;
-6. do not rerun a historical one-shot generation merely to reproduce a figure if the immutable result artifact already exists.
-
-## Level 3 — reproduce the MEE post-freeze derivation
-
-The ecological-estimand and weighting audit is a deterministic transformation of the immutable full V14b surface, not a new observer generation.
-
-Install the analysis dependencies:
+Install:
 
 ```bash
 python -m pip install -r requirements-analysis.txt
 ```
 
-Download GitHub Actions artifact `9593775550` from InsePi workflow `32932634622` and extract `phase_surface.json`. Before analysis its SHA-256 must be:
+Download artifact `9593775550` from InsePi workflow `32932634622` and extract `phase_surface.json`. Its SHA-256 must be:
 
 ```text
 1d2c7c1f8f7370aad3cdde4d9d9d47bf318b2a057b6f788d3a48df9ea8d16c34
@@ -61,41 +48,49 @@ Then run:
 python scripts/analyze_mee_synthetic_consequences.py \
   --phase-surface /path/to/phase_surface.json \
   --output derived/mee_synthetic_consequences.json
+python scripts/validate_mee_synthetic_consequences.py
 ```
 
-The script fails closed on a source-SHA or surface-dimension mismatch. It derives:
+This derives the original D1 target-prevalence comparison, registered-axis slices and bounded weighting sensitivity. It does not refit observers or change thresholds.
 
-- synthetic target-prevalence bias after forced binary collapse;
-- B/T/N/U versus binary partial-identification widths over the six-regime simplex;
-- registered-axis slice sensitivity;
-- density-ratio weighting sensitivity for U composition, Pi1 monotonicity and the Pi2 local contrast.
+## Level 4 — reproduce the post-freeze observation-vocabulary ablation (D3)
 
-It does **not** refit target/nuisance observers, change alpha, alter the registered grid or replace the frozen V14b result.
+D3 uses the **same immutable phase surface** and 3,003 six-regime simplex mixtures. It was motivated by the expanded prior-art audit after earlier results were inspected, so it is explicitly **not preregistered**.
+
+Run:
+
+```bash
+python scripts/analyze_observation_vocabulary_ablation.py \
+  --phase-surface /path/to/phase_surface.json \
+  --output derived/observation_vocabulary_ablation.json
+python scripts/validate_observation_vocabulary_ablation.py
+```
+
+The analysis compares four nested observation vocabularies across five fixed estimands and all 34 registered single-axis slices. It generates no new synthetic worlds and retunes no observer or threshold. Deterministic never-wider relations are structural; numerical width reductions are post-freeze descriptive results of the frozen emission matrix.
 
 ## Reproduction boundary
 
-A rerun and a reproduction are not always the same operation in TNOA.
+A rerun and a reproduction are not always the same operation in TNOA. For historical one-shot generations, the scientific record is the prefrozen protocol plus immutable result/receipt. Re-executing a generator under a later runtime may be useful as a software check but must not replace the historical locked result.
 
-For historical one-shot generations, the scientific record is the prefrozen protocol plus immutable result/receipt. Re-executing the generator under a later software/runtime environment may be useful as a software check, but it must not replace the historical locked result.
-
-Post-freeze derived analyses may transform immutable outputs provided that their source digest, transformation code and claim boundary are recorded explicitly.
+Post-freeze derived analyses may transform immutable outputs provided that their source digest, transformation code, temporal status and claim boundary are explicit. D3 therefore remains scientifically usable only with its `post-freeze/not-preregistered` label intact.
 
 ## Required final submission bundle
 
-The eventual submission tag should contain:
+The eventual submission package should contain:
 
-- manuscript source;
-- paper-grade figure scripts;
-- figure/table manifest mapping each output to locked or explicitly derived result IDs;
+- active manuscript and front matter;
+- paper-grade figure scripts and pinned figure data;
 - `paper_manifest.json`;
-- `docs/CLAIM_TRACEABILITY.md`;
+- claim-boundary and claim-traceability documents;
 - `derived/mee_synthetic_consequences.json`;
+- `derived/structural_axis_audit.json`;
+- `derived/observation_vocabulary_ablation.json`;
+- expanded prior-art and nearest-neighbour documents;
 - `references.bib`;
-- a release/version identifier for TNOA;
-- exact source repository commits/artifact digests used for every figure and table.
+- release/version identifier and exact source commits/artifact digests.
 
 ## Current status
 
-The MEE-focused scientific and reproducibility package is assembled and CI-validated. Implemented components include the frozen science/provenance stack, post-freeze downstream-estimand and weighting analyses, structural-axis audit, reusable Python API/CLI, sensor-agnostic fail-closed field-translation pathway, code-assembled quantitative/composite figures, anonymous initial-submission source, validated anonymous DOCX, and deterministic double-anonymous reviewer bundle. The active framing distinguishes deterministic coarsening guarantees from the empirical magnitude of information loss, and `paper_manifest.json` records zero remaining scientific blockers.
+The MEE-focused scientific and reproducibility package is assembled with frozen science, D1/D2 and literature-audit-motivated D3, reusable API/CLI, fail-closed field translation, figures, anonymous DOCX and deterministic reviewer bundle. The expanded prior-art audit explicitly surrenders priority for uncertain ecological observations, continuous-score inference, multilabel abstention, information ordering and partial identification; the residual claim is the tested process-semantic observation contract plus measured information loss under progressive garbling.
 
-Remaining pre-upload work is intentionally non-scientific and human-facing: complete author/title-page metadata, visually inspect the generated DOCX/figures/references, recheck the publisher-facing word count, rebuild the final reviewer ZIP with all author/institution literals supplied to the identity scanner, and rerun claim/package audits after any final text-changing edit.
+Remaining pre-upload work is human-facing: author/title-page metadata, visual inspection, publisher-facing word count, final identity-scanned reviewer ZIP and post-edit audit reruns.
