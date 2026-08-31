@@ -8,18 +8,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DRAFT = ROOT / "manuscript" / "TNOA_MEE_DRAFT.md"
 
+# These are formulations that are unsafe even outside a positive/negative grammar context.
+# Specific "first X" strings are not listed here because the manuscript deliberately
+# contains explicit priority disclaimers such as "does not claim to be the first...".
 FORBIDDEN_PHRASES = (
     "tnoa is the first",
-    "first abstaining ecological classifier",
-    "first framework to separate process and observation",
-    "introduces the idea that nondetection is not absence",
-    "first ecological method to retain uncertain observations",
-    "first non-binary use of machine-learning output",
-    "first continuous-score ecological",
-    "first method to allow target and nuisance to coexist",
     "no previous method separates",
     "uniquely represents ignorance",
-    "first method to retain multiple hypotheses",
     "proves that tnoa",
     "proves tnoa",
     "universal ecological snr threshold",
@@ -34,6 +29,13 @@ FORBIDDEN_PHRASES = (
     "d3 was preregistered",
     "pollipi",
     "insepi",
+)
+
+# Positive priority claims are caught grammatically while allowing explicit negation.
+UNSAFE_PRIORITY_PATTERNS = (
+    r"(?<!not )(?<!does not )(?<!do not )claim(?:s|ed)?\s+(?:to be\s+)?the first",
+    r"(?<!not )(?<!does not )(?<!do not )introduc(?:e|es|ed)\s+the first",
+    r"(?<!not )(?<!does not )(?<!do not )(?:is|was)\s+the first\s+(?:ecological|method|framework|non-binary|continuous-score)",
 )
 
 NUMERIC_CLAIM_REQUIREMENTS = {
@@ -101,6 +103,9 @@ def main() -> None:
     for phrase in FORBIDDEN_PHRASES:
         if phrase in lower:
             fail(f"forbidden priority/claim/anonymity phrase present: {phrase!r}")
+    for pattern in UNSAFE_PRIORITY_PATTERNS:
+        if re.search(pattern, lower):
+            fail(f"unsafe positive priority formulation present: {pattern!r}")
 
     ps = paragraphs(text)
     for token, claim_id in NUMERIC_CLAIM_REQUIREMENTS.items():
@@ -163,7 +168,6 @@ def main() -> None:
     if "not supported" not in results[third:].lower() or "pi2" not in results[third:].lower():
         fail("Results 3.3 must retain the preregistered Pi2 negative result")
 
-    # Calibration language must distinguish historical labels from the manuscript's inferential claim.
     section31 = results[first:second].lower()
     if "predeclared family-conditional" not in section31:
         fail("Results 3.1 must use family-conditional calibration semantics")
