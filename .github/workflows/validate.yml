@@ -20,6 +20,8 @@ jobs:
         run: python scripts/validate_mee_synthetic_consequences.py
       - name: Validate post-freeze observation-vocabulary ablation
         run: python scripts/validate_observation_vocabulary_ablation.py
+      - name: Validate prevalence and composition-weight sensitivity
+        run: python scripts/validate_prevalence_weighting_sensitivity.py
       - name: Validate structural axis audit
         run: python scripts/validate_structural_axis_audit.py
       - name: Validate MEE figure data
