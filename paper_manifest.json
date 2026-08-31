@@ -1,7 +1,7 @@
 {
-  "schema": "tnoa-paper-manifest-v7",
+  "schema": "tnoa-paper-manifest-v8",
   "paper_generation": "TNOA-P1-MEE",
-  "scope": "closed-world methods paper with frozen science and post-freeze downstream-estimand, robustness, structural and vocabulary-ablation analyses; field validation remains external",
+  "scope": "closed-world methods paper with frozen science and post-freeze downstream-estimand, robustness, structural, vocabulary-ablation and prevalence/composition-weight sensitivity analyses; field validation remains external",
   "source_repositories": {
     "pollipi": {
       "repository": "zuizui0223/pollipi",
@@ -194,6 +194,31 @@
         "target_strict_median_improvement_slices": 27,
         "other_estimands_strict_median_improvement_slices": 29
       }
+    },
+    "prevalence_weighting_sensitivity": {
+      "status": "reviewer_motivated_post_freeze_design_sensitivity_not_preregistered",
+      "source_workflow_run_id": 32932634622,
+      "source_artifact_id": 9593775550,
+      "source_phase_surface_sha256": "1d2c7c1f8f7370aad3cdde4d9d9d47bf318b2a057b6f788d3a48df9ea8d16c34",
+      "script": "scripts/analyze_prevalence_weighting_sensitivity.py",
+      "result": "derived/prevalence_weighting_sensitivity.json",
+      "validation": "scripts/validate_prevalence_weighting_sensitivity.py",
+      "documentation": "docs/PREVALENCE_WEIGHTING_SENSITIVITY.md",
+      "preregistered": false,
+      "observer_retuned": false,
+      "new_synthetic_worlds_generated": false,
+      "field_claims_allowed": false,
+      "annotation_budget_efficiency_claimed": false,
+      "summary": {
+        "mixture_count": 3003,
+        "rare_target_theta_le_0_2_compositions": 141,
+        "rare_target_theta_le_0_2_uniform_lattice_mass": 0.04695304695304695,
+        "rare_target_theta_le_0_2_median_width_binary": 0.07409970878498642,
+        "rare_target_theta_le_0_2_median_width_btnu": 0.0001746269687759039,
+        "rare_target_theta_le_0_2_median_width_reason_resolved": 0.0,
+        "composition_kappa_10_min_fraction_binary_width_removed_by_btnu": 0.5746863884992289,
+        "composition_kappa_10_min_additional_fraction_btnu_width_removed_by_reason_resolved": 0.4000338180837051
+      }
     }
   },
   "reusable_implementation": {
@@ -218,12 +243,11 @@
     "claim_traceability": "docs/CLAIM_TRACEABILITY.md",
     "claim_scanner": "scripts/audit_manuscript_claims.py",
     "anonymous_builder": "scripts/build_mee_anonymous_manuscript.py",
-    "internal_result_provenance_tags": "C1-C15 plus D1-D3 post-freeze derived analyses",
+    "internal_result_provenance_tags": "C1-C15 plus D1-D4 post-freeze derived analyses",
     "result_hierarchy": [
       "C6-C7 nuisance threshold-scale failure and predeclared family-conditional false-attribution calibration",
-      "D1 downstream synthetic target-prevalence information-loss magnitude",
+      "D1-D3-D4 downstream synthetic information-loss magnitude, reason provenance and prevalence/composition-weight sensitivity",
       "C2 preregistered Pi2 narrow-ridge negative result",
-      "D3 post-freeze observation-vocabulary ablation showing additional information in U reason provenance",
       "C10 robust unresolved-reason composition",
       "C11 Pi1 reason substitution as secondary illustration"
     ]
@@ -249,7 +273,8 @@
     "supplementary_panels": ["figS2_axis_separation"],
     "manual_data_geometry_editing_allowed": false,
     "field_claims_from_figures_allowed": false,
-    "d3_new_main_figure_required": false
+    "d3_new_main_figure_required": false,
+    "d4_new_main_figure_required": false
   },
   "literature_positioning": {
     "status": "expanded_targeted_prior_art_audit_complete_not_systematic_review",
@@ -293,6 +318,9 @@
     "distribution_free_finite_sample_risk_guarantee_claim": false,
     "d3_preregistered_claim": false,
     "d3_arbitrary_weighting_robustness_claim": false,
+    "d4_preregistered_claim": false,
+    "d4_arbitrary_ecological_weighting_robustness_claim": false,
+    "annotation_budget_efficiency_claim": false,
     "closed_world_method_claims": true,
     "synthetic_known_truth_estimand_claims": true,
     "weighting_robustness_only_within_tested_class": true
@@ -315,10 +343,12 @@
       "MEE front-matter, running-headline, keyword and inclusion-statement guards",
       "tested-method framing separating deterministic coarsening guarantees from empirical information-loss magnitude",
       "expanded nearest-neighbour prior-art audit",
-      "post-freeze observation-vocabulary ablation with five estimands and 34 registered axis slices"
+      "post-freeze observation-vocabulary ablation with five estimands and 34 registered axis slices",
+      "post-freeze target-prevalence stratification and direct composition-level bounded density-ratio sensitivity",
+      "annotation/calibration budget asymmetry registered as an explicit limitation rather than silently ignored"
     ],
     "remaining_scientific_blockers": [],
-    "strategy": "Lead with C6-C7 representation-change failure plus predeclared family-conditional calibration and D1 empirical information-loss magnitude; retain C2 as the preregistered negative result; present D3 as explicitly post-freeze/not-preregistered evidence that reason-resolved U retains additional downstream identifying information; keep naive binary bias, pooled rates, C13, Pi3 and world count secondary."
+    "strategy": "Lead with C6-C7 representation-change failure plus predeclared family-conditional calibration; follow with D1-D3-D4 empirical information-loss magnitude, reason provenance and prevalence/composition-weight conditions; retain C2 as the preregistered negative result; keep naive binary bias, pooled rates, C13, Pi3 and world count secondary."
   },
   "editorial_tasks_before_upload": [
     "complete author names, affiliations, corresponding-author details, CRediT contributions, acknowledgements, funding and competing-interest metadata",
