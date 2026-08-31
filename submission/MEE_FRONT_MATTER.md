@@ -8,7 +8,7 @@
 
 **3.** After the nuisance representation changed, ranking was retained but an inherited raw threshold failed its registered coverage rule. A predeclared family-conditional false-attribution criterion at `alpha=0.05` yielded held-out false nuisance attribution of `0/43,200` and `1,920/43,200` (`0.0444`) in the two negative families. Across 3,003 latent-regime compositions, median compatible target-prevalence width was `0.2656` for target/not-target, `0.1886` for target/nuisance/other, `0.0299` for B/T/N/U and `0.00408` when unresolved reasons were retained. The latter ablation was post-freeze and not preregistered. The preregistered matched-timescale ambiguity ridge was not supported.
 
-**4.** TNOA's contribution is therefore process-semantic rather than priority for abstention, uncertain ecological events or continuous classifier scores: preserve target, nuisance, observability and attribution provenance before downstream inference, and calibrate process-support decisions against explicit error criteria rather than inherited score values. Current quantitative results are closed-world; field translation requires independent truth, grouped development calibration and frozen held-out evaluation.
+**4.** TNOA's contribution is therefore process-semantic rather than priority for abstention, uncertain ecological events or continuous classifier scores: preserve target, nuisance, observability and attribution provenance before downstream inference, and calibrate process-support decisions against explicit error criteria rather than inherited score values. Current quantitative results are **closed-world rather than field-calibrated**; field translation requires independent truth, grouped development calibration and frozen held-out evaluation.
 
 ## Keywords
 
