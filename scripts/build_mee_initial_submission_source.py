@@ -54,7 +54,7 @@ def main() -> None:
 
     callouts = {
         "### 3.1 An inherited raw threshold failed even when nuisance ranking was retained": "### 3.1 An inherited raw threshold failed even when nuisance ranking was retained\n\n*See Figure 2a–c.*",
-        "### 3.2 Progressive coarsening discarded information about downstream ecological estimands": "### 3.2 Progressive coarsening discarded information about downstream ecological estimands\n\n*See Figure 3a–b for the preregistered/frozen B/T/N/U-versus-binary target-prevalence comparison; the post-freeze reason-resolved vocabulary ablation is reported in text and supplementary analysis files.*",
+        "### 3.2 Progressive coarsening discarded information about downstream ecological estimands": "### 3.2 Progressive coarsening discarded information about downstream ecological estimands\n\n*See Figure 3a–b.*\n\nThe post-freeze reason-resolved vocabulary ablation is reported in the text and supplementary analysis files; Figure 3 retains the frozen B/T/N/U-versus-binary target-prevalence comparison.",
         "### 3.4 Unresolved observations were dominated by overlap/attribution, but observation duration is secondary": "### 3.4 Unresolved observations were dominated by overlap/attribution, but observation duration is secondary\n\n*See Figure 4a–b.*",
         "### 3.5 The six registered coordinates had strongly uneven effective separation": "### 3.5 The six registered coordinates had strongly uneven effective separation\n\n*See Supplementary Figure S2.*",
     }
