@@ -1,0 +1,27 @@
+# Nearest-neighbour methods matrix
+
+Status: targeted adversarial positioning aid for TNOA Paper 1; **not a systematic review**.
+
+The purpose of this table is to state what neighbouring methods already solve, which priority claims TNOA therefore surrenders, and what methodological object remains distinct.
+
+| Method family | What prior work already solves | Priority claim TNOA surrenders | Residual TNOA distinction |
+| --- | --- | --- | --- |
+| Continuous-score ecological inference [@rhinehart2022continuous] | Uses continuous machine-learning scores directly in occupancy inference instead of thresholding them to detections | First non-binary use of classifier output in ecological inference | TNOA retains heterogeneous process propositions rather than one target-confidence score: positive T, positive N, separate O, attribution-gated C and optional A− |
+| AI-to-inference workflows [@cowans2026aiworkflow; @kitzes2026aiworkflow] | Connects sensor deployment, classifier confidence and downstream ecological analysis | First end-to-end framing of AI-assisted ecological inference | TNOA is a tested observation contract at the sensor–inference boundary, not an end-to-end workflow |
+| Classification-error models [@spence2025classification; @santoro2025bias] | Propagates classifier confusion/bias into ecological counts or inference | First recognition that classification errors affect downstream ecology | TNOA acts before a confusion-matrix correction is sufficient: nuisance, observability and attribution can be distinct propositions rather than class mistakes |
+| Multievent / uncertain-state ecology [@pradel2005multievent; @mackenzie2009multistate; @hollanders2022stateuncertainty; @campbellgrant2023partial] | Represents uncertain, ambiguous, equivocal or partially observed ecological states/events | First ecological use of an unresolved or ambiguous observation | TNOA constructs the upstream event vocabulary from process evidence before downstream latent-state inference |
+| Multilabel partial abstention [@nguyen2020partialabstention] | Allows simultaneous labels and selective abstention on only some labels | First method to allow coexistence or partial refusal | T/N/O/C/A− are heterogeneous propositions with different semantics, not exchangeable class labels |
+| Reject/selective/conformal prediction [@elyaniv2010selective; @hendrickx2024reject; @bates2021riskcontrol] | Refuses predictions and can attach formal risk guarantees under stated assumptions | First abstention or first error-controlled rejection | TNOA specifies which ecological process statement is licensed; current family-conditional calibration is empirical closed-world control, not a distribution-free guarantee |
+| Calibration and dataset shift [@guo2017calibration; @ovadia2019shift] | Shows that confidence calibration depends on model/data representation and can degrade under shift | First observation that raw confidence values are not invariant | TNOA documents a concrete ecological nuisance-score representation change and transfers a declared decision-level error criterion rather than the historical raw threshold |
+| Blackwell information ordering [@blackwell1953comparison] | Formalizes when one statistical experiment is a garbling of a more informative experiment | Discovery that a deterministic coarsening cannot be more informative | TNOA measures the ecological **magnitude** of information loss across registered observation vocabularies |
+| Partial identification [@manski2005partial] | Uses identified sets when data and assumptions do not point-identify an estimand | Invention of identification widths/bounds | TNOA uses partial-identification width to quantify what ecological target/nuisance estimands remain compatible with progressively coarsened sensor records |
+| Belief/evidential uncertainty [@denoeux2019belief; @gao2026evidential] | Represents ignorance, conflict and non-singleton belief | First explicit ignorance/conflict representation | TNOA fixes ecological sensor semantics and attribution requirements before any uncertainty calculus is applied |
+| Imperfect detection / observation models [@mackenzie2002occupancy; @roylelink2006occupancy; @augermethe2021statespace] | Separates latent ecological process from observation process and false positives/negatives | First statement that nondetection is not absence | TNOA operates one stage upstream, deciding what observation record the downstream model is allowed to receive |
+
+## Strongest residual novelty statement
+
+> TNOA contributes a tested upstream ecological observation contract that separates positive target support, positive nuisance support, measurement observability, attribution-gated coupled response and independently supported absence; preserves reason-resolved unresolved observations before downstream analysis; calibrates process-support decisions against predeclared family-conditional errors; and quantifies under frozen known truth the decision-relevant information lost when this record is garbled to coarser observation vocabularies.
+
+## Consequence for manuscript language
+
+The manuscript should not rely on a conjunction-of-eleven-components priority claim. The stronger and easier-to-defend claim is functional: TNOA defines a process-semantic observation contract and experimentally measures what is lost when that contract is coarsened. Historical priority for abstention, uncertain ecological events, continuous classifier scores, multilabel coexistence, information ordering or partial identification is explicitly disclaimed.
