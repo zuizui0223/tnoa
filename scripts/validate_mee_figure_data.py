@@ -50,11 +50,11 @@ def main() -> None:
     pooled = risk["pooled_risk_calibration"]
     family = risk["familywise_risk_calibration"]
     if pooled["freezable"] is not False or family["freezable"] is not True:
-        fail("pooled/family-wise pass-fail sequence drifted")
+        fail("pooled/family-specific pass-fail sequence drifted")
     if not pooled["coupled_negative_fpr"] > pooled["alpha"]:
         fail("pooled calibration should fail the coupled-negative alpha gate")
     if not family["coupled_negative_fpr"] <= family["alpha"]:
-        fail("family-wise calibration should pass the coupled-negative alpha gate")
+        fail("max-over-predeclared-families calibration should pass the coupled-negative alpha gate")
 
     est = d["figure3_estimand"]
     source_estimand = consequences["estimand"]
@@ -158,11 +158,13 @@ def main() -> None:
         if surface[key] != expected:
             fail(f"surface provenance {key} drifted")
     sequence = {row["stage"]: row for row in manifest["development_evidence"]["nuisance_threshold_sequence"]}
+    # Figure-data keys retain the historical labels for immutable provenance.
+    # The manifest stage name uses the corrected statistical interpretation.
     stage_map = {
         "nuisance_v1_failure": "inherited_threshold_failure",
         "nuisance_score_diagnosis": "score_scale_diagnosis",
         "pooled_risk_failure": "pooled_risk_failure",
-        "familywise_risk_freeze": "familywise_risk_freeze",
+        "familywise_risk_freeze": "max_over_predeclared_negative_families_freeze",
     }
     for figure_key, stage in stage_map.items():
         actual = p[figure_key]
