@@ -1,7 +1,7 @@
 {
-  "schema": "tnoa-paper-manifest-v6",
+  "schema": "tnoa-paper-manifest-v7",
   "paper_generation": "TNOA-P1-MEE",
-  "scope": "closed-world methods paper with post-freeze downstream-estimand and robustness analyses; field validation remains external",
+  "scope": "closed-world methods paper with frozen science and post-freeze downstream-estimand, robustness, structural and vocabulary-ablation analyses; field validation remains external",
   "source_repositories": {
     "pollipi": {
       "repository": "zuizui0223/pollipi",
@@ -53,12 +53,17 @@
       "artifact_digest": "sha256:46777528229e45d01bea5195bdb271e7e764c87a16f378e25f2c4517cc928044",
       "result_sha256": "e5f0fac6f0b5790192be46f923572e5f3f57b1913325d435a2f9f6320fb57617",
       "role": "frozen validation",
-      "paper_use": "family-wise alpha=0.05 false-attribution decision criterion",
+      "paper_use": "historically labelled family-wise nuisance run; manuscript interpretation is a predeclared family-conditional false-attribution criterion, not classical FWER",
       "registered_summary": {
         "alpha": 0.05,
         "target_only_false_nuisance_attribution": 0.0,
+        "target_only_false_nuisance_attribution_count": 0,
+        "target_only_heldout_count": 43200,
         "target_nuisance_coupled_false_nuisance_attribution": 0.044444444444444446,
-        "heldout_nuisance_coverage": 1.0
+        "target_nuisance_coupled_false_nuisance_attribution_count": 1920,
+        "target_nuisance_coupled_heldout_count": 43200,
+        "heldout_nuisance_coverage": 1.0,
+        "distribution_free_finite_sample_guarantee_claimed": false
       }
     },
     {
@@ -109,15 +114,16 @@
         "artifact_id": 9593167283,
         "artifact_digest": "sha256:5fb01ef0a7d0952d8686f08b73f5aed8ac71673ff509098afb67720989e03d2b",
         "result_sha256": "56b95a8f2ff819a73fca96e9c1268e6bfb26666dc24897e73a25c82a6fc02367",
-        "summary": "pooled calibration had coupled-negative FPR 0.0888889 > alpha 0.05 despite nuisance coverage 1.0"
+        "summary": "pooled calibration had target-coupled negative FPR 0.0888889 > predeclared alpha 0.05 despite nuisance coverage 1.0"
       },
       {
-        "stage": "familywise_risk_freeze",
+        "stage": "max_over_predeclared_negative_families_freeze",
+        "historical_stage_label": "familywise_risk_freeze",
         "workflow_run_id": 32931223272,
         "artifact_id": 9593286927,
         "artifact_digest": "sha256:46777528229e45d01bea5195bdb271e7e764c87a16f378e25f2c4517cc928044",
         "result_sha256": "e5f0fac6f0b5790192be46f923572e5f3f57b1913325d435a2f9f6320fb57617",
-        "summary": "family-wise calibration had coupled-negative FPR 0.0444444 <= alpha 0.05 and nuisance coverage 1.0"
+        "summary": "predeclared family-conditional held-out false-attribution rates were 0/43200 and 1920/43200=0.0444444, both <= alpha 0.05; nuisance coverage 1.0"
       }
     ],
     "retained_invalidated_diagnostic": "InsePi PR #40 target-separability diagnostic invalidated by truth leakage; not used as evidence"
@@ -161,6 +167,33 @@
         "pi5_max_marginal_total_variation": 0.021384285714285703,
         "c13_design_identity": "0.2*1.0 + 0.8*0.196125"
       }
+    },
+    "observation_vocabulary_ablation": {
+      "status": "literature_audit_motivated_post_freeze_deterministic_derivation_not_preregistered",
+      "source_workflow_run_id": 32932634622,
+      "source_artifact_id": 9593775550,
+      "source_phase_surface_sha256": "1d2c7c1f8f7370aad3cdde4d9d9d47bf318b2a057b6f788d3a48df9ea8d16c34",
+      "script": "scripts/analyze_observation_vocabulary_ablation.py",
+      "result": "derived/observation_vocabulary_ablation.json",
+      "validation": "scripts/validate_observation_vocabulary_ablation.py",
+      "documentation": "docs/OBSERVATION_VOCABULARY_ABLATION.md",
+      "preregistered": false,
+      "observer_retuned": false,
+      "new_synthetic_worlds_generated": false,
+      "field_claims_allowed": false,
+      "summary": {
+        "mixture_count": 3003,
+        "vocabulary_count": 4,
+        "estimand_count": 5,
+        "registered_axis_slice_count": 34,
+        "target_prevalence_median_widths": [0.2656306018443621, 0.18861428571428596, 0.02992070478107567, 0.004077995920098443],
+        "target_reason_resolved_relative_median_width_reduction_vs_generic_u": 0.8637065553790797,
+        "target_nuisance_cooccurrence_median_widths": [0.7230694417428517, 0.5136354794787008, 0.10493504246086616, 0.014840229278269765],
+        "target_nuisance_cooccurrence_reason_resolved_relative_median_width_reduction_vs_generic_u": 0.8585769926780733,
+        "all_estimands_all_34_slices_reason_resolved_never_wider": true,
+        "target_strict_median_improvement_slices": 27,
+        "other_estimands_strict_median_improvement_slices": 29
+      }
     }
   },
   "reusable_implementation": {
@@ -185,11 +218,12 @@
     "claim_traceability": "docs/CLAIM_TRACEABILITY.md",
     "claim_scanner": "scripts/audit_manuscript_claims.py",
     "anonymous_builder": "scripts/build_mee_anonymous_manuscript.py",
-    "internal_result_provenance_tags": "C1-C15 plus D1-D2 post-freeze derived analyses",
+    "internal_result_provenance_tags": "C1-C15 plus D1-D3 post-freeze derived analyses",
     "result_hierarchy": [
-      "C6-C7 nuisance threshold-scale failure and family-wise error control",
-      "D1 downstream synthetic target-prevalence information preservation",
+      "C6-C7 nuisance threshold-scale failure and predeclared family-conditional false-attribution calibration",
+      "D1 downstream synthetic target-prevalence information-loss magnitude",
       "C2 preregistered Pi2 narrow-ridge negative result",
+      "D3 post-freeze observation-vocabulary ablation showing additional information in U reason provenance",
       "C10 robust unresolved-reason composition",
       "C11 Pi1 reason substitution as secondary illustration"
     ]
@@ -214,18 +248,31 @@
     ],
     "supplementary_panels": ["figS2_axis_separation"],
     "manual_data_geometry_editing_allowed": false,
-    "field_claims_from_figures_allowed": false
+    "field_claims_from_figures_allowed": false,
+    "d3_new_main_figure_required": false
   },
   "literature_positioning": {
-    "status": "targeted_final_prior_art_audit_complete_not_systematic_review",
+    "status": "expanded_targeted_prior_art_audit_complete_not_systematic_review",
     "evidence_map": "docs/LITERATURE_EVIDENCE_MAP.md",
     "final_prior_art_audit": "docs/FINAL_PRIOR_ART_AUDIT.md",
+    "nearest_neighbour_matrix": "docs/NEAREST_NEIGHBOUR_METHODS.md",
     "reviewer_attack_matrix": "docs/REVIEWER_ATTACK_MATRIX.md",
     "bibliography": "references.bib",
     "transferability_map": "docs/TRANSFERABILITY_TABLE.md",
-    "central_defensible_novelty": "process-preserving ecological observation interface, prespecified error-rate calibration after score-representation change, and downstream information-preservation consequence",
+    "central_defensible_novelty": "tested upstream process-semantic ecological observation contract plus empirical information-loss magnitude under progressive garbling; reason-resolved U provenance is part of the retained scientific record",
+    "priority_claims_surrendered": [
+      "abstention/rejection",
+      "uncertain or equivocal ecological observations",
+      "continuous-score ecological inference",
+      "multilabel coexistence and partial abstention",
+      "process/observation separation",
+      "information ordering/garbling",
+      "partial identification",
+      "formal distribution-free risk control"
+    ],
     "quantitative_cross_system_transfer_claimed": false,
-    "absolute_priority_claimed": false
+    "absolute_priority_claimed": false,
+    "systematic_review_claimed": false
   },
   "reproducibility": {
     "entry_point": "reproduce/README.md",
@@ -242,6 +289,10 @@
     "component_level_priority": false,
     "c13_performance_claim": false,
     "six_axes_equal_effective_dimensions_claim": false,
+    "classical_familywise_error_rate_control_claim": false,
+    "distribution_free_finite_sample_risk_guarantee_claim": false,
+    "d3_preregistered_claim": false,
+    "d3_arbitrary_weighting_robustness_claim": false,
     "closed_world_method_claims": true,
     "synthetic_known_truth_estimand_claims": true,
     "weighting_robustness_only_within_tested_class": true
@@ -262,10 +313,12 @@
       "anonymous MEE DOCX generation and XML validation",
       "deterministic double-anonymous reviewer bundle",
       "MEE front-matter, running-headline, keyword and inclusion-statement guards",
-      "tested-method framing separating deterministic coarsening guarantees from empirical information-loss magnitude"
+      "tested-method framing separating deterministic coarsening guarantees from empirical information-loss magnitude",
+      "expanded nearest-neighbour prior-art audit",
+      "post-freeze observation-vocabulary ablation with five estimands and 34 registered axis slices"
     ],
     "remaining_scientific_blockers": [],
-    "strategy": "Lead with C6-C7 error-control evidence and the empirical D1 information-loss magnitude (median compatible width about 0.030 versus 0.266); retain the deterministic never-wider relation as a structural property rather than performance evidence; retain C2 as the preregistered negative result; keep naive binary bias, pooled rates, C13, Pi3 and world count secondary."
+    "strategy": "Lead with C6-C7 representation-change failure plus predeclared family-conditional calibration and D1 empirical information-loss magnitude; retain C2 as the preregistered negative result; present D3 as explicitly post-freeze/not-preregistered evidence that reason-resolved U retains additional downstream identifying information; keep naive binary bias, pooled rates, C13, Pi3 and world count secondary."
   },
   "editorial_tasks_before_upload": [
     "complete author names, affiliations, corresponding-author details, CRediT contributions, acknowledgements, funding and competing-interest metadata",
