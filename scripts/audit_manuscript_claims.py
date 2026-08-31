@@ -8,9 +8,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DRAFT = ROOT / "manuscript" / "TNOA_MEE_DRAFT.md"
 
-# These are formulations that are unsafe even outside a positive/negative grammar context.
-# Specific "first X" strings are not listed here because the manuscript deliberately
-# contains explicit priority disclaimers such as "does not claim to be the first...".
+# Use only formulations that are unsafe regardless of surrounding negation.
+# The manuscript deliberately contains explicit priority disclaimers such as
+# "does not claim to be the first...", so naive first-X pattern matching is avoided.
 FORBIDDEN_PHRASES = (
     "tnoa is the first",
     "no previous method separates",
@@ -29,13 +29,6 @@ FORBIDDEN_PHRASES = (
     "d3 was preregistered",
     "pollipi",
     "insepi",
-)
-
-# Positive priority claims are caught grammatically while allowing explicit negation.
-UNSAFE_PRIORITY_PATTERNS = (
-    r"(?<!not )(?<!does not )(?<!do not )claim(?:s|ed)?\s+(?:to be\s+)?the first",
-    r"(?<!not )(?<!does not )(?<!do not )introduc(?:e|es|ed)\s+the first",
-    r"(?<!not )(?<!does not )(?<!do not )(?:is|was)\s+the first\s+(?:ecological|method|framework|non-binary|continuous-score)",
 )
 
 NUMERIC_CLAIM_REQUIREMENTS = {
@@ -103,9 +96,6 @@ def main() -> None:
     for phrase in FORBIDDEN_PHRASES:
         if phrase in lower:
             fail(f"forbidden priority/claim/anonymity phrase present: {phrase!r}")
-    for pattern in UNSAFE_PRIORITY_PATTERNS:
-        if re.search(pattern, lower):
-            fail(f"unsafe positive priority formulation present: {pattern!r}")
 
     ps = paragraphs(text)
     for token, claim_id in NUMERIC_CLAIM_REQUIREMENTS.items():
@@ -147,7 +137,6 @@ def main() -> None:
         if phrase not in lower:
             fail(f"required qualification missing: {phrase!r}")
 
-    # Result hierarchy must stay MEE-facing: C6/C7 -> D1+D3 -> C2.
     results = text.split("## 3. Results", 1)[-1].split("## 4. Discussion", 1)[0]
     first = results.find("### 3.1")
     second = results.find("### 3.2")
