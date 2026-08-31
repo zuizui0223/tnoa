@@ -1,154 +1,133 @@
 # Final targeted prior-art audit for TNOA Paper 1
 
-Status: **completed targeted audit for manuscript positioning**.
+Status: **expanded targeted adversarial audit for manuscript positioning**.
 
-This is not a systematic review. Its purpose is narrower: test the strongest TNOA novelty statement against the method families most likely to invalidate it.
+This is not a systematic review. Its purpose is narrower: search the method families most likely to invalidate TNOA's strongest novelty statement, surrender component-level priority wherever prior art exists, and identify the residual contribution that remains defensible.
 
 ## 1. Search scope
 
-The final audit explicitly checked the following neighbouring families:
+The audit covers:
 
-- selective classification / reject option;
-- conformal classifiers with rejection guarantees;
-- partial and set-valued reject options;
-- open-set / open-world recognition;
-- Dempster–Shafer belief functions and evidential reasoning;
-- evidential deep learning / subjective-logic uncertainty;
-- ecological occupancy and imperfect-detection models;
-- occupancy models with false-positive and false-negative observation errors;
-- hierarchical/state-space process-versus-observation models;
-- camera-trap component detection processes;
-- sensor fusion and conflict-aware multisource reasoning;
-- adaptive/preferential ecological sampling.
+- ecological occupancy, multistate and multievent models with imperfect, ambiguous, equivocal or partial observations;
+- continuous-score and AI-assisted ecological inference;
+- ecological models that propagate image/audio classification error;
+- selective classification, reject options, conformal/risk-controlling prediction sets and multilabel partial abstention;
+- open-set recognition and evidential/belief-function uncertainty;
+- confidence calibration and uncertainty under dataset shift;
+- Blackwell comparison/garbling of statistical experiments and partial identification;
+- camera-trap component detection, sensor fusion and adaptive/preferential sampling.
 
-The search was deliberately adversarial: a neighbouring framework only needs to invalidate a component-level novelty claim, not reproduce the entire TNOA implementation.
+The search is deliberately adversarial. A neighbouring method only needs to invalidate one priority claim; it need not reproduce the full TNOA architecture.
 
-## 2. Component claims that are NOT novel
+## 2. Strong claims that prior art invalidates
 
-### 2.1 Abstention / rejection
+### 2.1 TNOA is not the first ecological method to retain uncertain observations
 
-Reject-option and selective-classification methods already formalise withholding a prediction to reduce predictive risk. Conformal reject methods can additionally provide finite-sample or distribution-free error guarantees under their assumptions.
+Multievent models explicitly accommodate uncertain state assignment [@pradel2005multievent]. Multistate occupancy models allow multiple ecological states under imperfect detection and ambiguous state information [@mackenzie2009multistate]. Later ecological methods explicitly retain uncertain, ambiguous, equivocal or partially observed events [@hollanders2022stateuncertainty; @campbellgrant2023partial].
 
-Therefore TNOA must not claim to invent:
+Therefore TNOA must not claim:
 
-- abstention;
-- risk–coverage trade-offs;
-- error-controlled rejection;
-- confidence-based refusal to classify.
+- the first ecological unresolved observation;
+- the first ecological representation of ambiguous/equivocal events;
+- the first separation of nondetection from absence.
 
-### 2.2 Partial or set-valued decisions
+### 2.2 TNOA is not the first non-binary use of machine-learning output in ecological inference
 
-Partial-reject and set-valued classifiers can retain multiple hypotheses rather than force a singleton class.
+A continuous-score occupancy model already incorporates uncertain machine-learning scores directly without first thresholding them to detections [@rhinehart2022continuous]. AI-to-inference workflows explicitly address how automated classifier confidence and uncertainty enter ecological analyses [@cowans2026aiworkflow; @kitzes2026aiworkflow]. Classification-error models and empirical audits show that confusion and systematic classifier bias alter ecological results [@spence2025classification; @santoro2025bias].
 
-Therefore TNOA must not claim that retaining more than one plausible hypothesis is itself new.
+Therefore TNOA must not claim:
 
-### 2.3 Unknown / open-set handling
+- the first threshold-free ecological use of classifier output;
+- the first continuous-score ecological inference method;
+- the first recognition that AI error propagates into ecological inference.
 
-Open-set recognition explicitly addresses samples that belong to classes unavailable during training and allows rejection of unknowns.
+### 2.3 Abstention, coexistence and partial decisions are established machine-learning ideas
 
-Therefore TNOA must not equate its U state with a novel form of open-set recognition or claim that handling unknown conditions is new.
+Selective/reject methods formalize abstention [@elyaniv2010selective; @hendrickx2024reject]. Partial/set-valued and multilabel abstention methods can preserve multiple labels and refuse only part of a multilabel decision [@karlsson2024partialreject; @nguyen2020partialabstention]. Open-set and evidential methods represent unknowns, ignorance and conflict [@geng2021openset; @denoeux2019belief; @gao2026evidential].
 
-### 2.4 Ignorance, conflict and incomplete evidence
+Therefore TNOA must not claim:
 
-Belief-function / Dempster–Shafer methods and subjective-logic/evidential approaches can represent ignorance, conflicting evidence, belief assigned to sets of hypotheses, and decisions that remain incomplete or incomparable.
+- invention of abstention;
+- invention of simultaneous labels or partial refusal;
+- invention of explicit ignorance or conflict.
 
-Therefore TNOA must not claim to invent:
+T+N coexistence remains important to TNOA's semantics, but coexistence alone is not a historical-priority claim.
 
-- explicit ignorance;
-- evidence conflict;
-- uncertainty represented separately from a singleton class probability;
-- undecided decision states under incomplete evidence.
+### 2.4 Error control and calibration have stronger formal precedents
 
-### 2.5 Non-detection is not absence
+Conformal/reject methods and risk-controlling prediction sets can provide formal error guarantees under specified assumptions [@garciagalindo2024conformalreject; @szabadvary2025reject; @bates2021riskcontrol]. Confidence calibration is known to depend on model representation, and predictive uncertainty can degrade under dataset shift [@guo2017calibration; @ovadia2019shift].
 
-Occupancy and imperfect-detection methods established long ago that nondetection does not imply absence when detection probability is below one. Generalized occupancy models also handle both false-negative and false-positive observations.
+The TNOA nuisance experiment therefore supports a narrower claim: a historical raw threshold lost its registered operating meaning after representation change, while a **predeclared family-conditional false-attribution criterion** could be recalibrated on the new score representation and checked held-out. The observed rates `0/43,200` and `1,920/43,200 = 0.04444` are closed-world empirical checks. They are not classical family-wise error-rate control and not a distribution-free finite-sample guarantee.
 
-Therefore TNOA must not claim to be the first ecological framework to separate:
+### 2.5 Deterministic coarsening and partial-identification bounds are not TNOA inventions
 
-- biological state from observation;
-- nondetection from absence;
-- false-positive from false-negative observation errors.
+Blackwell's comparison of experiments formalizes information loss under garbling [@blackwell1953comparison]. Partial-identification theory formalizes identified sets when data and assumptions do not point-identify an estimand [@manski2005partial].
 
-### 2.6 Process and observation separation
+Therefore the statement that a deterministic coarsening cannot be more informative is structural prior art. TNOA's empirical result is the **magnitude and ecological consequence** of that information loss for its frozen observation experiment.
 
-Hierarchical and state-space ecological models explicitly distinguish latent ecological process from observation process/error.
+## 3. What remains distinct
 
-Therefore the process/observation split by itself is not a TNOA novelty.
+The residual object is not a generic uncertain label or a single continuous target-confidence score. TNOA defines an **upstream process-semantic observation contract** in which:
 
-### 2.7 Sensor fusion and evidence conflict
+1. T is positive support for the focal target process;
+2. N is separate positive support for an exogenous process that can mimic, mask, corrupt attribution or degrade support;
+3. T and N are non-complementary and may coexist;
+4. O is a measurement-support proposition rather than target confidence or nuisance burden;
+5. C is a local target-coupled response that is not promoted without independent attribution;
+6. A−, if used, requires independent positive support for absence;
+7. U retains reason provenance rather than serving only as a generic reject label;
+8. process-support decisions are calibrated to declared error semantics rather than inherited raw-score values;
+9. the resulting record is evaluated by the downstream ecological information lost when it is deliberately coarsened.
 
-Multisensor and evidential fusion methods already combine heterogeneous evidence and explicitly study conflict among sources.
+The strongest contribution is therefore functional rather than combinatorial: **define a process-semantic observation record upstream of ecological inference, then experimentally measure the decision-relevant information destroyed when that record is garbled to coarser vocabularies.**
 
-Therefore TNOA must not claim to invent conflict-aware sensor fusion.
+## 4. New post-freeze evidence motivated by this audit
 
-### 2.8 Adaptive / preferential sampling
+The prior-art comparison raised a question not answered by the original D1 analysis: if uncertain events and non-binary outputs are already known, does TNOA gain anything specifically from preserving the **reason** for unresolvedness?
 
-Adaptive ecological sampling and preferential-sampling literature already treats data-dependent observation as a design problem that can alter the sampled distribution.
+A deterministic post-freeze vocabulary ablation on the immutable V14b surface addresses that question. It is explicitly literature-audit-motivated and **not preregistered**. No observer, threshold or synthetic world was changed.
 
-Therefore the historical PolliPi/InsePi allocation work is not a basis for claiming invention of adaptive ecological sampling.
+Across the same 3,003 six-regime mixtures, median target-prevalence identification width was:
 
-## 3. What survives the audit
+- TARGET/not-TARGET: `0.2656`;
+- TARGET/NUISANCE/other: `0.1886`;
+- B/T/N/U: `0.02992`;
+- B/T/N/U with no-support and overlap/attribution U separated: `0.00408`.
 
-No audited neighbouring family was found that, in the ecological sensor-decision setting, simultaneously makes all of the following the explicit object of the method:
+For T+N co-occurrence prevalence the corresponding widths were `0.7231`, `0.5136`, `0.10494` and `0.01484`. Reason-resolved U reduced median width by a further `86.37%` for target prevalence and `85.86%` for T+N co-occurrence relative to generic B/T/N/U. All five fixed estimands and all 34 registered-axis slices are reported in `docs/OBSERVATION_VOCABULARY_ABLATION.md`.
 
-1. **T and N are positive, non-complementary process hypotheses.**
-2. **T+N coexistence is legitimate** and is not automatically converted to conflict, error, or one winning class.
-3. **O is a positive measurement-support variable** separate from target confidence and nuisance burden.
-4. **Low T cannot certify absence.**
-5. **A− is optional and must be independently supported** if certified absence is desired.
-6. **C is only usable when a local response is independently attributed** to the focal target interaction.
-7. **U has reasoned provenance**: unsupported evidence is distinct from overlap/attribution and from representation defects.
-8. **N is defined by finite process effects on inference** (mimic, mask, corrupt attribution, degrade support), not an open-ended cause list.
-9. **Operational boundaries are tied to false-certainty contracts** rather than inherited raw score scales.
-10. **Resolvability is measured over a dimensionless process phase space** after observer rules are frozen.
-11. **Failed generations are retained as scientific provenance** and constrain later claims.
+The nested never-wider direction is structural; the numerical reductions are the post-freeze empirical result.
 
-The defensible novelty is therefore the **integrated ecological sensing architecture and its experimentally frozen decision geometry**, not any one primitive.
+## 5. Nearest-neighbour comparison
 
-## 4. Strongest safe novelty statement
+The detailed comparison is retained in `docs/NEAREST_NEIGHBOUR_METHODS.md`. The key distinctions are:
 
-Preferred manuscript wording:
+- continuous-score occupancy preserves one classifier-score stream; TNOA preserves heterogeneous process propositions;
+- multievent/partial-observation ecology models uncertain observed events; TNOA constructs the upstream event vocabulary from sensor evidence;
+- multilabel abstention allows coexistence/refusal among labels; TNOA's channels make different propositions and have different evidential requirements;
+- Blackwell/Manski supply the information-ordering and identified-set language; TNOA contributes the frozen ecological observation experiment and measured loss magnitude.
 
-> TNOA integrates established ideas about imperfect observation, abstention and evidence uncertainty into a process-preserving ecological sensing architecture in which target and nuisance are independent positive hypotheses, observability is a separate measurement property, absence requires independent evidence if it is to be certified, and abstention is retained when the available channels do not license a unique biological statement. Its methodological contribution is the resulting decision contract and its frozen dimensionless resolvability geometry.
+## 6. Strongest safe novelty statement
 
-Shorter wording:
+> TNOA contributes a tested upstream ecological observation contract that separates positive target support, positive nuisance support, measurement observability, attribution-gated coupled response and independently supported absence; preserves reason-resolved unresolved observations before downstream analysis; calibrates process-support decisions against predeclared family-conditional errors; and quantifies under frozen known truth the decision-relevant information lost when this record is garbled to coarser observation vocabularies.
 
-> The novelty of TNOA lies in the integrated process/evidence architecture and frozen decision geometry, not in abstention, imperfect-detection correction or uncertainty representation individually.
+This wording deliberately does not claim priority for abstention, uncertain ecological events, continuous classifier scores, multilabel coexistence, calibration theory, information ordering or partial identification.
 
-## 5. Wording that is now prohibited
+## 7. Prohibited wording
 
 Do not write:
 
 - “TNOA is the first abstaining ecological classifier.”
-- “TNOA is the first method to separate process and observation.”
-- “TNOA introduces the idea that nondetection is not absence.”
-- “TNOA is the first method to represent ignorance or conflicting evidence.”
-- “TNOA uniquely allows multiple hypotheses.”
-- “No previous method can retain target and nuisance simultaneously.”
+- “TNOA is the first ecological method to retain uncertain observations.”
+- “TNOA is the first method to use non-binary classifier output in ecological inference.”
+- “TNOA is the first method to allow target and nuisance to coexist.”
+- “TNOA proves family-wise error-rate control.”
+- “TNOA provides a distribution-free risk guarantee.”
+- “TNOA discovers that richer deterministic records are never less informative.”
+- “No previous method can retain multiple hypotheses or conflicting evidence.”
 
-The last statement is too broad even though the audited nearest ecological-sensing literature did not reveal the same full architecture.
+## 8. Remaining uncertainty
 
-## 6. Most important neighbours to cite explicitly
+This audit reduces but cannot eliminate prior-art risk because it is targeted rather than systematic, relevant work may use different terminology, and adjacent results may exist in robotics, fault diagnosis, active perception, source separation or evidence theory. Those outer-ring literatures are reasons to avoid absolute priority claims, not reasons to delay Paper 1 until every technical field has been systematically reviewed.
 
-The manuscript should explicitly cite and distinguish at least:
-
-- El-Yaniv & Wiener 2010; Geifman & El-Yaniv 2017/2019; Hendrickx et al. 2024 — selective/reject classification;
-- Karlsson & Hössjer 2024 — partial/set-valued reject options;
-- García-Galindo et al. 2024 and Szabadváry et al. 2025 — conformal reject guarantees;
-- Geng et al. 2021 — open-set recognition;
-- Denœux 2019 and Gao et al. 2026 — belief/evidential uncertainty and decision under ignorance;
-- MacKenzie et al. 2002 — imperfect detection and nondetection/absence separation;
-- Royle & Link 2006 — simultaneous false-positive/false-negative occupancy errors;
-- Royle & Dorazio 2008; Auger-Méthé et al. 2021 — hierarchical/state-space process/observation separation;
-- Hofmeester et al. 2019; Findlay et al. 2020 — component detectability in camera sensing;
-- Henrys et al. 2024; Pescott 2025 — adaptive ecological sampling.
-
-## 7. Remaining uncertainty
-
-This audit reduces but cannot eliminate prior-art risk. TNOA should still avoid absolute priority claims because:
-
-- relevant work may exist under different terminology in robotics, fault diagnosis, active perception or evidence theory;
-- the audit is targeted, not systematic;
-- conceptual similarity does not require identical notation.
-
-This residual uncertainty is handled by claiming the tested **integration and decision geometry**, not historical priority for each concept.
+The paper should therefore claim a tested **ecological observation contract and measured coarsening consequence**, not historical ownership of its individual mathematical or machine-learning ingredients.
