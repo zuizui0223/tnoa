@@ -8,9 +8,6 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DRAFT = ROOT / "manuscript" / "TNOA_MEE_DRAFT.md"
 
-# Use only formulations that are unsafe regardless of surrounding negation.
-# The manuscript deliberately contains explicit priority disclaimers such as
-# "does not claim to be the first...", so naive first-X pattern matching is avoided.
 FORBIDDEN_PHRASES = (
     "tnoa is the first",
     "no previous method separates",
@@ -31,31 +28,34 @@ FORBIDDEN_PHRASES = (
     "insepi",
 )
 
-NUMERIC_CLAIM_REQUIREMENTS = {
-    "30,625": "C8",
-    "5,880,000": "C8",
-    "0.55": "C6",
-    "0.04444": "C7",
-    "43,200": "C7",
-    "1,920": "C7",
-    "3,003": "D1",
-    "99.63%": "D1",
-    "-0.238": "D1",
-    "`0.030`": "D1",
-    "`0.266`": "D1",
-    "84.45%": "D1",
-    "`0.00408`": "D3",
-    "`0.01484`": "D3",
-    "86.37%": "D3",
-    "85.86%": "D3",
-    "27/34": "D3",
-    "29/34": "D3",
-    "0.02675": "C10",
-    "0.22658": "C10",
-    "0.6431": "D2",
-    "0.0214": "D2",
-    "0.3569": "C13",
-    "0.196125": "C13",
+# A token may legitimately occur under more than one provenance ID when a later
+# post-freeze analysis reuses the same frozen design fact (e.g. the 3,003-mixture
+# simplex in both D1 and D3).
+NUMERIC_CLAIM_REQUIREMENTS: dict[str, tuple[str, ...]] = {
+    "30,625": ("C8",),
+    "5,880,000": ("C8",),
+    "0.55": ("C6",),
+    "0.04444": ("C7",),
+    "43,200": ("C7",),
+    "1,920": ("C7",),
+    "3,003": ("D1", "D3"),
+    "99.63%": ("D1",),
+    "-0.238": ("D1",),
+    "`0.030`": ("D1",),
+    "`0.266`": ("D1",),
+    "84.45%": ("D1",),
+    "`0.00408`": ("D3",),
+    "`0.01484`": ("D3",),
+    "86.37%": ("D3",),
+    "85.86%": ("D3",),
+    "27/34": ("D3",),
+    "29/34": ("D3",),
+    "0.02675": ("C10",),
+    "0.22658": ("C10",),
+    "0.6431": ("D2",),
+    "0.0214": ("D2",),
+    "0.3569": ("C13",),
+    "0.196125": ("C13",),
 }
 
 QUALIFICATION_CHECKS = (
@@ -98,13 +98,14 @@ def main() -> None:
             fail(f"forbidden priority/claim/anonymity phrase present: {phrase!r}")
 
     ps = paragraphs(text)
-    for token, claim_id in NUMERIC_CLAIM_REQUIREMENTS.items():
+    for token, claim_ids in NUMERIC_CLAIM_REQUIREMENTS.items():
         matched = [i for i, paragraph in enumerate(ps) if token in paragraph]
         if not matched:
             fail(f"expected central numerical claim token missing: {token}")
         for index in matched:
-            if not has_claim_tag(ps, index, claim_id):
-                fail(f"numerical claim {token} lacks {claim_id} traceability")
+            if not any(has_claim_tag(ps, index, claim_id) for claim_id in claim_ids):
+                allowed = "/".join(claim_ids)
+                fail(f"numerical claim {token} lacks {allowed} traceability")
 
     for pattern, claim_id, label in QUALIFICATION_CHECKS:
         for index, paragraph in enumerate(ps):
