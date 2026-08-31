@@ -52,19 +52,19 @@ Because the equal grid gives one fifth of Pi3 mass to zero and four fifths to po
 
 Thus 0.3569 is strongly determined by the registered grid composition. Likewise, the zero target false-positive rate follows the frozen positive-target observer on the registered non-target regimes and should not be presented as empirical specificity.
 
-C13 remains useful only as an illustration of what the **registered comparator** does when U is collapsed. The new prevalence-mixture analysis is the stronger downstream ecological result because it asks how much estimand information is lost across many latent-regime compositions rather than promoting one equal-grid miss rate.
+C13 remains useful only as an illustration of what the **registered comparator** does when U is collapsed. The prevalence-mixture analyses are the stronger downstream ecological result because they ask how much estimand information is lost across many latent-regime compositions rather than promoting one equal-grid miss rate.
 
-## 4. Revised result hierarchy
+## 4. Final result hierarchy
 
 ### Primary
 
-1. **C6 -> C7: representation ranking survived while inherited threshold meaning failed; a prefrozen family-wise false-certainty contract restored the declared error control.** This is the cleanest non-trivial methodological result because the failure was observed rather than built into the ontology.
-2. **Downstream synthetic estimand consequence:** collapsing B/T/N/U to binary discards information about latent target prevalence across the registered prevalence simplex; preserving the four observation states substantially narrows the known-truth partial-identification set in the frozen experiment.
+1. **C6 -> C7: representation ranking survived while inherited threshold meaning failed; a predeclared family-conditional false-attribution criterion restored the declared held-out operating meaning.** This is the cleanest non-trivial methodological result because the failure was observed rather than built into the ontology. The historical source files retain the development label `familywise`, but the manuscript does not claim classical FWER or distribution-free control.
+2. **D1/D3/D4 downstream information consequence:** progressively coarsening the process-preserving observation record widens the compatible sets for known ecological estimands. D1 establishes the B/T/N/U-versus-binary magnitude, D3 shows additional value in reason-resolved U, and D4 shows that the gain persists in rare-target compositions and under bounded reweighting of the 3,003 composition lattice. Deterministic never-wider ordering remains structural rather than a performance claim.
 3. **C2 negative result:** the preregistered narrow `Pi2 ~= 1` ambiguity ridge was not supported and was retired without modifying the generator to rescue it.
 
 ### Secondary
 
-4. **U reason composition:** overlap/attribution dominates no-support in the registered design and remains a majority under the tested density-ratio reweighting family.
+4. **U reason composition:** overlap/attribution dominates no-support in the registered design and remains a majority under the tested phase-space density-ratio reweighting family.
 5. **Pi1 reason substitution:** longer windows can reduce no-support while increasing overlap/attribution, but the exact pooled total-U curve is weighting-sensitive.
 6. **Uneven effective axis separation:** the registered six-coordinate design contains a binary-like Pi3 axis and weak Pi4/Pi5 marginal separation.
 
@@ -78,4 +78,4 @@ C13 remains useful only as an illustration of what the **registered comparator**
 
 ## 5. Consequence for the abstract
 
-The abstract should lead with the threshold/risk-contract result and the downstream estimand consequence. It may mention the robust U-reason composition and the failed Pi2 hypothesis. It should not use “non-monotonicity” as a headline result, should not present 0.3569 as method performance, and should treat 5.88M as design provenance rather than evidence magnitude.
+The abstract should lead with **C6/C7** and then the **D1/D3/D4 downstream information consequence**. The current rare-target sensitivity is useful because only `141/3003` simplex compositions have target prevalence `<=0.2`, yet the information-preservation advantage does not disappear there. The failed Pi2 hypothesis may follow as a credibility constraint. The abstract should not use “non-monotonicity” as a headline result, should not present 0.3569 as method performance, and should treat 5.88M as design provenance rather than evidence magnitude.
