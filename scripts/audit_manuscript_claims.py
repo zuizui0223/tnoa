@@ -24,13 +24,11 @@ FORBIDDEN_PHRASES = (
     "tnoa achieves zero false positives",
     "distribution-free guarantee provided by tnoa",
     "d3 was preregistered",
+    "d4 was preregistered",
     "pollipi",
     "insepi",
 )
 
-# A token may legitimately occur under more than one provenance ID when a later
-# post-freeze analysis reuses the same frozen design fact (e.g. the 3,003-mixture
-# simplex in both D1 and D3).
 NUMERIC_CLAIM_REQUIREMENTS: dict[str, tuple[str, ...]] = {
     "30,625": ("C8",),
     "5,880,000": ("C8",),
@@ -38,7 +36,7 @@ NUMERIC_CLAIM_REQUIREMENTS: dict[str, tuple[str, ...]] = {
     "0.04444": ("C7",),
     "43,200": ("C7",),
     "1,920": ("C7",),
-    "3,003": ("D1", "D3"),
+    "3,003": ("D1", "D3", "D4"),
     "99.63%": ("D1",),
     "-0.238": ("D1",),
     "`0.030`": ("D1",),
@@ -50,6 +48,12 @@ NUMERIC_CLAIM_REQUIREMENTS: dict[str, tuple[str, ...]] = {
     "85.86%": ("D3",),
     "27/34": ("D3",),
     "29/34": ("D3",),
+    "141/3003": ("D4",),
+    "4.70%": ("D4",),
+    "`0.07410`": ("D4",),
+    "`0.000175`": ("D4",),
+    "57.5%": ("D4",),
+    "40.0%": ("D4",),
     "0.02675": ("C10",),
     "0.22658": ("C10",),
     "0.6431": ("D2",),
@@ -133,6 +137,8 @@ def main() -> None:
         "not a distribution-free finite-sample guarantee",
         "continuous-score occupancy already shows",
         "multievent or partial-observation models already preserve uncertain ecological events",
+        "fixed validation budget",
+        "do not claim greater information per annotation",
     )
     for phrase in required_phrases:
         if phrase not in lower:
@@ -153,6 +159,8 @@ def main() -> None:
         fail("Results 3.2 must distinguish structural garbling from empirical loss magnitude")
     if "post-freeze vocabulary ablation" not in section32 or "not preregistered" not in section32:
         fail("Results 3.2 must label D3 as post-freeze/not-preregistered")
+    if "rare-target subset" not in section32 or "adversarially" not in section32:
+        fail("Results 3.2 must retain D4 prevalence/composition-weight sensitivity")
     if section32.find("`0.030`") > section32.find("99.63%"):
         fail("Results 3.2 must lead with identification-width magnitude before the secondary naive-bias diagnostic")
     if "not supported" not in results[third:].lower() or "pi2" not in results[third:].lower():
@@ -166,7 +174,7 @@ def main() -> None:
 
     print(
         "TNOA MEE manuscript claim scan OK: "
-        f"{len(ps)} paragraphs, {len(NUMERIC_CLAIM_REQUIREMENTS)} numeric provenance guards, D3 post-freeze boundary enforced"
+        f"{len(ps)} paragraphs, {len(NUMERIC_CLAIM_REQUIREMENTS)} numeric provenance guards, D3/D4 post-freeze boundaries enforced"
     )
 
 

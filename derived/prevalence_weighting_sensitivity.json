@@ -1,0 +1,45 @@
+{
+  "claim_boundary": [
+    "The simplex lattice remains a sensitivity design, not an ecological prior.",
+    "Prevalence-stratified results are descriptive of the frozen emission map and fixed composition lattice.",
+    "Composition-level density-ratio results vary composition weights only; they do not alter the observer, emission matrix, or latent regimes.",
+    "No field prevalence, field accuracy, annotation-budget efficiency, or universal superiority claim is made."
+  ],
+  "composition_density_ratio_sensitivity": {
+    "definition": "relative to uniform weighting of the 3,003 simplex compositions, each composition multiplier r satisfies 1/kappa <= r <= kappa and mean(r)=1; reported quantities are worst-case ratios of weighted mean width reductions, not weighted medians",
+    "kappa_values": [1.0, 1.25, 1.5, 1.6, 2.0, 3.0, 5.0, 10.0],
+    "minimum_fraction_width_removed": {
+      "1.0": {"btnu_vs_binary": 0.8426328123074449, "reason_resolved_vs_btnu": 0.8626480807663361},
+      "1.25": {"btnu_vs_binary": 0.8193720923010012, "reason_resolved_vs_btnu": 0.8375891832911027},
+      "1.5": {"btnu_vs_binary": 0.8002949977204383, "reason_resolved_vs_btnu": 0.8140432870028461},
+      "1.6": {"btnu_vs_binary": 0.7935380865781135, "reason_resolved_vs_btnu": 0.8049873666990087},
+      "2.0": {"btnu_vs_binary": 0.7700906123311534, "reason_resolved_vs_btnu": 0.7708146955815418},
+      "3.0": {"btnu_vs_binary": 0.7283885874098739, "reason_resolved_vs_btnu": 0.697458408491446},
+      "5.0": {"btnu_vs_binary": 0.6721071434505249, "reason_resolved_vs_btnu": 0.5846723154993992},
+      "10.0": {"btnu_vs_binary": 0.5746863884992289, "reason_resolved_vs_btnu": 0.4000338180837051}
+    }
+  },
+  "prevalence_lattice_counts": {"0.0": 11, "0.1": 40, "0.2": 90, "0.3": 160, "0.4": 245, "0.5": 336, "0.6": 420, "0.7": 480, "0.8": 495, "0.9": 440, "1.0": 286},
+  "prevalence_strata": {
+    "0.0": {"count": 11, "median_relative_reduction_btnu_vs_binary": null, "median_relative_reduction_reason_resolved_vs_btnu": null, "median_width_binary": 1.149026265326086e-16, "median_width_btnu": 0.0, "median_width_reason_resolved": 0.0, "median_width_target_nuisance_other": 0.0},
+    "0.1": {"count": 40, "median_relative_reduction_btnu_vs_binary": 1.0, "median_relative_reduction_reason_resolved_vs_btnu": 1.0, "median_width_binary": 0.04639491587121845, "median_width_btnu": 0.0, "median_width_reason_resolved": 0.0, "median_width_target_nuisance_other": 0.037049854392493156},
+    "0.2": {"count": 90, "median_relative_reduction_btnu_vs_binary": 0.8505597677418568, "median_relative_reduction_reason_resolved_vs_btnu": 1.0, "median_width_binary": 0.09413439977349965, "median_width_btnu": 0.017079579994473654, "median_width_reason_resolved": 0.0, "median_width_target_nuisance_other": 0.09266854877851491},
+    "0.3": {"count": 160, "median_relative_reduction_btnu_vs_binary": 0.8400290414851124, "median_relative_reduction_reason_resolved_vs_btnu": 1.0, "median_width_binary": 0.14052931564471788, "median_width_btnu": 0.02302795423467016, "median_width_reason_resolved": 0.0, "median_width_target_nuisance_other": 0.12983968613492977},
+    "0.4": {"count": 245, "median_relative_reduction_btnu_vs_binary": 0.843143859971742, "median_relative_reduction_reason_resolved_vs_btnu": 0.9290217448861898, "median_width_binary": 0.18826879954699915, "median_width_btnu": 0.029531117184696143, "median_width_reason_resolved": 0.0, "median_width_target_nuisance_other": 0.16945739362562706},
+    "0.5": {"count": 336, "median_relative_reduction_btnu_vs_binary": 0.8546900276727971, "median_relative_reduction_reason_resolved_vs_btnu": 0.9111185261891982, "median_width_binary": 0.23466371541821732, "median_width_btnu": 0.030093613125864338, "median_width_reason_resolved": 0.004077995920098443, "median_width_target_nuisance_other": 0.20638596505419843},
+    "0.6": {"count": 420, "median_relative_reduction_btnu_vs_binary": 0.8657665121439577, "median_relative_reduction_reason_resolved_vs_btnu": 0.9013682910210463, "median_width_binary": 0.28240319932049857, "median_width_btnu": 0.03485766786405087, "median_width_reason_resolved": 0.004077995920098498, "median_width_target_nuisance_other": 0.24038283449280057},
+    "0.7": {"count": 480, "median_relative_reduction_btnu_vs_binary": 0.8427549912686831, "median_relative_reduction_reason_resolved_vs_btnu": 0.8989535143407333, "median_width_binary": 0.3222028312570783, "median_width_btnu": 0.04734782008911398, "median_width_reason_resolved": 0.004077995920098498, "median_width_target_nuisance_other": 0.23106785714285738},
+    "0.8": {"count": 495, "median_relative_reduction_btnu_vs_binary": 0.852320273090314, "median_relative_reduction_reason_resolved_vs_btnu": 0.8956874482057586, "median_width_binary": 0.3203857142857145, "median_width_btnu": 0.05172572447889556, "median_width_reason_resolved": 0.004077995920098498, "median_width_target_nuisance_other": 0.22032857142857165},
+    "0.9": {"count": 440, "median_relative_reduction_btnu_vs_binary": 0.8345096203416218, "median_relative_reduction_reason_resolved_vs_btnu": 0.9185309253660767, "median_width_binary": 0.27766071428571437, "median_width_btnu": 0.0298233078819809, "median_width_reason_resolved": 0.004077995920098387, "median_width_target_nuisance_other": 0.1776607142857145},
+    "1.0": {"count": 286, "median_relative_reduction_btnu_vs_binary": 0.743782325775424, "median_relative_reduction_reason_resolved_vs_btnu": 0.907939007869935, "median_width_binary": 0.19612500000000005, "median_width_btnu": 0.030164197028812956, "median_width_reason_resolved": 0.004077995920098498, "median_width_target_nuisance_other": 0.1961250000000001}
+  },
+  "rare_target_subsets": {
+    "theta_le_0.1": {"count": 51, "median_relative_reduction_btnu_vs_binary": 1.0, "median_relative_reduction_reason_resolved_vs_btnu": 1.0, "median_width_binary": 0.03704985439249332, "median_width_btnu": 0.0, "median_width_reason_resolved": 0.0, "median_width_target_nuisance_other": 0.036928571428571436, "uniform_lattice_mass": 0.016983016983016984},
+    "theta_le_0.2": {"count": 141, "median_relative_reduction_btnu_vs_binary": 0.9952867029671435, "median_relative_reduction_reason_resolved_vs_btnu": 1.0, "median_width_binary": 0.07409970878498642, "median_width_btnu": 0.0001746269687759039, "median_width_reason_resolved": 0.0, "median_width_target_nuisance_other": 0.07385714285714287, "uniform_lattice_mass": 0.04695304695304695},
+    "theta_le_0.3": {"count": 301, "median_relative_reduction_btnu_vs_binary": 0.8662363748074378, "median_relative_reduction_reason_resolved_vs_btnu": 1.0, "median_width_binary": 0.11147995469988692, "median_width_btnu": 0.017079579994473654, "median_width_reason_resolved": 0.0, "median_width_target_nuisance_other": 0.09560025076848411, "uniform_lattice_mass": 0.10023310023310024}
+  },
+  "schema": "tnoa-prevalence-weighting-sensitivity-v1",
+  "source": {"coordinate_count": 30625, "mixture_count": 3003, "phase_surface_sha256": "1d2c7c1f8f7370aad3cdde4d9d9d47bf318b2a057b6f788d3a48df9ea8d16c34", "row_count": 183750, "simplex_step": 0.1, "workflow_run_id": 32932634622},
+  "status": "post-freeze design-sensitivity derivation from immutable V14b; no observer retuning; not preregistered",
+  "target_truth_vector": [0.0, 1.0, 0.0, 1.0, 1.0, 1.0]
+}

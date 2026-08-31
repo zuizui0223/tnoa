@@ -12,7 +12,7 @@ Authoritative source:
 - 183,750 coordinate × latent-regime rows;
 - 5,880,000 synthetic worlds.
 
-The executable derivation is `scripts/analyze_mee_synthetic_consequences.py`; the compact locked result is `derived/mee_synthetic_consequences.json`.
+The executable D1 derivation is `scripts/analyze_mee_synthetic_consequences.py`; the compact locked result is `derived/mee_synthetic_consequences.json`. D3 reason-resolution is in `scripts/analyze_observation_vocabulary_ablation.py`, and the D4 prevalence/composition-weight audit is in `scripts/analyze_prevalence_weighting_sensitivity.py`.
 
 ## 1. Downstream ecological estimand
 
@@ -57,7 +57,7 @@ Across the 3,003 synthetic regime compositions:
 - B/T/N/U was never wider than its binary collapse, as required because the binary observation is a deterministic coarsening of the full observation;
 - the true synthetic target prevalence remained inside the TNOA-compatible set for every enumerated composition.
 
-The result is not that TNOA magically estimates field prevalence. The result is narrower and more useful:
+The result is not that TNOA estimates field prevalence. The result is narrower:
 
 > **Collapsing reasoned observation states to a binary record can destroy information needed to identify an ecological prevalence, even when the underlying sensor emissions are perfectly calibrated.**
 
@@ -74,7 +74,15 @@ The same prevalence-simplex calculation was repeated after conditioning the froz
 
 These boundary cases should remain visible; the MEE claim is information preservation, not universal superiority of a four-state encoding.
 
-## 2. Equal-grid weighting sensitivity
+### Target-prevalence and composition-weight sensitivity
+
+The 3,003-point simplex is not uniform in target prevalence. Only `141/3003 = 4.70%` of compositions have known target prevalence `<=0.2`, so the global median by itself gives little weight to rare-target conditions.
+
+A post-freeze reviewer-motivated audit therefore stratified by known target prevalence and separately reweighted the composition lattice. In the `theta<=0.2` subset, median identification widths were `0.07410` for target/not-target, `0.07386` for target/nuisance/other, `0.000175` for B/T/N/U and `0.0` to numerical tolerance for reason-resolved U. Thus the information-preservation advantage does not disappear in the rare-target portion of this frozen simplex.
+
+We then placed a bounded density-ratio class directly on the 3,003 composition weights. At `kappa=10`, an adversarial composition weighting could not reduce the weighted-mean fraction of binary width removed by B/T/N/U below **0.575**, and could not reduce the additional fraction of generic-U width removed by reason-resolved U below **0.400**. These are worst-case weighted-mean ratios, not weighted medians and not ecological priors. Full values are in `docs/PREVALENCE_WEIGHTING_SENSITIVITY.md`.
+
+## 2. Phase-space/equal-grid weighting sensitivity
 
 ### Why this analysis is needed
 
@@ -100,11 +108,7 @@ Minimum possible overlap/attribution share of U within the reweighting class:
 | 5.0 | 0.611 |
 | 10.0 | 0.520 |
 
-Thus the statement
-
-> most U is associated with overlap/attribution rather than no-supported-evidence
-
-survives every tested reweighting through `kappa=10`. This is a substantially stronger MEE-facing result than the pooled `U=0.2533` frequency.
+Thus the statement that most U is associated with overlap/attribution rather than no-supported-evidence survives every tested reweighting through `kappa=10`.
 
 ### 2.2 Pi1 nonmonotonicity is not a robust headline
 
@@ -113,7 +117,7 @@ We ask whether one common reweighting over the Pi2-Pi6/regime strata can make to
 - impossible through `kappa=1.5`;
 - feasible at `kappa=1.6` and above in the tested grid.
 
-Therefore the original equal-grid statement that longer observation does not monotonically remove U remains a valid description of the registered design, but **it should not be promoted as a weighting-robust ecological law**. For MEE it belongs as a conditional/sensitivity result, not a headline conclusion.
+Therefore the original equal-grid statement that longer observation does not monotonically remove U remains a valid description of the registered design, but **it should not be promoted as a weighting-robust ecological law**.
 
 ### 2.3 The Pi2=1 pooled contrast is highly weight-sensitive
 
@@ -123,21 +127,19 @@ Define the local pooled contrast
 
 Under equal weighting it is only about `+0.00646`. With `kappa=1.25`, the admissible range already spans approximately `-0.0195` to `+0.0327`.
 
-This reinforces, rather than weakens, the retired narrow-ridge hypothesis: there is no stable global timescale-collision ridge whose sign survives even modest design-space reweighting.
+This reinforces the retired narrow-ridge hypothesis: there is no stable global timescale-collision ridge whose sign survives even modest design-space reweighting.
 
-## 3. Consequence for the MEE manuscript
+## 3. Final consequence for the MEE manuscript
 
-The main results should now be ordered as follows:
+The main results are ordered as follows:
 
-1. **Ecological consequence:** binary collapse biases naive target/visit prevalence downward and greatly broadens calibrated partial identification in most synthetic regime mixtures.
-2. **Robust decision geometry:** U is predominantly overlap/attribution across a broad explicit reweighting class.
-3. **Conditional geometry:** Pi1 nonmonotonicity is descriptive and weight-sensitive, so it is retained but demoted.
-4. **Negative result:** a narrow Pi2 collision ridge is not a stable property of the frozen design.
-5. **Structural boundary:** Pi3 zero/positive remains explicitly a consequence of the frozen direct-channel rule, not a field SNR law.
+1. **C6 -> C7 operational calibration result:** ranking survived a nuisance-representation change while the inherited raw threshold lost its operating meaning; a predeclared family-conditional false-attribution criterion restored the declared held-out semantics.
+2. **D1/D3/D4 downstream information consequence:** progressive observation coarsening widens compatible ecological estimands; reason-resolved U retains additional information; and the magnitude remains substantial in rare-target compositions and under bounded composition reweighting.
+3. **C2 negative result:** the preregistered narrow `Pi2` collision ridge was not supported.
+4. **Secondary geometry:** robust U-reason composition, conditional Pi1 reason substitution and uneven effective axis separation.
+5. **Structural/design diagnostics:** Pi3 zero/positive and C13 remain design-induced diagnostics, not method-performance headlines.
 
-This changes the paper's center of gravity from “a decision ontology plus a large simulation” to:
-
-> **preserving observation-process states prevents avoidable loss of ecological estimand information, and the frozen phase surface identifies when that preservation matters.**
+This aligns `MEE_SYNTHETIC_CONSEQUENCES.md`, `STRUCTURAL_RESULT_AUDIT.md`, the active manuscript and the claim-audit order.
 
 ## 4. Claim boundary
 
@@ -145,7 +147,8 @@ Allowed:
 
 - synthetic target-prevalence bias against known latent truth;
 - partial-identification width comparisons under the frozen calibrated emission map;
-- explicit bounded reweighting sensitivity;
+- prevalence-stratified summaries on the registered simplex;
+- explicit bounded reweighting sensitivity over both phase-space rows and simplex compositions;
 - axis-slice sensitivity within the registered synthetic grid.
 
 Still forbidden without external validation:
@@ -153,5 +156,6 @@ Still forbidden without external validation:
 - field visit prevalence or field abundance estimates;
 - field detection accuracy;
 - field biological absence certification;
-- a claim that the equal-grid emission matrix transfers numerically to another camera, site or taxon;
-- a universal claim that four-state TNOA is always more informative in practice than every calibrated binary model.
+- a claim that the frozen emission matrix transfers numerically to another camera, site or taxon;
+- a universal claim that four-state TNOA is always more informative in practice than every calibrated binary model;
+- a claim of greater information per annotation or per unit calibration cost, because the present comparison conditions on a frozen effectively known emission map.

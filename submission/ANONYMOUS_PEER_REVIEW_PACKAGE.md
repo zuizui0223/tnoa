@@ -4,14 +4,14 @@ This document defines the reviewer-facing package for the active MEE-focused TNO
 
 ## Current implementation
 
-The reviewer package is now executable rather than a manual checklist:
+The reviewer package is executable rather than a manual checklist:
 
 - `scripts/build_anonymous_review_bundle.py` builds a deterministic ZIP from the current MEE manuscript/package plus pinned upstream scientific source checkouts;
-- `scripts/validate_anonymous_review_bundle.py` verifies the internal hash registry, current MEE schemas, figure count, source commits and recursive identity scan;
+- `scripts/validate_anonymous_review_bundle.py` verifies the internal hash registry, current MEE schemas, D3/D4 boundaries, figure count, source commits and recursive identity scan;
 - CI checks out the two pinned upstream source commits and builds/validates the ZIP on every relevant pull request;
 - the CI artifact is a validation artifact only. The final reviewer ZIP must still be placed in the journal's private/reviewer-only location.
 
-The builder does **not** rerun the frozen 5.88M-world scientific generation.
+The builder does **not** rerun the frozen 5.88M-world scientific generation. D3 and D4 are deterministic post-freeze transformations/sensitivity analyses of the immutable surface and remain explicitly not preregistered.
 
 ## Build command
 
@@ -67,17 +67,27 @@ docs/
   MEE_FIGURE_VALIDATION.md
   MEE_SYNTHETIC_CONSEQUENCES.md
   STRUCTURAL_RESULT_AUDIT.md
+  OBSERVATION_VOCABULARY_ABLATION.md
+  PREVALENCE_WEIGHTING_SENSITIVITY.md
   REUSABLE_IMPLEMENTATION.md
+  FIELD_TRANSLATION_PATHWAY.md
+  NEAREST_NEIGHBOUR_METHODS.md
   MEE_VOCABULARY_MAP.md
 derived/
   mee_figure_data.json
   mee_synthetic_consequences.json
   structural_axis_audit.json
+  observation_vocabulary_ablation.json
+  prevalence_weighting_sensitivity.json
 scripts/
   audit_manuscript_claims.py
   validate_mee_figure_data.py
   validate_mee_synthetic_consequences.py
   validate_structural_axis_audit.py
+  validate_observation_vocabulary_ablation.py
+  validate_prevalence_weighting_sensitivity.py
+  analyze_observation_vocabulary_ablation.py
+  analyze_prevalence_weighting_sensitivity.py
   build_mee_figures.py
   validate_anonymous_review_bundle.py
 tnoa/
@@ -99,7 +109,7 @@ source_B/
 bundle_manifest.json
 ```
 
-The three `derived` files are copied byte-identically from the source-guarded TNOA repository. Pinned Source-B locked result summaries are also copied byte-identically after Git-blob verification. Reviewer-facing source code is sanitized only for identity-bearing owner/email/repository metadata; scientific code and parameter semantics are retained.
+The derived JSON files are copied byte-identically from the source-guarded TNOA repository. Pinned Source-B locked result summaries are also copied byte-identically after Git-blob verification. Reviewer-facing source code is sanitized only for identity-bearing owner/email/repository metadata; scientific code and parameter semantics are retained.
 
 ## Remove or replace for anonymity
 
@@ -121,8 +131,10 @@ Repository identities in the anonymous manifest are replaced by neutral `Source 
 The bundle supports three levels of checking without requiring a network connection:
 
 1. **Package integrity and anonymity:** validate the ZIP hash registry and identity scan.
-2. **Paper-result validation:** run the three derived-result/figure validators and the manuscript claim scanner.
+2. **Paper-result validation:** run D1–D4 derived-result validators, figure-data validator and manuscript claim scanner. D4 reproduces the rare-target strata and direct bounded reweighting of the 3,003 composition lattice.
 3. **Figure and API reproduction:** rebuild the MEE figures from the included pinned derived data and run the reusable `tnoa` API tests/CSV example.
+
+The D4 files also make the annotation-budget limitation auditable: the current comparison conditions on a frozen effectively known emission map and does not claim greater information per annotation or per unit calibration cost.
 
 The package is not required to reproduce the full historical 5.88M-world computation during routine peer review unless editors specifically request it. That generation remains defined by its prefrozen protocol plus immutable result/receipt and hashes.
 

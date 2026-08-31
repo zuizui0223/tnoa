@@ -77,7 +77,7 @@ Allowed frozen-design results include:
 - target-prevalence median widths `0.2656 -> 0.1886 -> 0.02992 -> 0.00408`;
 - target+nuisance co-occurrence median widths `0.7231 -> 0.5136 -> 0.10494 -> 0.01484`;
 - reason-resolved additional median-width reductions of approximately `86.37%` for target prevalence and `85.86%` for T+N co-occurrence relative to generic B/T/N/U;
-- all five prespecified-for-final-integration estimands in `derived/observation_vocabulary_ablation.json`;
+- all five estimands in `derived/observation_vocabulary_ablation.json`;
 - the registered 34-axis-slice summaries, including that reason-resolved U was never wider than generic U in all 34 slices and strictly improved the median in 27/34 target-prevalence slices and 29/34 slices for each other reported estimand.
 
 The nested never-wider relations are structural consequences of deterministic coarsening. The **numerical magnitude** of the width reductions is the post-freeze empirical result.
@@ -88,6 +88,33 @@ Not allowed:
 - claiming arbitrary weighting robustness from the 34 registered slices;
 - treating reason-resolved U as universally sufficient in field systems;
 - inferring field target/nuisance prevalence from the synthetic emission matrix.
+
+### A13. Post-freeze prevalence/composition-weight sensitivity (D4)
+
+Paper 1 may report the reviewer-motivated sensitivity analysis that conditions D1/D3 on known target prevalence and reweights the 3,003 regime compositions directly.
+
+D4 must always be described as **post-freeze and not preregistered**. It does not change the observer, emission matrix, thresholds, latent regimes or synthetic worlds.
+
+Allowed D4 results include:
+
+- only `141/3003 = 4.70%` of uniformly enumerated compositions have known target prevalence `<=0.2`;
+- in that rare-target subset, median target-prevalence width is `0.07410` for target/not-target, `0.07386` for target/nuisance/other, `0.000175` for B/T/N/U and `0.0` to numerical tolerance for reason-resolved U;
+- under direct composition-level bounded density-ratio reweighting at `kappa=10`, the worst-case weighted-mean fraction of binary width removed by B/T/N/U remains at least `57.5%`;
+- under the same `kappa=10` class, reason-resolved U removes at least a further `40.0%` of generic-U weighted-mean width.
+
+Required qualifications:
+
+- the 3,003-point lattice remains a sensitivity design, not an ecological prior;
+- the composition-level statistic is a worst-case **weighted-mean reduction ratio**, not a weighted median;
+- the bounded class does not imply robustness to arbitrary ecological prevalence distributions;
+- rare-target results are conditional on the frozen emission map and do not estimate field rarity or field prevalence.
+
+Not allowed:
+
+- calling D4 preregistered or confirmatory;
+- claiming the 3,003 compositions represent natural prevalence frequencies;
+- treating `kappa=10` as an ecological prior class;
+- claiming universal superiority under arbitrary composition weighting.
 
 ## B. Claims allowed only with explicit qualification
 
@@ -157,14 +184,15 @@ Not allowed without comparative empirical/benchmark evidence:
 
 Allowed:
 
-> A qualitative result is robust only within the explicitly reported reweighting class or registered axis slices actually tested.
+> A qualitative result is robust only within the explicitly reported reweighting class or registered slices/strata actually tested.
 
-For the current post-freeze analysis:
+For the current post-freeze analyses:
 
-- overlap/attribution dominance of U survives the tested density-ratio class through `kappa=10`;
+- overlap/attribution dominance of U survives phase-space-row reweighting through `kappa=10`;
 - the exact Pi1 total-U shape does **not** survive all moderate reweightings and must remain conditional;
 - the small pooled Pi2=1 contrast changes sign within the `kappa=1.25` admissible range and therefore cannot be presented as a stable ridge;
-- D3's 34 registered-axis slices demonstrate slice-level nesting and frequent strict median improvement, but do **not** establish arbitrary ecological weighting robustness.
+- D3's 34 registered-axis slices demonstrate slice-level nesting and frequent strict median improvement, but do not establish arbitrary ecological weighting robustness;
+- D4 separately shows the information-preservation magnitude by known target prevalence and under bounded reweighting of the 3,003 **composition** lattice through `kappa=10`.
 
 Not allowed:
 
@@ -176,12 +204,6 @@ Allowed:
 
 > The experiment used six registered dimensionless coordinates, but their marginal separation of the final B/T/N/U response was highly uneven in the frozen design.
 
-The post-freeze audit may report descriptive axis separation, including:
-
-- Pi3: five registered levels but two distinct marginal decision vectors, with the largest marginal total-variation shift;
-- Pi4 and Pi5: weak marginal separation in this generation;
-- Pi1, Pi2 and Pi6: intermediate changes in decision composition.
-
 Not allowed:
 
 > The ecological problem has exactly two (or any fixed number of) intrinsic dimensions.
@@ -192,7 +214,7 @@ Allowed wording:
 
 > The registered equal-grid comparator has target-present false-negative rate 0.3569, but this quantity is strongly design-compositional: `0.3569 = 0.2*1.0 + 0.8*0.196125` across the registered Pi3 levels.
 
-The zero target false-positive rate is likewise a property of the frozen positive-target observer on the registered non-target regimes. C13 is a **design diagnostic**, not a performance estimate. The downstream prevalence-mixture analysis is the stronger ecological consequence of binary coarsening.
+The zero target false-positive rate is likewise a property of the frozen positive-target observer on the registered non-target regimes. C13 is a **design diagnostic**, not a performance estimate.
 
 Not allowed:
 
@@ -200,25 +222,25 @@ Not allowed:
 
 ### B9. Fail-closed field translation pathway
 
-Paper 1 may describe a **prospective implementation sequence** that moves a new sensor domain toward calibrated TNOA inputs:
+Paper 1 may describe a **prospective implementation sequence** that moves a new sensor domain toward calibrated TNOA inputs. The pathway is implementation guidance, not a new result or field validation.
 
-1. preserve an interpretable primary scientific record;
-2. log raw T/N/O/C diagnostics without promoting them to calibrated support;
-3. retain pre-calibration observations as `U / field_calibration_pending` and keep TNOA acquisition actions inactive;
-4. establish independent biological-event, coupled-response, nuisance and observability truth;
-5. calibrate evidence channels on grouped development data against declared error criteria;
-6. freeze the calibration manifest before held-out days/scenes are scored;
-7. enable adaptive acquisition only after the observation semantics pass held-out validation.
+### B10. Annotation/calibration burden
 
-Allowed wording:
+The D1/D3/D4 information comparisons condition on a frozen, effectively known emission map. This is appropriate for isolating information loss caused by observation coarsening, but it does not answer a fixed-budget measurement-design question.
 
-> This fail-closed sequence is an implementation template for transferring the architecture to a new sensor system.
+Required limitation:
+
+> A richer observation vocabulary may require more annotation and calibration effort, and finite-sample uncertainty in a richer emission map could offset part of the identification gain under a fixed validation budget.
+
+Allowed:
+
+> Paper 1 compares information retained **conditional on the frozen calibrated emission map**.
 
 Not allowed:
 
-> The field translation pathway is empirically validated, the field thresholds are established, or the hardware implementation provides Paper-1 field-performance evidence.
+> TNOA provides more information per annotation, per unit cost or per field hour.
 
-The pathway is **implementation guidance, not a new result**. It must remain true even if future empirical validation is null or adverse.
+A finite-budget comparison would require a new specification for annotation allocation, grouped dependence, rare-state sampling and emission-matrix uncertainty.
 
 ## C. Claims not allowed in Paper 1
 
@@ -240,11 +262,13 @@ Do not claim:
 - statistical independence of target-side and nuisance-side implementation errors;
 - that every no-supported-evidence case is true information absence;
 - that nuisance is fully represented by the current synthetic process families;
-- that synthetic phase-space frequency equals natural ecological frequency;
+- that synthetic phase-space frequency or simplex composition frequency equals natural ecological frequency;
 - that 5.88M synthetic worlds substitute for external ecological validation;
 - that the equal-grid synthetic emission matrix transfers numerically to another camera, site, taxon or sensor domain;
 - that the six registered coordinates are six equally effective or intrinsic ecological dimensions;
 - that C13 is a field or transferable classifier-performance estimate;
+- that D3 or D4 is preregistered;
+- that the present analysis establishes information per annotation or cost efficiency;
 - that a development shadow implementation, hardware smoke test or prospective calibration protocol constitutes field validation.
 
 ## D. Terminology guardrails
@@ -262,6 +286,7 @@ Use:
 - `registered design space`, not `nature`, when reporting phase-surface frequencies;
 - `synthetic target-prevalence estimand`, not `field visit-rate estimate`, for the known-truth downstream analysis;
 - `post-freeze observation-vocabulary ablation`, not `preregistered vocabulary test`, for D3;
+- `post-freeze prevalence/composition-weight sensitivity`, not `ecological prevalence prior robustness`, for D4;
 - `bounded reweighting sensitivity`, not `prior robustness`, unless an actual ecological prior has been specified;
 - `design-compositional comparator rate`, not `performance`, for C13;
 - `field translation pathway` or `implementation template`, not `field validation`, for the prospective fail-closed deployment sequence.
@@ -276,8 +301,9 @@ Examples:
 - C indirect-rescue claims require independently validated attribution;
 - N field claims require effect-specific nuisance calibration;
 - absence claims require validated A− or an explicitly different study design;
-- **empirical** visit-rate claims require frozen split/exposure/sampling design and held-out estimates.
+- empirical visit-rate claims require frozen split/exposure/sampling design and held-out estimates;
+- fixed-budget annotation-efficiency claims require a preregistered allocation and emission-uncertainty design.
 
-The A11 synthetic known-truth estimand analysis, A12 post-freeze vocabulary ablation and B9 implementation pathway do not satisfy or bypass these empirical promotion rules.
+The A11 synthetic known-truth estimand analysis, A12 vocabulary ablation, A13 prevalence/composition sensitivity and B9 implementation pathway do not satisfy or bypass these empirical promotion rules.
 
 Paper 1 must remain valid if every later empirical result is null or adverse.
