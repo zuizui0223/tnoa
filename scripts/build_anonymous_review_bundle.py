@@ -44,19 +44,21 @@ TNOA_DOCS = (
     "docs/CLAIM_TRACEABILITY.md", "docs/FIGURE_PLAN.md",
     "docs/MEE_FIGURE_VALIDATION.md", "docs/MEE_SYNTHETIC_CONSEQUENCES.md",
     "docs/STRUCTURAL_RESULT_AUDIT.md", "docs/OBSERVATION_VOCABULARY_ABLATION.md",
-    "docs/REUSABLE_IMPLEMENTATION.md", "docs/FIELD_TRANSLATION_PATHWAY.md",
-    "docs/MEE_VOCABULARY_MAP.md",
+    "docs/PREVALENCE_WEIGHTING_SENSITIVITY.md", "docs/REUSABLE_IMPLEMENTATION.md",
+    "docs/FIELD_TRANSLATION_PATHWAY.md", "docs/MEE_VOCABULARY_MAP.md",
 )
 DERIVED = (
     "derived/mee_figure_data.json", "derived/mee_synthetic_consequences.json",
     "derived/structural_axis_audit.json", "derived/observation_vocabulary_ablation.json",
+    "derived/prevalence_weighting_sensitivity.json",
 )
 TNOA_SCRIPTS = (
     "scripts/audit_manuscript_claims.py", "scripts/validate_mee_figure_data.py",
     "scripts/validate_mee_synthetic_consequences.py", "scripts/validate_structural_axis_audit.py",
-    "scripts/validate_observation_vocabulary_ablation.py", "scripts/build_mee_figures.py",
-    "scripts/analyze_mee_synthetic_consequences.py", "scripts/analyze_structural_axis_audit.py",
-    "scripts/analyze_observation_vocabulary_ablation.py", "scripts/validate_anonymous_review_bundle.py",
+    "scripts/validate_observation_vocabulary_ablation.py", "scripts/validate_prevalence_weighting_sensitivity.py",
+    "scripts/build_mee_figures.py", "scripts/analyze_mee_synthetic_consequences.py",
+    "scripts/analyze_structural_axis_audit.py", "scripts/analyze_observation_vocabulary_ablation.py",
+    "scripts/analyze_prevalence_weighting_sensitivity.py", "scripts/validate_anonymous_review_bundle.py",
 )
 
 
@@ -139,20 +141,21 @@ def neutral_readme() -> str:
 
 This package supports double-anonymous review of the active MEE-focused TNOA methods paper. Public repository ownership is withheld; immutable scientific run IDs, hashes and artifact digests are retained.
 
-Included materials cover the anonymous manuscript, a parallel C/D-tagged audit source, expanded nearest-neighbour prior-art positioning, frozen/post-freeze derived analyses including the explicitly non-preregistered observation-vocabulary ablation, reproducible figure inputs/builders, and the minimal reusable API/CLI.
+Included materials cover the anonymous manuscript, a parallel C/D-tagged audit source, expanded nearest-neighbour prior-art positioning, frozen/post-freeze derived analyses including the explicitly non-preregistered D3 observation-vocabulary ablation and D4 prevalence/composition-weight sensitivity, reproducible figure inputs/builders, and the minimal reusable API/CLI.
 
 Fast checks:
 
 ```bash
 python scripts/validate_mee_synthetic_consequences.py
 python scripts/validate_observation_vocabulary_ablation.py
+python scripts/validate_prevalence_weighting_sensitivity.py
 python scripts/validate_structural_axis_audit.py
 python scripts/validate_mee_figure_data.py
 python scripts/audit_manuscript_claims.py
 python -m unittest discover -s tests -p 'test_*.py'
 ```
 
-The historical full phase-surface generation is intentionally not rerun for routine peer review. D3 is a deterministic post-freeze transformation of the immutable surface and is explicitly not preregistered.
+The historical full phase-surface generation is intentionally not rerun for routine peer review. D3 and D4 are deterministic post-freeze transformations/sensitivity analyses of the immutable surface and are explicitly not preregistered.
 """
 
 
@@ -304,6 +307,7 @@ def main() -> None:
             "double_anonymous": True,
             "scientific_claim_boundary_unchanged": True,
             "d3_status": "post-freeze/not-preregistered",
+            "d4_status": "post-freeze/not-preregistered design sensitivity",
             "source_snapshots": source_meta,
             "files": files,
         }
@@ -317,6 +321,7 @@ def main() -> None:
         "source_A_commit": SOURCE_A_COMMIT,
         "source_B_commit": SOURCE_B_COMMIT,
         "d3_status": "post-freeze/not-preregistered",
+        "d4_status": "post-freeze/not-preregistered design sensitivity",
     }
     receipt_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(f"Built anonymous review bundle: {zip_path}")
