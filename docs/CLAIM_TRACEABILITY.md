@@ -1,6 +1,6 @@
 # Claim-to-artifact traceability for TNOA Paper 1
 
-Every central Paper-1 claim must resolve to a locked source generation. This table is the manuscript-level guard against turning development intuition into a result claim.
+Every central Paper-1 claim must resolve to a locked source generation or an explicitly pinned post-freeze derivation. This table is the manuscript-level guard against turning development intuition into a result claim.
 
 | ID | Paper claim | Primary locked source | Supporting source / semantic guard | Status | Forbidden extension |
 | --- | --- | --- | --- | --- | --- |
@@ -9,8 +9,8 @@ Every central Paper-1 claim must resolve to a locked source generation. This tab
 | C3 | Direct-visible target+nuisance worlds retained strong target separability under the corrected observation-safe representation. | `v14a2_plateau_diagnosis_observation_safe_result.json`; workflow 32926639089 | target observer freeze | locked diagnostic | field target accuracy |
 | C4 | Indirect-only coupled response was not promoted to target support without an independent attribution channel. | `v14b_target_observer_direct_first_validation_v2_result.json`; workflow 32928566405 | V14c semantic clarification | frozen validation | “all indirect evidence is useless” |
 | C5 | The target-side frozen validation retained nuisance-only target support at zero and direct-visible target support at one under its registered closed-world design. | `v14b_target_observer_direct_first_validation_v2_result.json` | exact artifact digest in `paper_manifest.json` | frozen validation / structural observer behavior | probability calibration or field prevalence |
-| C6 | Inherited raw nuisance thresholds were not invariant across score-representation changes. | retained failed PR #43 + PR #44 diagnosis | family-wise risk freeze | supported development/falsification claim | “the nuisance representation itself failed” |
-| C7 | A family-wise alpha=0.05 nuisance decision contract passed its frozen held-out closed-world false-attribution gates. | `v14b_nuisance_familywise_risk_result.json`; workflow 32931223272 | `paper_manifest.json` | frozen validation | field nuisance threshold or field FPR |
+| C6 | Inherited raw nuisance thresholds were not invariant across score-representation changes. | retained failed PR #43 + PR #44 diagnosis | subsequent calibration sequence | supported development/falsification claim | “the nuisance representation itself failed” |
+| C7 | A predeclared family-conditional alpha=0.05 nuisance false-attribution criterion passed its frozen held-out closed-world gates (`0/43,200` and `1,920/43,200`). | historically named `v14b_nuisance_familywise_risk_result.json`; workflow 32931223272 | `paper_manifest.json` + `CLAIM_BOUNDARY.md` | frozen validation | classical FWER, distribution-free guarantee, field nuisance threshold or field FPR |
 | C8 | The final frozen phase surface contains 30,625 coordinates and 5,880,000 synthetic worlds with observers not retuned after freeze. | `v14b_frozen_ternary_phase_surface_result.json`; workflow 32932634622 | artifact digest + phase-surface SHA in manifest | design/provenance fact | evidence strength or ecological frequency estimate |
 | C9 | Under equal-grid/equal-regime weighting, the final design-space summary is approximately B=0.2302, T=0.4287, N=0.0877, U=0.2533. | `v14b_frozen_ternary_phase_surface_result.json` | V14c semantic clarification + weighting audit | descriptive locked result | natural prevalence or field decision rate |
 | C10 | Most U in that frozen design-space summary is overlap/attribution U rather than the historical no-support category. | final ternary surface | V14c semantic clarification + bounded reweighting audit | descriptive result robust within tested weighting class | universal cause of ecological uncertainty |
@@ -22,22 +22,27 @@ Every central Paper-1 claim must resolve to a locked source generation. This tab
 
 ## Post-freeze derived analyses
 
-These analyses do not change C1–C15 or the frozen observers. They qualify how the locked results may be interpreted.
+These analyses do not change C1–C15 or the frozen observers. Their provenance labels are part of the claim boundary.
 
-- `derived/mee_synthetic_consequences.json`: known-truth synthetic target-prevalence consequence and bounded weighting sensitivity.
-- `derived/structural_axis_audit.json`: Pi1 U-reason decomposition, marginal axis-separation audit, and C13 Pi3 composition identity.
+- **D1 — `derived/mee_synthetic_consequences.json`:** known-truth synthetic target-prevalence consequence plus phase-space-row bounded weighting sensitivity. The deterministic never-wider direction is structural; the empirical result is the magnitude of width loss.
+- **D2 — `derived/structural_axis_audit.json`:** Pi1 U-reason decomposition, marginal axis-separation audit, and C13 Pi3 composition identity.
+- **D3 — `derived/observation_vocabulary_ablation.json`:** literature-audit-motivated post-freeze/not-preregistered progressive vocabulary ablation. It reports four nested vocabularies, five estimands and all 34 registered axis slices.
+- **D4 — `derived/prevalence_weighting_sensitivity.json`:** reviewer-motivated post-freeze/not-preregistered target-prevalence stratification and direct bounded reweighting of the 3,003 simplex compositions. It also fixes the annotation-budget boundary: no information-per-annotation/cost claim follows from a known-emission comparison.
 
-The downstream prevalence result is stronger than C13 as an ecological consequence of binary coarsening because it evaluates information loss across 3,003 latent-regime compositions rather than elevating one equal-grid comparator rate.
+The final primary result hierarchy is **C6/C7 → D1/D3/D4 → C2**. D2, C10 and C11 provide secondary interpretation; C13 remains a design diagnostic.
 
 ## Manuscript rule
 
-A sentence that asserts an empirical/simulation result must cite at least one C-ID internally during drafting or point explicitly to a registered post-freeze derived analysis. Conceptual framing can cite framework sections, but if it contains a number, direction of effect, pass/fail statement or claim of observed structure it must map to a locked C-ID or pinned derived result.
+A sentence that asserts an empirical/simulation result must cite at least one C-ID internally during drafting or point explicitly to a registered post-freeze derived analysis. Conceptual framing can cite framework sections, but if it contains a number, direction of effect, pass/fail statement or claim of observed structure it must map to a locked C-ID or pinned D-ID.
+
+D3 and D4 must never be called preregistered or confirmatory. D4 prevalence strata and composition-level `kappa` results are conditional on the frozen emission map and registered simplex, not estimates of natural prevalence weighting.
 
 ## Results that must remain in the supplement or development ledger
 
 - the PR #40 target-separability diagnostic invalidated by truth leakage;
 - PR #43 nuisance v1 failure;
-- any V15 development calibration or field result unless Paper 1 scope is explicitly revised.
+- any V15 development calibration or field result unless Paper 1 scope is explicitly revised;
+- any future fixed-annotation-budget comparison unless it receives a separate frozen measurement-design specification.
 
 ## Claim audit rule
 
@@ -45,4 +50,4 @@ Before submission, scan the manuscript for the following terms and require a tra
 
 - `shows`, `demonstrates`, `proves`, `supports`, `falsifies`, `improves`, `reduces`, `increases`;
 - percentages, rates, thresholds and world counts;
-- `field`, `general`, `universal`, `optimal`, `absence`, `probability`, `performance`, `dimension`.
+- `field`, `general`, `universal`, `optimal`, `absence`, `probability`, `performance`, `dimension`, `annotation`, `budget`, `prevalence`, `weighting`.
