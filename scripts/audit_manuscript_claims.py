@@ -13,6 +13,10 @@ FORBIDDEN_PHRASES = (
     "first abstaining ecological classifier",
     "first framework to separate process and observation",
     "introduces the idea that nondetection is not absence",
+    "first ecological method to retain uncertain observations",
+    "first non-binary use of machine-learning output",
+    "first continuous-score ecological",
+    "first method to allow target and nuisance to coexist",
     "no previous method separates",
     "uniquely represents ignorance",
     "first method to retain multiple hypotheses",
@@ -26,6 +30,8 @@ FORBIDDEN_PHRASES = (
     "field-calibrated tnoa",
     "six-dimensional ecological complexity",
     "tnoa achieves zero false positives",
+    "distribution-free guarantee provided by tnoa",
+    "d3 was preregistered",
     "pollipi",
     "insepi",
 )
@@ -35,12 +41,20 @@ NUMERIC_CLAIM_REQUIREMENTS = {
     "5,880,000": "C8",
     "0.55": "C6",
     "0.04444": "C7",
+    "43,200": "C7",
+    "1,920": "C7",
     "3,003": "D1",
     "99.63%": "D1",
     "-0.238": "D1",
     "`0.030`": "D1",
     "`0.266`": "D1",
     "84.45%": "D1",
+    "`0.00408`": "D3",
+    "`0.01484`": "D3",
+    "86.37%": "D3",
+    "85.86%": "D3",
+    "27/34": "D3",
+    "29/34": "D3",
     "0.02675": "C10",
     "0.22658": "C10",
     "0.6431": "D2",
@@ -117,14 +131,18 @@ def main() -> None:
         "do not transfer automatically to another device",
         "implementation guidance, not field validation",
         "no field result from such a deployment is used as evidence in paper 1",
-        "mathematical property of the two representations, not an empirical performance result",
-        "the empirical result is the size of that advantage",
+        "deterministic coarsening cannot make the retained record more informative",
+        "the empirical result is the size of the information loss",
+        "post-freeze and not preregistered",
+        "not a distribution-free finite-sample guarantee",
+        "continuous-score occupancy already shows",
+        "multievent or partial-observation models already preserve uncertain ecological events",
     )
     for phrase in required_phrases:
         if phrase not in lower:
             fail(f"required qualification missing: {phrase!r}")
 
-    # Result hierarchy must stay MEE-facing: C6/C7 -> D1 -> C2.
+    # Result hierarchy must stay MEE-facing: C6/C7 -> D1+D3 -> C2.
     results = text.split("## 3. Results", 1)[-1].split("## 4. Discussion", 1)[0]
     first = results.find("### 3.1")
     second = results.find("### 3.2")
@@ -134,18 +152,27 @@ def main() -> None:
     if "inherited raw threshold" not in results[first:second].lower():
         fail("Results 3.1 must lead with the inherited-threshold failure")
     section32 = results[second:third].lower()
-    if "target prevalence" not in section32:
+    if "target-prevalence" not in section32 and "target prevalence" not in section32:
         fail("Results 3.2 must lead with the downstream ecological estimand")
-    if "the empirical result is the size of that advantage" not in section32:
-        fail("Results 3.2 must distinguish the coarsening guarantee from the empirical magnitude")
+    if "the empirical result is the size of the information loss" not in section32:
+        fail("Results 3.2 must distinguish structural garbling from empirical loss magnitude")
+    if "post-freeze vocabulary ablation" not in section32 or "not preregistered" not in section32:
+        fail("Results 3.2 must label D3 as post-freeze/not-preregistered")
     if section32.find("`0.030`") > section32.find("99.63%"):
         fail("Results 3.2 must lead with identification-width magnitude before the secondary naive-bias diagnostic")
     if "not supported" not in results[third:].lower() or "pi2" not in results[third:].lower():
         fail("Results 3.3 must retain the preregistered Pi2 negative result")
 
+    # Calibration language must distinguish historical labels from the manuscript's inferential claim.
+    section31 = results[first:second].lower()
+    if "predeclared family-conditional" not in section31:
+        fail("Results 3.1 must use family-conditional calibration semantics")
+    if "distribution-free" not in section31:
+        fail("Results 3.1 must deny distribution-free guarantee")
+
     print(
         "TNOA MEE manuscript claim scan OK: "
-        f"{len(ps)} paragraphs, {len(NUMERIC_CLAIM_REQUIREMENTS)} numeric provenance guards"
+        f"{len(ps)} paragraphs, {len(NUMERIC_CLAIM_REQUIREMENTS)} numeric provenance guards, D3 post-freeze boundary enforced"
     )
 
 
