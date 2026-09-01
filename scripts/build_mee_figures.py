@@ -65,11 +65,11 @@ def fig2c_error_control(data: dict, out_dir: Path) -> None:
     x = [0, 1]
     ax.bar(x, [pooled["coupled_negative_fpr"], family["coupled_negative_fpr"]])
     ax.axhline(pooled["alpha"], linestyle="--", label=r"Prespecified $\alpha=0.05$")
-    ax.set_xticks(x, ["Pooled\ncalibration", "Family-wise\ncalibration"])
+    ax.set_xticks(x, ["Pooled\ncalibration", "Family-conditional\ncalibration"])
     ax.set_ylabel("Held-out false nuisance attribution")
     ax.set_ylim(0, 0.105)
     ax.legend(frameon=False)
-    ax.set_title("Family-wise calibration met the declared error criterion")
+    ax.set_title("Family-conditional calibration met the declared criterion")
     _save(fig, out_dir, "fig2c_error_control")
 
 

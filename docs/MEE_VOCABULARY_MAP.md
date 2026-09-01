@@ -24,17 +24,17 @@ This file fixes the language used in the MEE manuscript. The mathematical object
 | latent regime mixture | synthetic composition of ecological/observation regimes | closer to population composition |
 | representation change | change in nuisance-score representation | concrete wording |
 | inherited raw threshold | threshold copied from an earlier score scale | makes failure mechanism explicit |
-| family-wise false-certainty budget | prespecified family-wise false-attribution rate | statistical wording |
+| historical `family-wise` false-certainty budget | predeclared family-conditional false-attribution criterion / max-over-predeclared-negative-families calibration | avoids implying classical FWER; historical source labels remain provenance only |
 
 ## Manuscript framing rules
 
 1. Start from the downstream ecological problem: automated sensors emit observations that later feed occupancy, interaction-rate or other ecological models.
 2. Describe B/T/N/U as **observation states**, not natural classes.
 3. Use `unresolved observation` before `abstention`; reserve `abstention` for connection to machine-learning literature.
-4. Introduce the error-rate calibration as a prespecified false-attribution criterion before using the internal phrase `risk contract`.
+4. Introduce the calibration as a predeclared family-conditional false-attribution criterion; do not use the historical `family-wise` label as a reader-facing statistical claim.
 5. Present the known-truth prevalence analysis as an observation-model coarsening experiment: retaining four observation states versus collapsing them to target/not-target.
 6. Treat the six Pi axes as experimental coordinates. Do not imply equal importance or intrinsic dimensionality.
 7. Treat the 30,625-coordinate / 5.88M count as reproducibility and design-coverage information, not a headline result.
 8. C13 is not a performance claim. If reported, immediately give its Pi3 composition identity.
 9. The Pi1 result is reason substitution, not generic non-monotonicity: after Pi1=1, no-support U declines while overlap/attribution rises.
-10. The strongest result order is: nuisance threshold-scale failure and prespecified error control -> downstream ecological estimand information loss -> preregistered Pi2 negative result -> robust U reason composition.
+10. The strongest result order is: C6/C7 threshold-meaning failure and family-conditional calibration -> D1/D4 downstream information-loss magnitude and prevalence/weight conditions -> C2 preregistered negative result. D3/D5 are a supporting self-critical refinement control, followed by secondary U-reason/design diagnostics.

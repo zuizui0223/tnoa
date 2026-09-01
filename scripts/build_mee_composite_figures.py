@@ -62,11 +62,11 @@ def figure2(data: dict, out: Path) -> None:
     family = d["familywise_risk_calibration"]
     axes[2].bar([0, 1], [pooled["coupled_negative_fpr"], family["coupled_negative_fpr"]])
     axes[2].axhline(pooled["alpha"], linestyle="--", label=r"Prespecified $\alpha=0.05$")
-    axes[2].set_xticks([0, 1], ["Pooled", "Family-wise"])
+    axes[2].set_xticks([0, 1], ["Pooled", "Family-conditional"])
     axes[2].set_ylabel("Held-out false nuisance attribution")
     axes[2].set_ylim(0, 0.105)
     axes[2].legend(frameon=False)
-    axes[2].set_title("Family-wise calibration met the error criterion")
+    axes[2].set_title("Family-conditional calibration met the criterion")
     _label(axes[2], "c")
     _save(fig, out, "Figure2_nuisance_calibration")
 
