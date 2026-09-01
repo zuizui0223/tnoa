@@ -49,7 +49,7 @@ The same conclusion is not specific to target prevalence.
 | coupled-response prevalence | `0.0751011` | `0.0211813` | `0.672` |
 | any-deviation prevalence | `0.0018694` | `0.0022955` | `0.480` |
 
-For coupled-response prevalence, the frozen semantic split was actually less informative than the median arbitrary split. D5 therefore provides no basis for claiming a semantic-specific information advantage of the two frozen reason labels.
+For coupled-response prevalence, the frozen semantic split was actually less informative than the median arbitrary split. D5 therefore provides no basis for claiming a semantic-specific information advantage of the two frozen reason labels. **The D3 refinement gain is therefore not semantic-specific in this frozen experiment.**
 
 ## Rank / null-space mechanism
 
