@@ -1,26 +1,23 @@
 # Anonymous peer-review code/data package
 
-This document defines the reviewer-facing package for the active MEE-focused TNOA paper. It is intentionally separate from the public source repository so that double-anonymous review does not depend on an author-identifying repository URL.
+This document defines the reviewer-facing package for the active MEE-focused TNOA paper. It is separate from the public source repository so double-anonymous review does not depend on an owner-identifying URL.
 
 ## Current implementation
 
-The reviewer package is executable rather than a manual checklist:
+- `scripts/build_anonymous_review_bundle.py` builds a deterministic ZIP from the current manuscript/package and pinned upstream checkouts.
+- `scripts/validate_anonymous_review_bundle.py` verifies the internal hash registry, manifest v9, D3–D5 boundaries, figure count, source commits and recursive identity scan.
+- CI builds and validates the ZIP on every relevant pull request.
+- The CI artifact is validation only; the final ZIP must be uploaded to the journal's private/reviewer-only location.
+- The builder does not rerun the frozen 5.88M-world generation.
 
-- `scripts/build_anonymous_review_bundle.py` builds a deterministic ZIP from the current MEE manuscript/package plus pinned upstream scientific source checkouts;
-- `scripts/validate_anonymous_review_bundle.py` verifies the internal hash registry, current MEE schemas, D3/D4 boundaries, figure count, source commits and recursive identity scan;
-- CI checks out the two pinned upstream source commits and builds/validates the ZIP on every relevant pull request;
-- the CI artifact is a validation artifact only. The final reviewer ZIP must still be placed in the journal's private/reviewer-only location.
+D3, D4 and D5 are all post-freeze and not preregistered. D5 is the explicit control preventing D3's extra narrowing from being interpreted as a semantic-specific reason-information premium.
 
-The builder does **not** rerun the frozen 5.88M-world scientific generation. D3 and D4 are deterministic post-freeze transformations/sensitivity analyses of the immutable surface and remain explicitly not preregistered.
+## Build
 
-## Build command
-
-Provide local checkouts at the exact registered commits:
+Pinned source checkouts:
 
 - Source A: `f3b266897f3e9139e6c3fe9ce6b645e25371e092`;
 - Source B: `1664a190cec47142e8d14cc5157302a7af18d019`.
-
-Then run:
 
 ```bash
 python -m pip install -r requirements-figures.txt
@@ -30,120 +27,50 @@ python scripts/build_anonymous_review_bundle.py \
   --output-dir submission/generated/review_bundle
 ```
 
-Immediately before journal upload, add every author/institution literal that must not survive anonymization:
+Immediately before journal upload, pass every author/institution literal through the repeatable `--forbid-literal` option. The build fails if a supplied literal survives anywhere in reviewer-facing text.
 
-```bash
-python scripts/build_anonymous_review_bundle.py \
-  --source-a-root /path/to/source_A \
-  --source-b-root /path/to/source_B \
-  --forbid-literal "AUTHOR NAME" \
-  --forbid-literal "INSTITUTION NAME" \
-  --output-dir submission/generated/review_bundle
-```
+## Scientific materials included
 
-`--forbid-literal` is repeatable. The build fails if a supplied literal survives anywhere in reviewer-facing text.
-
-## Bundle contents
-
-The v2 ZIP contains, at minimum:
+The ZIP contains the anonymous manuscript plus a C/D-tagged audit source, `paper_manifest.json`, references, figure data/builders, the reusable API/CLI, pinned source snapshots and all current derived controls. In particular it includes:
 
 ```text
-README.md
-LICENSE
-paper_manifest.json
-paper_manifest.anonymous.json
-references.bib
-requirements-figures.txt
-requirements-analysis.txt
-pyproject.toml
-manuscript/
-  MEE_ANONYMOUS_MANUSCRIPT.md
-  TNOA_MEE_DRAFT.md              # parallel C/D-tagged audit source
-docs/
-  CONCEPTUAL_FRAMEWORK.md
-  CLAIM_BOUNDARY.md
-  CLAIM_TRACEABILITY.md
-  FIGURE_PLAN.md
-  MEE_FIGURE_VALIDATION.md
-  MEE_SYNTHETIC_CONSEQUENCES.md
-  STRUCTURAL_RESULT_AUDIT.md
-  OBSERVATION_VOCABULARY_ABLATION.md
-  PREVALENCE_WEIGHTING_SENSITIVITY.md
-  REUSABLE_IMPLEMENTATION.md
-  FIELD_TRANSLATION_PATHWAY.md
-  NEAREST_NEIGHBOUR_METHODS.md
-  MEE_VOCABULARY_MAP.md
-derived/
-  mee_figure_data.json
-  mee_synthetic_consequences.json
-  structural_axis_audit.json
-  observation_vocabulary_ablation.json
-  prevalence_weighting_sensitivity.json
-scripts/
-  audit_manuscript_claims.py
-  validate_mee_figure_data.py
-  validate_mee_synthetic_consequences.py
-  validate_structural_axis_audit.py
-  validate_observation_vocabulary_ablation.py
-  validate_prevalence_weighting_sensitivity.py
-  analyze_observation_vocabulary_ablation.py
-  analyze_prevalence_weighting_sensitivity.py
-  build_mee_figures.py
-  validate_anonymous_review_bundle.py
-tnoa/
-  __init__.py
-  core.py
-  cli.py
-tests/
-  test_minimal_api.py
-examples/
-  minimal_evidence.csv
-figures/
-  fig1_tnoa_architecture.svg
-  generated/                    # 8 PNG + 8 SVG + figure_provenance.json
-source_A/
-  target_evidence.py
-source_B/
-  benchmarks/                   # pinned locked result summaries
-  src/, scripts/, tests/        # anonymized scientific source snapshot
-bundle_manifest.json
+docs/OBSERVATION_VOCABULARY_ABLATION.md
+docs/PREVALENCE_WEIGHTING_SENSITIVITY.md
+docs/REASON_SPLIT_SPECIFICITY_CONTROL.md
+docs/REUSABLE_IMPLEMENTATION.md
+derived/observation_vocabulary_ablation.json
+derived/prevalence_weighting_sensitivity.json
+derived/reason_split_specificity_control.json
+scripts/analyze_observation_vocabulary_ablation.py
+scripts/validate_observation_vocabulary_ablation.py
+scripts/analyze_prevalence_weighting_sensitivity.py
+scripts/validate_prevalence_weighting_sensitivity.py
+scripts/analyze_reason_split_specificity_control.py
+scripts/validate_reason_split_specificity_control.py
 ```
 
-The derived JSON files are copied byte-identically from the source-guarded TNOA repository. Pinned Source-B locked result summaries are also copied byte-identically after Git-blob verification. Reviewer-facing source code is sanitized only for identity-bearing owner/email/repository metadata; scientific code and parameter semantics are retained.
-
-## Remove or replace for anonymity
-
-The package must not contain:
-
-- public repository owner/user names;
-- author names or initials that reveal identity;
-- author email addresses;
-- institutional names/addresses;
-- ORCID identifiers;
-- acknowledgements that identify the authors;
-- public GitHub URLs that expose ownership;
-- Git commit author metadata exported into the review package.
-
-Repository identities in the anonymous manifest are replaced by neutral `Source A` / `Source B` labels while immutable commits, workflow/run IDs, artifact digests and result hashes are retained.
+The derived JSON files are copied byte-identically. Reviewer-facing source is sanitized only for identity-bearing metadata; scientific semantics are retained.
 
 ## Reviewer reproduction targets
 
-The bundle supports three levels of checking without requiring a network connection:
+1. **Package/anonymity:** validate ZIP hashes and identity scan.
+2. **Primary science:** validate C6/C7 provenance and D1/D4 information-loss results.
+3. **Self-critical refinement control:** validate D3 and then D5. D5 must reproduce target-prevalence random two-way median `0.0050075`, `48.0%` random equal-or-better fraction and the full-rank three-way control.
+4. **Reason-vocabulary boundary:** inspect `docs/REUSABLE_IMPLEMENTATION.md`; the frozen surface has two U reason buckets while the current API exposes four, with no one-to-one four-way empirical validation claimed.
+5. **Figures/API:** rebuild figures and run API/CLI tests.
 
-1. **Package integrity and anonymity:** validate the ZIP hash registry and identity scan.
-2. **Paper-result validation:** run D1–D4 derived-result validators, figure-data validator and manuscript claim scanner. D4 reproduces the rare-target strata and direct bounded reweighting of the 3,003 composition lattice.
-3. **Figure and API reproduction:** rebuild the MEE figures from the included pinned derived data and run the reusable `tnoa` API tests/CSV example.
+The D4/D5 files also expose current limitations: the information comparisons condition on a frozen effectively known emission map and do not establish information per annotation/cost, and D3 does not isolate a semantic-specific advantage of the frozen reason labels.
 
-The D4 files also make the annotation-budget limitation auditable: the current comparison conditions on a frozen effectively known emission map and does not claim greater information per annotation or per unit calibration cost.
+## Anonymity rules
 
-The package is not required to reproduce the full historical 5.88M-world computation during routine peer review unless editors specifically request it. That generation remains defined by its prefrozen protocol plus immutable result/receipt and hashes.
+The reviewer package must not contain author names, emails, institutions, ORCIDs, acknowledgements revealing identity, owner-identifying public repository URLs or commit-author metadata. Neutral Source A / Source B labels replace repository identities while immutable commits, workflow IDs, digests and result hashes remain.
 
 ## Final pre-upload procedure
 
-1. Complete the separate title page first so the full author/institution literal set is known.
-2. Rebuild the bundle with each identifying literal passed through `--forbid-literal`.
-3. Confirm the generated `.receipt.json` SHA-256 and ZIP size.
+1. Complete the separate title page so all author/institution literals are known.
+2. Rebuild with each literal supplied via `--forbid-literal`.
+3. Verify the receipt SHA-256.
 4. Run `scripts/validate_anonymous_review_bundle.py` on the final ZIP.
-5. Upload the ZIP only to the private/reviewer-only location required by the journal.
+5. Upload only to the journal's reviewer-only/private location.
 
-The public CI-generated bundle must not be treated as the final reviewer delivery location.
+The public CI-generated bundle is not the final delivery location.
