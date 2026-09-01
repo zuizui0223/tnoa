@@ -179,8 +179,8 @@ def main() -> None:
     if "distribution-free" not in section31:
         fail("Results 3.1 must deny distribution-free guarantee")
 
-    discussion = text.split("## 4. Discussion", 1)[-1]
-    if "current experiment does not show that the size of that gain is specific to the selected reason semantics" not in discussion.lower():
+    discussion = text.split("## 4. Discussion", 1)[-1].lower()
+    if "does not show that the size of that gain is specific to the selected reason semantics" not in discussion:
         fail("Conclusions must demote semantic-specific D3 interpretation")
 
     print(
