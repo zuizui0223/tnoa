@@ -1,7 +1,7 @@
 {
-  "schema": "tnoa-paper-manifest-v8",
+  "schema": "tnoa-paper-manifest-v9",
   "paper_generation": "TNOA-P1-MEE",
-  "scope": "closed-world methods paper with frozen science and post-freeze downstream-estimand, robustness, structural, vocabulary-ablation and prevalence/composition-weight sensitivity analyses; field validation remains external",
+  "scope": "closed-world methods paper with frozen science and post-freeze downstream-estimand, robustness, structural, vocabulary-ablation, prevalence/composition-weight and semantic-specificity controls; field validation remains external",
   "source_repositories": {
     "pollipi": {
       "repository": "zuizui0223/pollipi",
@@ -181,18 +181,16 @@
       "observer_retuned": false,
       "new_synthetic_worlds_generated": false,
       "field_claims_allowed": false,
+      "semantic_specificity_demonstrated": false,
       "summary": {
         "mixture_count": 3003,
         "vocabulary_count": 4,
         "estimand_count": 5,
         "registered_axis_slice_count": 34,
         "target_prevalence_median_widths": [0.2656306018443621, 0.18861428571428596, 0.02992070478107567, 0.004077995920098443],
-        "target_reason_resolved_relative_median_width_reduction_vs_generic_u": 0.8637065553790797,
         "target_nuisance_cooccurrence_median_widths": [0.7230694417428517, 0.5136354794787008, 0.10493504246086616, 0.014840229278269765],
-        "target_nuisance_cooccurrence_reason_resolved_relative_median_width_reduction_vs_generic_u": 0.8585769926780733,
-        "all_estimands_all_34_slices_reason_resolved_never_wider": true,
-        "target_strict_median_improvement_slices": 27,
-        "other_estimands_strict_median_improvement_slices": 29
+        "all_estimands_all_34_slices_refined_record_never_wider": true,
+        "interpretation": "numerical refinement effect only; D5 shows the additional narrowing is not specific to the two reason semantics"
       }
     },
     "prevalence_weighting_sensitivity": {
@@ -215,9 +213,36 @@
         "rare_target_theta_le_0_2_uniform_lattice_mass": 0.04695304695304695,
         "rare_target_theta_le_0_2_median_width_binary": 0.07409970878498642,
         "rare_target_theta_le_0_2_median_width_btnu": 0.0001746269687759039,
-        "rare_target_theta_le_0_2_median_width_reason_resolved": 0.0,
         "composition_kappa_10_min_fraction_binary_width_removed_by_btnu": 0.5746863884992289,
-        "composition_kappa_10_min_additional_fraction_btnu_width_removed_by_reason_resolved": 0.4000338180837051
+        "interpretation": "D4 supports D1 prevalence/weight robustness; finer-split gains remain subject to D5 semantic-specificity correction"
+      }
+    },
+    "reason_split_specificity_control": {
+      "status": "reviewer_motivated_post_freeze_random_split_control_not_preregistered",
+      "source_workflow_run_id": 32932634622,
+      "source_artifact_id": 9593775550,
+      "source_phase_surface_sha256": "1d2c7c1f8f7370aad3cdde4d9d9d47bf318b2a057b6f788d3a48df9ea8d16c34",
+      "script": "scripts/analyze_reason_split_specificity_control.py",
+      "result": "derived/reason_split_specificity_control.json",
+      "validation": "scripts/validate_reason_split_specificity_control.py",
+      "documentation": "docs/REASON_SPLIT_SPECIFICITY_CONTROL.md",
+      "preregistered": false,
+      "observer_retuned": false,
+      "new_synthetic_worlds_generated": false,
+      "field_claims_allowed": false,
+      "semantic_specificity_demonstrated": false,
+      "summary": {
+        "random_seed": 0,
+        "two_way_random_split_count": 500,
+        "three_way_random_split_count": 500,
+        "target_generic_u_median_width": 0.02992070478107567,
+        "target_semantic_two_reason_median_width": 0.004077995920098443,
+        "target_random_two_way_median_width": 0.005007513005321984,
+        "target_fraction_random_equal_or_narrower_than_semantic": 0.48,
+        "five_estimand_random_equal_or_better_fraction_range": [0.48, 0.672],
+        "rank_nullspace_dimensions": [4, 3, 2, 1, 0],
+        "random_three_way_full_rank_fraction": 1.0,
+        "random_three_way_point_identification_fraction_all_estimands": 1.0
       }
     }
   },
@@ -232,7 +257,10 @@
     "packaging": "pyproject.toml",
     "input_contract": "already-calibrated positive-support flags; raw detector-score calibration remains domain-specific",
     "universal_raw_thresholds_shipped": false,
-    "field_calibration_claimed": false
+    "field_calibration_claimed": false,
+    "frozen_v14b_reason_count": 2,
+    "reusable_api_unresolved_reason_count": 4,
+    "one_to_one_frozen_to_api_reason_validation_claimed": false
   },
   "manuscript_package": {
     "status": "mee_focused_draft_instantiated_and_claim_guarded",
@@ -243,13 +271,13 @@
     "claim_traceability": "docs/CLAIM_TRACEABILITY.md",
     "claim_scanner": "scripts/audit_manuscript_claims.py",
     "anonymous_builder": "scripts/build_mee_anonymous_manuscript.py",
-    "internal_result_provenance_tags": "C1-C15 plus D1-D4 post-freeze derived analyses",
+    "internal_result_provenance_tags": "C1-C15 plus D1-D5 post-freeze derived analyses",
     "result_hierarchy": [
       "C6-C7 nuisance threshold-scale failure and predeclared family-conditional false-attribution calibration",
-      "D1-D3-D4 downstream synthetic information-loss magnitude, reason provenance and prevalence/composition-weight sensitivity",
+      "D1-D4 core B/T/N/U versus binary information-loss magnitude plus prevalence/composition-weight sensitivity",
       "C2 preregistered Pi2 narrow-ridge negative result",
-      "C10 robust unresolved-reason composition",
-      "C11 Pi1 reason substitution as secondary illustration"
+      "D3-D5 post-freeze refinement diagnostic showing additional columns can narrow identification but semantic-specific reason value is not isolated",
+      "C10-C11 unresolved-reason composition and Pi1 reason substitution as secondary illustrations"
     ]
   },
   "figure_package": {
@@ -274,17 +302,18 @@
     "manual_data_geometry_editing_allowed": false,
     "field_claims_from_figures_allowed": false,
     "d3_new_main_figure_required": false,
-    "d4_new_main_figure_required": false
+    "d4_new_main_figure_required": false,
+    "d5_new_main_figure_required": false
   },
   "literature_positioning": {
     "status": "expanded_targeted_prior_art_audit_complete_not_systematic_review",
     "evidence_map": "docs/LITERATURE_EVIDENCE_MAP.md",
-    "final_prior_art_audit": "docs/FINAL_PRIOR_ART_AUDIT.md",
+    "final_prior_art_audit": "docs/FINAL_PRI_ART_AUDIT.md",
     "nearest_neighbour_matrix": "docs/NEAREST_NEIGHBOUR_METHODS.md",
     "reviewer_attack_matrix": "docs/REVIEWER_ATTACK_MATRIX.md",
     "bibliography": "references.bib",
     "transferability_map": "docs/TRANSFERABILITY_TABLE.md",
-    "central_defensible_novelty": "tested upstream process-semantic ecological observation contract plus empirical information-loss magnitude under progressive garbling; reason-resolved U provenance is part of the retained scientific record",
+    "central_defensible_novelty": "tested upstream process-semantic ecological observation contract plus empirical information-loss magnitude when core B/T/N/U observation distinctions are garbled to binary; finer reason semantics require independent validation",
     "priority_claims_surrendered": [
       "abstention/rejection",
       "uncertain or equivocal ecological observations",
@@ -317,10 +346,14 @@
     "classical_familywise_error_rate_control_claim": false,
     "distribution_free_finite_sample_risk_guarantee_claim": false,
     "d3_preregistered_claim": false,
+    "d3_semantic_specificity_claim": false,
     "d3_arbitrary_weighting_robustness_claim": false,
     "d4_preregistered_claim": false,
     "d4_arbitrary_ecological_weighting_robustness_claim": false,
+    "d5_preregistered_claim": false,
+    "d5_random_controls_are_ecological_reason_systems_claim": false,
     "annotation_budget_efficiency_claim": false,
+    "api_four_reason_vocabulary_validated_by_frozen_d3_claim": false,
     "closed_world_method_claims": true,
     "synthetic_known_truth_estimand_claims": true,
     "weighting_robustness_only_within_tested_class": true
@@ -345,10 +378,12 @@
       "expanded nearest-neighbour prior-art audit",
       "post-freeze observation-vocabulary ablation with five estimands and 34 registered axis slices",
       "post-freeze target-prevalence stratification and direct composition-level bounded density-ratio sensitivity",
+      "reviewer-motivated D5 random-split control demonstrating that D3 additional narrowing is not semantic-specific",
+      "frozen two-reason versus reusable four-reason vocabulary boundary documented explicitly",
       "annotation/calibration budget asymmetry registered as an explicit limitation rather than silently ignored"
     ],
     "remaining_scientific_blockers": [],
-    "strategy": "Lead with C6-C7 representation-change failure plus predeclared family-conditional calibration; follow with D1-D3-D4 empirical information-loss magnitude, reason provenance and prevalence/composition-weight conditions; retain C2 as the preregistered negative result; keep naive binary bias, pooled rates, C13, Pi3 and world count secondary."
+    "strategy": "Lead with C6-C7 representation-change failure plus predeclared family-conditional calibration; follow with D1-D4 core B/T/N/U-versus-binary information-loss magnitude and prevalence/composition-weight conditions; retain C2 as the preregistered negative result; present D3-D5 as a self-critical post-freeze refinement diagnostic showing that finer columns can narrow identification but semantic-specific reason value is not isolated."
   },
   "editorial_tasks_before_upload": [
     "complete author names, affiliations, corresponding-author details, CRediT contributions, acknowledgements, funding and competing-interest metadata",
