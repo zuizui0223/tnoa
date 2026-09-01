@@ -34,6 +34,11 @@ Immediately before journal upload, pass every author/institution literal through
 The ZIP contains the anonymous manuscript plus a C/D-tagged audit source, `paper_manifest.json`, references, figure data/builders, the reusable API/CLI, pinned source snapshots and all current derived controls. In particular it includes:
 
 ```text
+derived/mee_figure_data.json
+scripts/validate_mee_figure_data.py
+scripts/build_mee_figures.py
+scripts/build_anonymous_review_bundle.py
+scripts/validate_anonymous_review_bundle.py
 docs/OBSERVATION_VOCABULARY_ABLATION.md
 docs/PREVALENCE_WEIGHTING_SENSITIVITY.md
 docs/REASON_SPLIT_SPECIFICITY_CONTROL.md
