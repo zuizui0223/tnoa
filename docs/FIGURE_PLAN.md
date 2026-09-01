@@ -30,7 +30,7 @@ A. Development failure: the revised nuisance representation retains ranking whil
 
 B. Score-scale diagnosis across registered Pi5 levels: spatial, temporal and combined components do not share a stable boundary at the inherited threshold.
 
-C. Error-control comparison: pooled calibration fails the coupled-negative `alpha=0.05` gate, whereas family-wise calibration passes it.
+C. Calibration comparison: pooled calibration fails the coupled-negative `alpha=0.05` gate, whereas the max-over-predeclared-negative-families calibration satisfies the family-conditional held-out criterion.
 
 ### Main message
 
@@ -38,7 +38,7 @@ The reusable object is the prespecified operating error criterion, not a numeric
 
 ### Boundary
 
-Closed-world validation only; no field threshold or field false-positive-rate claim.
+Closed-world validation only; no classical family-wise error-rate-control, distribution-free, field-threshold or field false-positive-rate claim.
 
 ## Figure 3 — Binary coarsening loses information about a downstream ecological estimand
 
