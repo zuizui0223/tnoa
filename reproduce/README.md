@@ -1,49 +1,36 @@
 # TNOA Paper-1 reproducibility entry point
 
-TNOA does not rerun locked upstream scientific generations by default. Reproduction is intentionally split into five levels.
+TNOA does not rerun locked upstream scientific generations by default. Reproduction is split into six levels.
 
-## Level 1 — validate the TNOA paper package
-
-From the repository root:
+## Level 1 — validate the paper package
 
 ```bash
 python scripts/validate_paper_manifest.py
 python scripts/validate_mee_synthetic_consequences.py
 python scripts/validate_observation_vocabulary_ablation.py
 python scripts/validate_prevalence_weighting_sensitivity.py
+python scripts/validate_reason_split_specificity_control.py
 python scripts/validate_structural_axis_audit.py
 python scripts/audit_manuscript_claims.py
 ```
 
-These checks verify that frozen source provenance has not drifted, the post-freeze D1–D4 results remain tied to the immutable V14b surface, D3/D4 remain explicitly post-freeze and not preregistered, and Paper-1 claim boundaries still forbid field accuracy, formal distribution-free guarantees, arbitrary weighting robustness, annotation-budget efficiency and primitive-level priority claims.
+These guards verify frozen provenance, D1–D5 status, the D5 semantic-specificity correction, the frozen-two-reason/current-four-reason API boundary, and the prohibitions on field accuracy, distribution-free guarantees, arbitrary-weighting robustness and annotation-budget efficiency claims.
 
-The same guards run in GitHub Actions.
+## Level 2 — verify authoritative locked sources
 
-## Level 2 — verify authoritative external source artifacts
-
-The authoritative frozen scientific results remain in the two pinned source repositories recorded in `paper_manifest.json`. Before final submission packaging:
-
-1. check out the recorded source commits;
-2. verify every locked result against its execution commit, artifact digest and result/phase-surface SHA;
-3. verify the target-evidence adapter against its pinned Git blob SHA-1;
-4. generate manuscript figures only from locked/derived artifacts named in the manifest;
-5. do not rerun a historical one-shot generation merely to reproduce a figure if the immutable result artifact already exists.
-
-## Level 3 — reproduce the original MEE post-freeze estimand/phase-space weighting audit (D1)
-
-Install:
-
-```bash
-python -m pip install -r requirements-analysis.txt
-```
-
-Download artifact `9593775550` from InsePi workflow `32932634622` and extract `phase_surface.json`. Its SHA-256 must be:
+Use the exact source commits and artifact identifiers in `paper_manifest.json`. Do not replace a historical one-shot result by a later rerun. The final V14b phase-surface artifact is workflow `32932634622`, artifact `9593775550`; extracted `phase_surface.json` must have SHA-256:
 
 ```text
 1d2c7c1f8f7370aad3cdde4d9d9d47bf318b2a057b6f788d3a48df9ea8d16c34
 ```
 
-Then run:
+Install the derived-analysis requirements with:
+
+```bash
+python -m pip install -r requirements-analysis.txt
+```
+
+## Level 3 — D1 downstream estimand / phase-space weighting
 
 ```bash
 python scripts/analyze_mee_synthetic_consequences.py \
@@ -52,13 +39,9 @@ python scripts/analyze_mee_synthetic_consequences.py \
 python scripts/validate_mee_synthetic_consequences.py
 ```
 
-This derives the D1 target-prevalence comparison, registered-axis slices and phase-space-row bounded weighting sensitivity. It does not refit observers or change thresholds.
+D1 is the primary downstream information-preservation analysis. It compares B/T/N/U with target/not-target under known synthetic truth. The deterministic never-wider direction is structural; the empirical result is the magnitude and conditions of the width loss.
 
-## Level 4 — reproduce the post-freeze observation-vocabulary ablation (D3)
-
-D3 uses the **same immutable phase surface** and 3,003 six-regime simplex mixtures. It was motivated by the expanded prior-art audit after earlier results were inspected, so it is explicitly **not preregistered**.
-
-Run:
+## Level 4 — D3 observation-vocabulary refinement
 
 ```bash
 python scripts/analyze_observation_vocabulary_ablation.py \
@@ -67,13 +50,9 @@ python scripts/analyze_observation_vocabulary_ablation.py \
 python scripts/validate_observation_vocabulary_ablation.py
 ```
 
-The analysis compares four nested observation vocabularies across five fixed estimands and all 34 registered single-axis slices. It generates no new synthetic worlds and retunes no observer or threshold. Deterministic never-wider relations are structural; numerical width reductions are post-freeze descriptive results of the frozen emission matrix.
+D3 is literature-audit-motivated, post-freeze and not preregistered. It reports four nested vocabularies, five estimands and 34 registered axis slices. Its final two-way U refinement is a numerical refinement result only. **D3 must be interpreted together with D5; it does not demonstrate a semantic-specific reason-information premium.**
 
-## Level 5 — reproduce target-prevalence/composition-weight sensitivity (D4)
-
-D4 addresses a different weighting layer from D1: the **3,003 latent-regime compositions themselves**. It is reviewer-motivated, post-freeze and not preregistered.
-
-Run:
+## Level 5 — D4 target-prevalence / composition-weight sensitivity
 
 ```bash
 python scripts/analyze_prevalence_weighting_sensitivity.py \
@@ -82,40 +61,41 @@ python scripts/analyze_prevalence_weighting_sensitivity.py \
 python scripts/validate_prevalence_weighting_sensitivity.py
 ```
 
-D4 reports:
+D4 is reviewer-motivated, post-freeze and not preregistered. It directly stress-tests the 3,003 composition lattice. Only `141/3003` compositions have θ≤0.2; in that subset median target-prevalence width is about `0.07410` after binary collapse versus `0.000175` with B/T/N/U. At `kappa=10`, B/T/N/U still removes at least `57.5%` of adversarially weighted mean binary width. These are design sensitivities, not ecological priors.
 
-- counts and identification widths at each known target prevalence `theta=0,0.1,...,1`;
-- rare-target stress tests for `theta<=0.1`, `theta<=0.2` and `theta<=0.3`;
-- direct bounded density-ratio reweighting of the 3,003 composition lattice through `kappa=10`.
+## Level 6 — D5 random-split semantic-specificity control
 
-Only `141/3003` compositions have `theta<=0.2`. In that subset, median target-prevalence width is approximately `0.07410` for binary target/not-target versus `0.000175` for B/T/N/U. At `kappa=10`, adversarial composition weights cannot reduce the weighted-mean B/T/N/U width-removal ratio below about `0.575`. These are frozen-design sensitivity results, not field prevalence estimates or ecological priors.
+```bash
+python scripts/analyze_reason_split_specificity_control.py \
+  --phase-surface /path/to/phase_surface.json \
+  --output derived/reason_split_specificity_control.json
+python scripts/validate_reason_split_specificity_control.py
+```
 
-## Reproduction boundary
+D5 is reviewer-motivated, post-freeze and not preregistered. With random seed `0` it compares the frozen two-way U split against a redundant constant split, 500 unlabeled regime-dependent two-way splits and 500 unlabeled three-way splits.
 
-A rerun and a reproduction are not always the same operation in TNOA. For historical one-shot generations, the scientific record is the prefrozen protocol plus immutable result/receipt. Re-executing a generator under a later runtime may be useful as a software check but must not replace the historical locked result.
+For target prevalence:
 
-Post-freeze derived analyses may transform immutable outputs provided that their source digest, transformation code, temporal status and claim boundary are explicit. D3 and D4 therefore remain scientifically usable only with their `post-freeze/not-preregistered` labels intact.
+- generic B/T/N/U median width: `0.0299207`;
+- constant 50:50 U split: `0.0299207`;
+- random two-way median: `0.0050075`;
+- frozen two-reason split: `0.0040780`;
+- `48.0%` of random two-way splits are equal to or narrower than the frozen split.
 
-All D1/D3/D4 information comparisons condition on the frozen effectively known emission map. They do **not** establish greater information per annotation, per unit cost or per field hour under a finite calibration budget.
+All 500 random three-way splits produce a full-rank six-regime constraint system and point-identify all five estimands to numerical tolerance. The correct conclusion is therefore generic rank/identifiability gain from non-redundant observation columns, **not** semantic-specific superiority of the frozen U-reason labels.
 
-## Required final submission bundle
+## Frozen reason-vocabulary boundary
 
-The eventual submission package should contain:
+The frozen V14b D3/D5 surface contains only two U reason buckets: historical `INFORMATION_ABSENT` and `OVERLAP_OR_ATTRIBUTION`. The later reusable API exposes four U reasons. There is no one-to-one empirical four-reason mapping validated by the frozen surface; see `docs/REUSABLE_IMPLEMENTATION.md`.
 
-- active manuscript and front matter;
-- paper-grade figure scripts and pinned figure data;
-- `paper_manifest.json`;
-- claim-boundary and claim-traceability documents;
-- `derived/mee_synthetic_consequences.json`;
-- `derived/structural_axis_audit.json`;
-- `derived/observation_vocabulary_ablation.json`;
-- `derived/prevalence_weighting_sensitivity.json`;
-- expanded prior-art and nearest-neighbour documents;
-- `references.bib`;
-- release/version identifier and exact source commits/artifact digests.
+## Reproduction and claim boundary
+
+All D1/D3/D4/D5 information analyses condition on the frozen effectively known emission map. They do not establish information per annotation, unit cost or field hour. D3–D5 are usable only with their post-freeze/not-preregistered labels and the D5 semantic-specificity correction intact.
+
+## Required reviewer/submission materials
+
+The package should include the active manuscript/front matter, `paper_manifest.json`, claim-boundary/traceability documents, all D1–D5 derived JSONs and validators, figure scripts/data, prior-art documents, `references.bib`, and exact source commits/artifact digests.
 
 ## Current status
 
-The MEE-focused scientific and reproducibility package is assembled with frozen science, D1/D2, literature-audit-motivated D3 and reviewer-motivated D4, reusable API/CLI, fail-closed field translation, figures, anonymous DOCX and deterministic reviewer bundle. The expanded prior-art audit surrenders primitive-level priority; the residual claim is the tested process-semantic observation contract plus measured information loss under progressive garbling, now with explicit prevalence and composition-weight conditions.
-
-Remaining pre-upload work is human-facing: author/title-page metadata, visual inspection, publisher-facing word count, final identity-scanned reviewer ZIP and post-edit audit reruns.
+The scientific package is assembled with C6/C7 and D1/D4 as the primary evidence, C2 as the preregistered negative result, and D3/D5 as a self-critical supporting refinement control. Remaining pre-upload work is human-facing: author/title-page metadata, visual inspection, publisher-facing word count and the final identity-scanned reviewer ZIP.
