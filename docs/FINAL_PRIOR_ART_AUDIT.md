@@ -8,6 +8,8 @@ The purpose is to surrender component-level priority wherever prior art exists a
 
 The audit covers ecological occupancy/multievent/partial-observation models; continuous-score and AI-assisted ecological inference; classifier-error propagation; selective/reject methods; multilabel partial abstention; evidential uncertainty; calibration/risk control; Blackwell comparison and partial identification; and sensor/adaptive-monitoring neighbours.
 
+Selective prediction and learned reject mechanisms are already well developed [@geifman2017selective; @geifman2019selectivenet]. Partial reject/abstention formulations extend that logic to selective components of a prediction [@karlsson2024partialreject], while conformal/reject approaches provide additional calibration and error-control neighbours [@garciagalindo2024conformalreject; @szabadvary2025reject]. These works reinforce that TNOA cannot claim priority for abstention or rejection itself.
+
 The following ideas are established prior art and are **not** TNOA priority claims:
 
 - unresolved, ambiguous or equivocal ecological observations;
