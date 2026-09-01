@@ -2,14 +2,14 @@
 
 The MEE-priority figures use one pinned numerical source, `derived/mee_figure_data.json`. `scripts/build_mee_figures.py` renders the audit-friendly component panels; `scripts/build_mee_composite_figures.py` assembles submission-facing Figure 2, Figure 3, Figure 4 and Supplementary Figure S2 from those same values. The figure-data file is a deterministic reduction of immutable or locked sources; no observer is refit and no threshold is selected during plotting.
 
-## Figure 2 provenance: threshold failure -> diagnosis -> family-wise error control
+## Figure 2 provenance: threshold failure -> diagnosis -> family-conditional calibration
 
 - inherited-threshold failure: InsePi workflow `32929245729`, artifact `9592634107`, artifact digest `sha256:92b6c1588ac94fdec11c2da2b3fc345aa7c143545bbbe286495b116cafa25253`, result SHA-256 `c3f3ba3c036b8b3a0c337edb6f5a89548c9375b1b1b39bfeab19916506444853`;
 - score-distribution diagnosis: workflow `32929754709`, artifact `9592803036`, digest `sha256:990adc30a779d893c0ec072b6264111083e0339c27d726b7c23a8ae0b15f6cdb`, result SHA-256 `7310178cf064fe1d06cf2564adf3b7e6b3df57b4ce446fd8b23fb48aff4ff6ee`;
 - pooled risk calibration failure: workflow `32930855374`, artifact `9593167283`, digest `sha256:5fb01ef0a7d0952d8686f08b73f5aed8ac71673ff509098afb67720989e03d2b`, result SHA-256 `56b95a8f2ff819a73fca96e9c1268e6bfb26666dc24897e73a25c82a6fc02367`;
-- family-wise risk freeze: workflow `32931223272`, artifact `9593286927`, digest `sha256:46777528229e45d01bea5195bdb271e7e764c87a16f378e25f2c4517cc928044`, result SHA-256 `e5f0fac6f0b5790192be46f923572e5f3f57b1913325d435a2f9f6320fb57617`.
+- historically labelled `family-wise` risk freeze: workflow `32931223272`, artifact `9593286927`, digest `sha256:46777528229e45d01bea5195bdb271e7e764c87a16f378e25f2c4517cc928044`, result SHA-256 `e5f0fac6f0b5790192be46f923572e5f3f57b1913325d435a2f9f6320fb57617`.
 
-The key plot sequence is fixed: AUC remained 1.0 while inherited-threshold nuisance recall was 0.23125; pooled alpha calibration produced coupled-negative FPR 0.08889 and failed the 0.05 criterion; family-wise calibration produced 0.04444 and passed.
+The key plot sequence is fixed: AUC remained 1.0 while inherited-threshold nuisance recall was 0.23125; pooled calibration produced coupled-negative false nuisance attribution 0.08889 and failed the declared 0.05 family-conditional criterion; max-over-predeclared-negative-families calibration produced held-out rates `0/43,200` and `1,920/43,200 = 0.04444`, both within the declared criterion. These are closed-world empirical checks, **not classical family-wise error-rate control or a distribution-free guarantee**.
 
 ## Figures 3-4 provenance
 
@@ -44,9 +44,10 @@ The following are not permitted as visual headlines:
 - 5.88M worlds as evidence magnitude;
 - C13 0.3569 or zero target false positives as classifier performance;
 - Pi3 positive magnitude as a continuous effect in the frozen generation;
-- the exact Pi1 total-U curve as a weighting-robust law.
+- the exact Pi1 total-U curve as a weighting-robust law;
+- `family-wise error control` as the reader-facing interpretation of C7.
 
-The intended hierarchy is Figure 2 risk-calibration evidence, Figure 3 downstream ecological-estimand information preservation, Figure 4 unresolved-reason structure, then design/falsification diagnostics in the supplement.
+The intended hierarchy is Figure 2 threshold-portability/family-conditional calibration evidence, Figure 3 downstream ecological-estimand information preservation, Figure 4 unresolved-reason structure, then design/falsification diagnostics in the supplement.
 
 ## Final human-only visual check
 
