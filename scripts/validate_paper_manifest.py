@@ -26,16 +26,18 @@ REQUIRED_REPO_FILES = (
     "docs/SOURCE_PROVENANCE.md", "docs/MEE_VOCABULARY_MAP.md",
     "docs/MEE_SYNTHETIC_CONSEQUENCES.md", "docs/STRUCTURAL_RESULT_AUDIT.md",
     "docs/OBSERVATION_VOCABULARY_ABLATION.md", "docs/PREVALENCE_WEIGHTING_SENSITIVITY.md",
-    "docs/REUSABLE_IMPLEMENTATION.md", "docs/FIGURE_PLAN.md", "docs/MEE_FIGURE_VALIDATION.md",
+    "docs/REASON_SPLIT_SPECIFICITY_CONTROL.md", "docs/REUSABLE_IMPLEMENTATION.md",
+    "docs/FIGURE_PLAN.md", "docs/MEE_FIGURE_VALIDATION.md",
     "derived/mee_synthetic_consequences.json", "derived/structural_axis_audit.json",
     "derived/observation_vocabulary_ablation.json", "derived/prevalence_weighting_sensitivity.json",
-    "derived/mee_figure_data.json",
+    "derived/reason_split_specificity_control.json", "derived/mee_figure_data.json",
     "tnoa/__init__.py", "tnoa/core.py", "tnoa/cli.py",
     "examples/minimal_evidence.csv", "tests/test_minimal_api.py",
     "scripts/analyze_mee_synthetic_consequences.py", "scripts/validate_mee_synthetic_consequences.py",
     "scripts/analyze_structural_axis_audit.py", "scripts/validate_structural_axis_audit.py",
     "scripts/analyze_observation_vocabulary_ablation.py", "scripts/validate_observation_vocabulary_ablation.py",
     "scripts/analyze_prevalence_weighting_sensitivity.py", "scripts/validate_prevalence_weighting_sensitivity.py",
+    "scripts/analyze_reason_split_specificity_control.py", "scripts/validate_reason_split_specificity_control.py",
     "scripts/validate_mee_figure_data.py", "scripts/build_mee_figures.py",
     "scripts/audit_manuscript_claims.py", "scripts/build_mee_anonymous_manuscript.py",
 )
@@ -79,8 +81,8 @@ def main() -> None:
             fail(f"missing required repository file: {relative}")
 
     p = json.loads(MANIFEST.read_text(encoding="utf-8"))
-    if p.get("schema") != "tnoa-paper-manifest-v8":
-        fail("manifest schema must be tnoa-paper-manifest-v8")
+    if p.get("schema") != "tnoa-paper-manifest-v9":
+        fail("manifest schema must be tnoa-paper-manifest-v9")
     if p.get("paper_generation") != "TNOA-P1-MEE":
         fail("paper_generation must be TNOA-P1-MEE")
     if "field validation remains external" not in str(p.get("scope", "")):
@@ -151,7 +153,7 @@ def main() -> None:
 
     d3 = derived.get("observation_vocabulary_ablation", {})
     validate_derived_entry(d3, "D3", "literature_audit_motivated_post_freeze_deterministic_derivation_not_preregistered")
-    for key in ("preregistered", "observer_retuned", "new_synthetic_worlds_generated"):
+    for key in ("preregistered", "observer_retuned", "new_synthetic_worlds_generated", "semantic_specificity_demonstrated"):
         if d3.get(key) is not False:
             fail(f"D3 boundary {key} must remain false")
     d3s = d3.get("summary", {})
@@ -160,8 +162,10 @@ def main() -> None:
     expected_target = [0.2656306018443621, 0.18861428571428596, 0.02992070478107567, 0.004077995920098443]
     if len(d3s.get("target_prevalence_median_widths", [])) != 4 or any(not close(a, b) for a, b in zip(d3s["target_prevalence_median_widths"], expected_target)):
         fail("D3 target widths drifted")
-    if d3s.get("all_estimands_all_34_slices_reason_resolved_never_wider") is not True:
+    if d3s.get("all_estimands_all_34_slices_refined_record_never_wider") is not True:
         fail("D3 slice nesting drifted")
+    if "not specific" not in str(d3s.get("interpretation", "")):
+        fail("D3 interpretation must defer semantic specificity to D5")
 
     d4 = derived.get("prevalence_weighting_sensitivity", {})
     validate_derived_entry(d4, "D4", "reviewer_motivated_post_freeze_design_sensitivity_not_preregistered")
@@ -175,12 +179,32 @@ def main() -> None:
         ("rare_target_theta_le_0_2_uniform_lattice_mass", 141 / 3003),
         ("rare_target_theta_le_0_2_median_width_binary", 0.07409970878498642),
         ("rare_target_theta_le_0_2_median_width_btnu", 0.0001746269687759039),
-        ("rare_target_theta_le_0_2_median_width_reason_resolved", 0.0),
         ("composition_kappa_10_min_fraction_binary_width_removed_by_btnu", 0.5746863884992289),
-        ("composition_kappa_10_min_additional_fraction_btnu_width_removed_by_reason_resolved", 0.4000338180837051),
     ):
         if not close(d4s.get(key), expected):
             fail(f"D4 summary drifted: {key}")
+
+    d5 = derived.get("reason_split_specificity_control", {})
+    validate_derived_entry(d5, "D5", "reviewer_motivated_post_freeze_random_split_control_not_preregistered")
+    for key in ("preregistered", "observer_retuned", "new_synthetic_worlds_generated", "semantic_specificity_demonstrated"):
+        if d5.get(key) is not False:
+            fail(f"D5 boundary {key} must remain false")
+    d5s = d5.get("summary", {})
+    for key, expected in (
+        ("random_seed", 0),
+        ("two_way_random_split_count", 500),
+        ("three_way_random_split_count", 500),
+        ("target_generic_u_median_width", 0.02992070478107567),
+        ("target_semantic_two_reason_median_width", 0.004077995920098443),
+        ("target_random_two_way_median_width", 0.005007513005321984),
+        ("target_fraction_random_equal_or_narrower_than_semantic", 0.48),
+        ("random_three_way_full_rank_fraction", 1.0),
+        ("random_three_way_point_identification_fraction_all_estimands", 1.0),
+    ):
+        if not close(d5s.get(key), expected):
+            fail(f"D5 summary drifted: {key}")
+    if d5s.get("rank_nullspace_dimensions") != [4, 3, 2, 1, 0]:
+        fail("D5 rank ladder drifted")
 
     software = p.get("reusable_implementation", {})
     if software.get("status") != "minimal_reusable_api_and_cli_implemented":
@@ -189,14 +213,18 @@ def main() -> None:
         require_file(str(software.get(key, "")), f"reusable implementation {key}")
     if software.get("universal_raw_thresholds_shipped") is not False or software.get("field_calibration_claimed") is not False:
         fail("reusable implementation overclaims calibration")
+    if software.get("frozen_v14b_reason_count") != 2 or software.get("reusable_api_unresolved_reason_count") != 4:
+        fail("frozen/API reason vocabulary counts drifted")
+    if software.get("one_to_one_frozen_to_api_reason_validation_claimed") is not False:
+        fail("reusable implementation must not claim frozen four-way reason validation")
 
     manuscript = p.get("manuscript_package", {})
     for key in ("draft", "historical_draft", "front_matter", "vocabulary_map", "claim_traceability", "claim_scanner", "anonymous_builder"):
         require_file(str(manuscript.get(key, "")), f"manuscript package {key}")
-    if manuscript.get("internal_result_provenance_tags") != "C1-C15 plus D1-D4 post-freeze derived analyses":
+    if manuscript.get("internal_result_provenance_tags") != "C1-C15 plus D1-D5 post-freeze derived analyses":
         fail("internal result provenance tag range drifted")
     hierarchy = manuscript.get("result_hierarchy", [])
-    if len(hierarchy) < 3 or not hierarchy[0].startswith("C6-C7") or not hierarchy[1].startswith("D1-D3-D4") or not hierarchy[2].startswith("C2"):
+    if len(hierarchy) < 4 or not hierarchy[0].startswith("C6-C7") or not hierarchy[1].startswith("D1-D4") or not hierarchy[2].startswith("C2") or not hierarchy[3].startswith("D3-D5"):
         fail("MEE result hierarchy drifted")
 
     figures = p.get("figure_package", {})
@@ -204,14 +232,16 @@ def main() -> None:
         require_file(str(figures.get(key, "")), f"figure package {key}")
     if figures.get("figure_data_git_blob_sha1") != "74fdac2a049c6c13833bb31f7a4ff0b7228a44a6":
         fail("MEE figure-data Git blob drifted")
-    if figures.get("d3_new_main_figure_required") is not False or figures.get("d4_new_main_figure_required") is not False:
-        fail("D3/D4 must not silently create a new main-figure requirement")
+    if figures.get("d3_new_main_figure_required") is not False or figures.get("d4_new_main_figure_required") is not False or figures.get("d5_new_main_figure_required") is not False:
+        fail("D3/D4/D5 must not silently create a new main-figure requirement")
 
     literature = p.get("literature_positioning", {})
     for key in ("evidence_map", "final_prior_art_audit", "nearest_neighbour_matrix", "reviewer_attack_matrix", "bibliography", "transferability_map"):
         require_file(str(literature.get(key, "")), f"literature {key}")
     if literature.get("absolute_priority_claimed") is not False or literature.get("quantitative_cross_system_transfer_claimed") is not False or literature.get("systematic_review_claimed") is not False:
         fail("literature positioning overclaims novelty/transfer/review scope")
+    if "finer reason semantics require independent validation" not in str(literature.get("central_defensible_novelty", "")):
+        fail("literature novelty must retain D5 semantic-specificity correction")
 
     boundary = p.get("paper_claim_boundary", {})
     false_keys = (
@@ -219,9 +249,10 @@ def main() -> None:
         "universal_pi3_law", "universal_optimal_abstention", "component_level_priority",
         "c13_performance_claim", "six_axes_equal_effective_dimensions_claim",
         "classical_familywise_error_rate_control_claim", "distribution_free_finite_sample_risk_guarantee_claim",
-        "d3_preregistered_claim", "d3_arbitrary_weighting_robustness_claim",
+        "d3_preregistered_claim", "d3_semantic_specificity_claim", "d3_arbitrary_weighting_robustness_claim",
         "d4_preregistered_claim", "d4_arbitrary_ecological_weighting_robustness_claim",
-        "annotation_budget_efficiency_claim",
+        "d5_preregistered_claim", "d5_random_controls_are_ecological_reason_systems_claim",
+        "annotation_budget_efficiency_claim", "api_four_reason_vocabulary_validated_by_frozen_d3_claim",
     )
     for key in false_keys:
         if boundary.get(key) is not False:
@@ -242,6 +273,8 @@ def main() -> None:
         "expanded nearest-neighbour prior-art audit",
         "post-freeze observation-vocabulary ablation with five estimands and 34 registered axis slices",
         "post-freeze target-prevalence stratification and direct composition-level bounded density-ratio sensitivity",
+        "reviewer-motivated D5 random-split control demonstrating that D3 additional narrowing is not semantic-specific",
+        "frozen two-reason versus reusable four-reason vocabulary boundary documented explicitly",
         "annotation/calibration budget asymmetry registered as an explicit limitation rather than silently ignored",
     ):
         if item not in completed:
@@ -252,7 +285,7 @@ def main() -> None:
         fail("editorial tasks must remain explicit")
 
     print(
-        "TNOA MEE manifest OK: 5 frozen science anchors; C6/C7 first; D1-D4 post-freeze stack including rare-target/composition sensitivity; 0 scientific blockers"
+        "TNOA MEE manifest OK: 5 frozen science anchors; C6/C7 + D1/D4 primary; D3/D5 specificity correction enforced; 0 scientific blockers"
     )
 
 
