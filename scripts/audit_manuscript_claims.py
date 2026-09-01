@@ -25,6 +25,10 @@ FORBIDDEN_PHRASES = (
     "distribution-free guarantee provided by tnoa",
     "d3 was preregistered",
     "d4 was preregistered",
+    "d5 was preregistered",
+    "reason provenance was not merely diagnostic metadata",
+    "reason provenance retained information about latent",
+    "supports reason provenance as part of the observation contract rather than as logging metadata alone",
     "pollipi",
     "insepi",
 )
@@ -44,16 +48,13 @@ NUMERIC_CLAIM_REQUIREMENTS: dict[str, tuple[str, ...]] = {
     "84.45%": ("D1",),
     "`0.00408`": ("D3",),
     "`0.01484`": ("D3",),
-    "86.37%": ("D3",),
-    "85.86%": ("D3",),
-    "27/34": ("D3",),
-    "29/34": ("D3",),
     "141/3003": ("D4",),
     "4.70%": ("D4",),
     "`0.07410`": ("D4",),
     "`0.000175`": ("D4",),
     "57.5%": ("D4",),
-    "40.0%": ("D4",),
+    "`0.0050075`": ("D5",),
+    "48.0%": ("D5",),
     "0.02675": ("C10",),
     "0.22658": ("C10",),
     "0.6431": ("D2",),
@@ -139,6 +140,10 @@ def main() -> None:
         "multievent or partial-observation models already preserve uncertain ecological events",
         "fixed validation budget",
         "do not claim greater information per annotation",
+        "not specific to the reason semantics",
+        "does not attribute that extra narrowing to reason semantics",
+        "contains only two aggregated u-reason buckets",
+        "reusable api later exposes four u reasons",
     )
     for phrase in required_phrases:
         if phrase not in lower:
@@ -159,6 +164,8 @@ def main() -> None:
         fail("Results 3.2 must distinguish structural garbling from empirical loss magnitude")
     if "post-freeze vocabulary ablation" not in section32 or "not preregistered" not in section32:
         fail("Results 3.2 must label D3 as post-freeze/not-preregistered")
+    if "not specific to the reason semantics" not in section32 or "500 unlabeled" not in section32:
+        fail("Results 3.2 must retain D5 semantic-specificity control")
     if "rare-target subset" not in section32 or "adversarially" not in section32:
         fail("Results 3.2 must retain D4 prevalence/composition-weight sensitivity")
     if section32.find("`0.030`") > section32.find("99.63%"):
@@ -172,9 +179,13 @@ def main() -> None:
     if "distribution-free" not in section31:
         fail("Results 3.1 must deny distribution-free guarantee")
 
+    discussion = text.split("## 4. Discussion", 1)[-1]
+    if "current experiment does not show that the size of that gain is specific to the selected reason semantics" not in discussion.lower():
+        fail("Conclusions must demote semantic-specific D3 interpretation")
+
     print(
         "TNOA MEE manuscript claim scan OK: "
-        f"{len(ps)} paragraphs, {len(NUMERIC_CLAIM_REQUIREMENTS)} numeric provenance guards, D3/D4 post-freeze boundaries enforced"
+        f"{len(ps)} paragraphs, {len(NUMERIC_CLAIM_REQUIREMENTS)} numeric provenance guards, D3-D5 controls enforced"
     )
 
 
