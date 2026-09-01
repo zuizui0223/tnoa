@@ -308,7 +308,7 @@
   "literature_positioning": {
     "status": "expanded_targeted_prior_art_audit_complete_not_systematic_review",
     "evidence_map": "docs/LITERATURE_EVIDENCE_MAP.md",
-    "final_prior_art_audit": "docs/FINAL_PRI_ART_AUDIT.md",
+    "final_prior_art_audit": "docs/FINAL_PRIOR_ART_AUDIT.md",
     "nearest_neighbour_matrix": "docs/NEAREST_NEIGHBOUR_METHODS.md",
     "reviewer_attack_matrix": "docs/REVIEWER_ATTACK_MATRIX.md",
     "bibliography": "references.bib",
