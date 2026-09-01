@@ -68,11 +68,11 @@ and reserve new days/scenes for held-out validation.
 Calibrate each operational evidence channel against a declared error criterion rather than inheriting raw thresholds from another representation, device or experiment. For example:
 
 - target support may require a declared miss/retention criterion;
-- nuisance support may use family-wise false-attribution control;
+- nuisance support may use predeclared family-conditional false-attribution criteria across independently defined negative families;
 - observability may use false-censor and unobservable-recall criteria;
 - coupled response must control spurious rescue when resolved target truth is absent.
 
-The calibration manifest should be versioned and frozen before held-out scoring.
+The calibration manifest should be versioned and frozen before held-out scoring. The historical Paper-1 nuisance run was internally labelled `family-wise`, but new deployments should not treat that label as classical family-wise error-rate control; they must state the actual family-conditional error semantics they validate.
 
 ## Stage 4 — validate observation semantics before adaptive control
 
