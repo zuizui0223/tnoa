@@ -1,0 +1,80 @@
+{
+  "claim_boundary": "The semantic U split is informative, but its additional identification gain is not shown to be specific to reason semantics. Random regime-discriminating U splits often yield comparable or greater narrowing because extra non-collinear observation columns reduce latent-mixture degrees of freedom.",
+  "control_design": {
+    "constant_split": "p=0.5 for every latent regime; creates no additional regime discrimination",
+    "interpretation": "random controls probe category/rank effects only; they are not ecological alternative reason systems",
+    "random_seed": 0,
+    "three_way_random_split_count": 500,
+    "three_way_split": "for each latent regime independently draw proportions~Dirichlet(1,1,1), then split generic U into three unlabeled columns",
+    "two_way_random_split_count": 500,
+    "two_way_split": "for each latent regime independently draw p~Uniform(0,1), then split that regime's generic U emission as U1=pU and U2=(1-p)U; labels carry no semantics"
+  },
+  "estimands": {
+    "any_deviation_prevalence": {
+      "constant_split_median_width": 0.01371606776231138,
+      "fraction_random_two_way_splits_equal_or_narrower_than_semantic": 0.48,
+      "generic_u_median_width": 0.01371606776231138,
+      "random_three_way_point_identification_fraction": 1.0,
+      "random_three_way_split_median_width_distribution": {"max": 0.0, "mean": 0.0, "median": 0.0, "min": 0.0, "q05": 0.0, "q25": 0.0, "q75": 0.0, "q95": 0.0},
+      "random_two_way_split_median_width_distribution": {"max": 0.007859815380248714, "mean": 0.003390749060949509, "median": 0.0022955136987646285, "min": 0.0, "q05": 0.0, "q25": 0.0, "q75": 0.007607059272645544, "q95": 0.00784333929867242},
+      "semantic_two_reason_split_median_width": 0.0018694101219792758,
+      "semantic_width_divided_by_random_median": 0.814375502522739
+    },
+    "coupled_response_prevalence": {
+      "constant_split_median_width": 0.3999026031009052,
+      "fraction_random_two_way_splits_equal_or_narrower_than_semantic": 0.672,
+      "generic_u_median_width": 0.3999026031009051,
+      "random_three_way_point_identification_fraction": 1.0,
+      "random_three_way_split_median_width_distribution": {"max": 0.0, "mean": 0.0, "median": 0.0, "min": 0.0, "q05": 0.0, "q25": 0.0, "q75": 0.0, "q95": 0.0},
+      "random_two_way_split_median_width_distribution": {"max": 0.1404300632166352, "mean": 0.04528285584086843, "median": 0.021181311888209417, "min": 0.0, "q05": 0.0, "q25": 0.0, "q75": 0.10414341615491457, "q95": 0.13242063490492703},
+      "semantic_two_reason_split_median_width": 0.07510112725107763,
+      "semantic_width_divided_by_random_median": 3.5456315287478817
+    },
+    "nuisance_prevalence": {
+      "constant_split_median_width": 0.08923538672581843,
+      "fraction_random_two_way_splits_equal_or_narrower_than_semantic": 0.488,
+      "generic_u_median_width": 0.08923538672581777,
+      "random_three_way_point_identification_fraction": 1.0,
+      "random_three_way_split_median_width_distribution": {"max": 0.0, "mean": 0.0, "median": 0.0, "min": 0.0, "q05": 0.0, "q25": 0.0, "q75": 0.0, "q95": 0.0},
+      "random_two_way_split_median_width_distribution": {"max": 0.050177443929828036, "mean": 0.02174923107341146, "median": 0.014601712582934454, "min": 0.0, "q05": 0.0, "q25": 0.0, "q75": 0.048858883075029926, "q95": 0.050137777833434254},
+      "semantic_two_reason_split_median_width": 0.012631643480150667,
+      "semantic_width_divided_by_random_median": 0.8650795862749499
+    },
+    "target_nuisance_cooccurrence": {
+      "constant_split_median_width": 0.10493504246086593,
+      "fraction_random_two_way_splits_equal_or_narrower_than_semantic": 0.488,
+      "generic_u_median_width": 0.10493504246086616,
+      "random_three_way_point_identification_fraction": 1.0,
+      "random_three_way_split_median_width_distribution": {"max": 0.0, "mean": 0.0, "median": 0.0, "min": 0.0, "q05": 0.0, "q25": 0.0, "q75": 0.0, "q95": 0.0},
+      "random_two_way_split_median_width_distribution": {"max": 0.05933474296080016, "mean": 0.02575499097631689, "median": 0.017292354117098056, "min": 0.0, "q05": 0.0, "q25": 0.0, "q75": 0.05790659892644937, "q95": 0.059315618496944965},
+      "semantic_two_reason_split_median_width": 0.014840229278269765,
+      "semantic_width_divided_by_random_median": 0.8581960083500881
+    },
+    "target_prevalence": {
+      "constant_split_median_width": 0.02992070478107489,
+      "fraction_random_two_way_splits_equal_or_narrower_than_semantic": 0.48,
+      "generic_u_median_width": 0.02992070478107567,
+      "random_three_way_point_identification_fraction": 1.0,
+      "random_three_way_split_median_width_distribution": {"max": 0.0, "mean": 0.0, "median": 0.0, "min": 0.0, "q05": 0.0, "q25": 0.0, "q75": 0.0, "q95": 0.0},
+      "random_two_way_split_median_width_distribution": {"max": 0.017145673213453727, "mean": 0.007396697318611371, "median": 0.005007513005321984, "min": 0.0, "q05": 0.0, "q25": 0.0, "q75": 0.016594302295180385, "q95": 0.01710973171904462},
+      "semantic_two_reason_split_median_width": 0.004077995920098443,
+      "semantic_width_divided_by_random_median": 0.8143755025227791
+    }
+  },
+  "rank_ladder": {
+    "btnu_generic_u": {"constraint_rank": 4, "nullspace_dimension": 2},
+    "btnu_semantic_two_reason_split": {"constraint_rank": 5, "nullspace_dimension": 1},
+    "random_three_way_u_split": {"constraint_rank": 6, "full_rank_fraction": 1.0, "nullspace_dimension": 0},
+    "target_not_target": {"constraint_rank": 2, "nullspace_dimension": 4},
+    "target_nuisance_other": {"constraint_rank": 3, "nullspace_dimension": 3}
+  },
+  "schema": "tnoa-reason-split-specificity-control-v1",
+  "source": {
+    "latent_regime_count": 6,
+    "mixture_count": 3003,
+    "phase_surface_sha256": "1d2c7c1f8f7370aad3cdde4d9d9d47bf318b2a057b6f788d3a48df9ea8d16c34",
+    "row_count": 183750,
+    "workflow_run_id": 32932634622
+  },
+  "status": "reviewer-motivated post-freeze random-split control; not preregistered; no observer retuning or new synthetic worlds"
+}

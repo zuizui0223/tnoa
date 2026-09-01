@@ -21,17 +21,18 @@ REQUIRED = {
     "docs/CONCEPTUAL_FRAMEWORK.md", "docs/CLAIM_BOUNDARY.md", "docs/CLAIM_TRACEABILITY.md",
     "docs/FIGURE_PLAN.md", "docs/MEE_FIGURE_VALIDATION.md", "docs/MEE_SYNTHETIC_CONSEQUENCES.md",
     "docs/STRUCTURAL_RESULT_AUDIT.md", "docs/OBSERVATION_VOCABULARY_ABLATION.md",
-    "docs/PREVALENCE_WEIGHTING_SENSITIVITY.md", "docs/NEAREST_NEIGHBOUR_METHODS.md",
-    "docs/FINAL_PRIOR_ART_AUDIT.md", "docs/LITERATURE_EVIDENCE_MAP.md",
+    "docs/PREVALENCE_WEIGHTING_SENSITIVITY.md", "docs/REASON_SPLIT_SPECIFICITY_CONTROL.md",
+    "docs/NEAREST_NEIGHBOUR_METHODS.md", "docs/FINAL_PRIOR_ART_AUDIT.md", "docs/LITERATURE_EVIDENCE_MAP.md",
     "docs/REVIEWER_ATTACK_MATRIX.md", "docs/REUSABLE_IMPLEMENTATION.md", "docs/FIELD_TRANSLATION_PATHWAY.md",
     "docs/MEE_VOCABULARY_MAP.md",
     "derived/mee_figure_data.json", "derived/mee_synthetic_consequences.json",
     "derived/structural_axis_audit.json", "derived/observation_vocabulary_ablation.json",
-    "derived/prevalence_weighting_sensitivity.json",
+    "derived/prevalence_weighting_sensitivity.json", "derived/reason_split_specificity_control.json",
     "scripts/audit_manuscript_claims.py", "scripts/validate_mee_figure_data.py",
     "scripts/validate_mee_synthetic_consequences.py", "scripts/validate_structural_axis_audit.py",
     "scripts/validate_observation_vocabulary_ablation.py", "scripts/analyze_observation_vocabulary_ablation.py",
     "scripts/validate_prevalence_weighting_sensitivity.py", "scripts/analyze_prevalence_weighting_sensitivity.py",
+    "scripts/validate_reason_split_specificity_control.py", "scripts/analyze_reason_split_specificity_control.py",
     "scripts/build_mee_figures.py", "scripts/validate_anonymous_review_bundle.py",
     "tnoa/__init__.py", "tnoa/core.py", "tnoa/cli.py", "tests/test_minimal_api.py", "examples/minimal_evidence.csv",
     "figures/fig1_tnoa_architecture.svg", "figures/generated/figure_provenance.json",
@@ -68,10 +69,12 @@ def main() -> None:
             fail("bundle identity/paper-generation contract drifted")
         if manifest.get("scientific_claim_boundary_unchanged") is not True:
             fail("bundle cannot change scientific claim boundary")
-        if manifest.get("d3_status") != "post-freeze/not-preregistered":
-            fail("bundle lost D3 post-freeze/not-preregistered boundary")
+        if manifest.get("d3_status") != "post-freeze/not-preregistered; semantic specificity not demonstrated":
+            fail("bundle lost D3 semantic-specificity correction")
         if manifest.get("d4_status") != "post-freeze/not-preregistered design sensitivity":
             fail("bundle lost D4 post-freeze/not-preregistered boundary")
+        if manifest.get("d5_status") != "post-freeze/not-preregistered random-split specificity control":
+            fail("bundle lost D5 post-freeze specificity-control boundary")
 
         recorded = manifest.get("files", {})
         if not isinstance(recorded, dict) or not recorded:
@@ -102,28 +105,38 @@ def main() -> None:
             fail("reviewer manuscript still contains internal claim-ID comments")
         if b"**1.**" not in manuscript or b"**4.**" not in manuscript:
             fail("reviewer manuscript lacks numbered 1-4 abstract")
-        for token in (b"0.00408", b"141/3003", b"57.5%", b"not preregistered"):
+        for token in (b"0.0299", b"0.2656", b"141/3003", b"57.5%", b"48%", b"not semantic-specific"):
             if token not in manuscript:
-                fail(f"reviewer manuscript lost D3/D4 result or boundary: {token!r}")
+                fail(f"reviewer manuscript lost central D1/D4/D5 result or boundary: {token!r}")
 
         audit = zf.read("manuscript/TNOA_MEE_DRAFT.md")
-        if b"<!-- D3 -->" not in audit or b"<!-- D4 -->" not in audit:
-            fail("parallel audit manuscript lost D3/D4 provenance tags")
+        for tag in (b"<!-- D3 -->", b"<!-- D4 -->", b"<!-- D5 -->"):
+            if tag not in audit:
+                fail(f"parallel audit manuscript lost provenance tag: {tag!r}")
 
         paper = json.loads(zf.read("paper_manifest.json").decode("utf-8"))
-        if paper.get("schema") != "tnoa-paper-manifest-v8" or paper.get("paper_generation") != "TNOA-P1-MEE":
-            fail("anonymous paper manifest is not active manifest v8")
+        if paper.get("schema") != "tnoa-paper-manifest-v9" or paper.get("paper_generation") != "TNOA-P1-MEE":
+            fail("anonymous paper manifest is not active manifest v9")
         if paper.get("submission_blockers") != []:
             fail("anonymous paper manifest reports scientific submission blockers")
         for value in paper.get("source_repositories", {}).values():
             if value.get("repository") != "withheld for double-anonymous review":
                 fail("anonymous paper manifest exposes source repository identity")
-        d3 = paper.get("derived_analyses", {}).get("observation_vocabulary_ablation", {})
-        if d3.get("preregistered") is not False or d3.get("observer_retuned") is not False:
-            fail("anonymous manifest overstates D3")
-        d4 = paper.get("derived_analyses", {}).get("prevalence_weighting_sensitivity", {})
+        derived = paper.get("derived_analyses", {})
+        d3 = derived.get("observation_vocabulary_ablation", {})
+        if d3.get("preregistered") is not False or d3.get("semantic_specificity_demonstrated") is not False:
+            fail("anonymous manifest overstates D3 semantic specificity")
+        d4 = derived.get("prevalence_weighting_sensitivity", {})
         if d4.get("preregistered") is not False or d4.get("annotation_budget_efficiency_claimed") is not False:
             fail("anonymous manifest overstates D4/annotation efficiency")
+        d5 = derived.get("reason_split_specificity_control", {})
+        if d5.get("preregistered") is not False or d5.get("semantic_specificity_demonstrated") is not False:
+            fail("anonymous manifest overstates D5")
+        software = paper.get("reusable_implementation", {})
+        if software.get("frozen_v14b_reason_count") != 2 or software.get("reusable_api_unresolved_reason_count") != 4:
+            fail("anonymous manifest lost frozen/API reason-vocabulary boundary")
+        if software.get("one_to_one_frozen_to_api_reason_validation_claimed") is not False:
+            fail("anonymous manifest falsely validates four-way API reason mapping")
 
         source_meta = manifest.get("source_snapshots", {})
         if source_meta.get("A", {}).get("commit") != "f3b266897f3e9139e6c3fe9ce6b645e25371e092":
@@ -156,6 +169,19 @@ def main() -> None:
         if abs(float(k10.get("btnu_vs_binary", -1)) - 0.5746863884992289) > 1e-10:
             fail("D4 kappa=10 composition sensitivity drifted")
 
+        d5_result = json.loads(zf.read("derived/reason_split_specificity_control.json").decode("utf-8"))
+        if d5_result.get("schema") != "tnoa-reason-split-specificity-control-v1" or d5_result.get("source", {}).get("phase_surface_sha256") != SURFACE_SHA:
+            fail("D5 result/provenance drifted")
+        target = d5_result.get("estimands", {}).get("target_prevalence", {})
+        if abs(float(target.get("fraction_random_two_way_splits_equal_or_narrower_than_semantic", -1)) - 0.48) > 1e-12:
+            fail("D5 random-control fraction drifted")
+        if abs(float(target.get("random_two_way_split_median_width_distribution", {}).get("median", -1)) - 0.005007513005321984) > 1e-12:
+            fail("D5 random-control median drifted")
+        if d5_result.get("rank_ladder", {}).get("random_three_way_u_split", {}).get("nullspace_dimension") != 0:
+            fail("D5 full-rank three-way control drifted")
+        if "not shown to be specific to reason semantics" not in str(d5_result.get("claim_boundary", "")):
+            fail("D5 semantic-specificity boundary missing")
+
         pathway = zf.read("docs/FIELD_TRANSLATION_PATHWAY.md")
         if b"implementation template" not in pathway or b"not a Paper-1 empirical result" not in pathway:
             fail("field translation guide lost prospective boundary")
@@ -165,10 +191,16 @@ def main() -> None:
         sensitivity_doc = zf.read("docs/PREVALENCE_WEIGHTING_SENSITIVITY.md")
         if b"Annotation-budget boundary" not in sensitivity_doc or b"not an ecological prior" not in sensitivity_doc:
             fail("D4 documentation lost weighting/annotation boundaries")
+        d5_doc = zf.read("docs/REASON_SPLIT_SPECIFICITY_CONTROL.md")
+        if b"48.0%" not in d5_doc or b"not semantic-specific" not in d5_doc:
+            fail("D5 documentation lost specificity correction")
+        implementation = zf.read("docs/REUSABLE_IMPLEMENTATION.md")
+        if b"no one-to-one empirical four-way mapping" not in implementation.lower():
+            fail("reusable implementation lost frozen/API reason mapping boundary")
 
     print(
         "Anonymous MEE review bundle OK: "
-        f"{len(recorded)} registered files, D3+D4 included, 8+8 figures, identity scan clean, pinned source commits retained"
+        f"{len(recorded)} registered files, D3-D5 controls included, 8+8 figures, identity scan clean, pinned source commits retained"
     )
 
 

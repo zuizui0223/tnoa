@@ -2,103 +2,99 @@
 
 Status: **expanded targeted evidence map complete; not a systematic review**. The adversarial synthesis is in `FINAL_PRIOR_ART_AUDIT.md`; the compact comparison is in `NEAREST_NEIGHBOUR_METHODS.md`.
 
-The purpose is to identify the method families most likely to collapse a TNOA novelty claim and state precisely what remains after those overlaps are conceded.
+The purpose is to identify neighbouring method families that constrain TNOA's novelty claim and to state what remains after those overlaps are conceded.
 
 ## 1. Ecological uncertain-event and multievent models
 
-Multievent capture–recapture explicitly handles uncertain state assignment [@pradel2005multievent]. Multistate occupancy models allow multiple states and imperfect state detection [@mackenzie2009multistate]. Later ecological models explicitly retain state uncertainty, ambiguous/equivocal events or partial observations [@hollanders2022stateuncertainty; @campbellgrant2023partial].
+Multievent capture–recapture accommodates uncertain state assignment [@pradel2005multievent]. Multistate occupancy allows imperfect state detection [@mackenzie2009multistate]. Later ecological models retain uncertain, equivocal or partial observations [@hollanders2022stateuncertainty; @campbellgrant2023partial].
 
-**Shared ground:** uncertain ecological observations need not be forced to a fully observed latent state.
+**Shared ground:** uncertain ecological observations need not be forced to fully observed states.
 
-**TNOA difference:** these methods model latent ecological states from an observation/event record. TNOA operates one stage earlier and specifies what process-semantic event record the sensor is entitled to emit.
+**TNOA difference:** it acts one stage earlier and specifies what process-semantic record the sensor may emit.
 
-**Claim surrendered:** TNOA is not the first ecological method to retain uncertainty, ambiguity or partial observations.
+**Claim surrendered:** TNOA is not the first ecological method to retain uncertainty or ambiguous observations.
 
 ## 2. Continuous-score and AI-assisted ecological inference
 
-Continuous-score occupancy uses classifier score distributions directly rather than thresholding them to detections [@rhinehart2022continuous]. Broader AI-to-inference workflows describe how automated classifier confidence should connect to ecological models [@cowans2026aiworkflow; @kitzes2026aiworkflow]. Classification-error models and camera-trap audits show that classifier confusion or systematic bias can alter ecological estimates [@spence2025classification; @santoro2025bias].
+Continuous-score occupancy can use classifier-score distributions without thresholding them to detections [@rhinehart2022continuous]. AI-to-inference workflows connect automated confidence/error to ecological analysis [@cowans2026aiworkflow; @kitzes2026aiworkflow]. Classification-error models show that classifier confusion/bias alters ecological inference [@spence2025classification; @santoro2025bias].
 
-**Shared ground:** binary thresholding is not required and classifier error can propagate downstream.
+**Shared ground:** binary thresholding is not required and automated-classifier error can propagate downstream.
 
-**TNOA difference:** TNOA does not retain one target-confidence score. It retains heterogeneous propositions: positive T, positive N, separate O, attribution-gated C and optional independently supported A−, plus unresolved-reason provenance.
+**TNOA difference:** TNOA retains heterogeneous propositions—positive T, positive N, separate O, attribution-gated C and optional independently supported A−—rather than one target-confidence stream.
 
 **Claim surrendered:** TNOA is not the first non-binary or continuous-score ecological use of machine-learning output.
 
 ## 3. Imperfect detection and process/observation models
 
-Occupancy and hierarchical/state-space models already separate ecological state from observation [@mackenzie2002occupancy; @roylelink2006occupancy; @royle2008hierarchical; @augermethe2021statespace]. Camera-trap work decomposes encounter, triggering, registration and image-quality processes [@hofmeester2019framing; @findlay2020detection].
+Occupancy and hierarchical/state-space models already separate ecological state from observation [@mackenzie2002occupancy; @roylelink2006occupancy; @royle2008hierarchical; @augermethe2021statespace]. Camera-trap work decomposes encounter, trigger, registration and image-quality processes [@hofmeester2019framing; @findlay2020detection].
 
-**TNOA difference:** its object is the upstream observation contract handed to these downstream models, not a replacement latent-state model.
+**TNOA difference:** its object is the upstream observation contract handed to these models.
 
 **Claim surrendered:** nondetection-is-not-absence and process/observation separation are established ecology.
 
 ## 4. Selective, reject and partial-abstention methods
 
-Selective classification and reject options formalize refusal [@elyaniv2010selective; @geifman2017selective; @geifman2019selectivenet; @hendrickx2024reject]. Partial/set-valued and multilabel abstention allow non-singleton decisions and selective refusal [@karlsson2024partialreject; @nguyen2020partialabstention]. Conformal reject methods add formal guarantees under their assumptions [@garciagalindo2024conformalreject; @szabadvary2025reject].
+Selective classification/reject options formalize refusal [@elyaniv2010selective; @hendrickx2024reject]. Multilabel partial abstention permits coexistence and selective refusal [@nguyen2020partialabstention]. Formal risk-control methods can offer stronger guarantees under stated assumptions [@bates2021riskcontrol].
 
-**TNOA difference:** T/N/O/C/A− are not exchangeable labels. They make different propositions and can require different evidence. T+N is physical coexistence, O is measurement support, and C requires attribution.
+**TNOA difference:** T/N/O/C/A− are not exchangeable class labels; they make different process/measurement propositions.
 
-**Claim surrendered:** abstention, coexistence of labels and partial refusal are not new.
+**Claim surrendered:** abstention, coexistence and partial refusal are not new.
 
 ## 5. Open-set and evidential uncertainty
 
-Open-set recognition handles unknown classes [@geng2021openset]. Belief-function and evidential approaches represent ignorance, conflict and non-singleton belief [@denoeux2019belief; @gao2026evidential].
+Open-set recognition handles unknown classes [@geng2021openset]. Belief/evidential approaches represent ignorance and conflict [@denoeux2019belief; @gao2026evidential].
 
-**TNOA difference:** U need not be an unknown class or a scalar uncertainty state. It can arise from known processes whose evidence does not license one ecological statement; reason provenance is retained.
+**TNOA difference:** U may arise among known processes because available evidence does not license one observation statement.
 
 **Claim surrendered:** explicit ignorance/conflict is prior art.
 
 ## 6. Calibration and formal risk control
 
-Confidence calibration changes with model representation [@guo2017calibration], and uncertainty can degrade under dataset shift [@ovadia2019shift]. Risk-controlling prediction sets provide stronger formal guarantees under specified assumptions [@bates2021riskcontrol].
+Calibration depends on representation [@guo2017calibration] and can degrade under dataset shift [@ovadia2019shift]. Risk-controlling prediction sets provide stronger formal guarantees under their assumptions [@bates2021riskcontrol].
 
-**TNOA difference:** the frozen development history documents an ecological nuisance representation change where ranking survived but the inherited raw threshold lost its operating meaning. The repair transfers a declared **family-conditional decision error** rather than the raw score value.
+**TNOA contribution:** the frozen nuisance history documents a representation change where ranking survived but an inherited raw threshold lost its operating meaning; a **predeclared family-conditional false-attribution criterion** was then recalibrated and checked held-out.
 
-**Boundary:** the current `0/43,200` and `1,920/43,200` held-out rates are closed-world empirical checks. They are not classical family-wise error-rate control and not distribution-free finite-sample guarantees.
+**Boundary:** the `0/43,200` and `1,920/43,200` held-out rates are closed-world empirical checks, not classical FWER or distribution-free finite-sample guarantees.
 
 ## 7. Information ordering and partial identification
 
-Blackwell comparison formalizes garbling of statistical experiments [@blackwell1953comparison]. Partial-identification theory formalizes compatible identified sets when data do not point-identify an estimand [@manski2005partial].
+Blackwell comparison formalizes garbling [@blackwell1953comparison]. Partial-identification theory formalizes compatible identified sets [@manski2005partial].
 
-**Shared ground:** a deterministic coarsening cannot be more informative than the record from which it is derived, and identification width is established statistical language.
+**Shared ground:** deterministic coarsening cannot be more informative, and identification width is established statistical language.
 
-**TNOA difference:** the empirical contribution is the magnitude of information loss for a frozen ecological sensing experiment and the observation semantics responsible for retaining it.
+**TNOA contribution:** D1 quantifies the magnitude of ecological target-prevalence information lost when the frozen core B/T/N/U record is coarsened to target/not-target. D4 maps how that magnitude behaves across target prevalence and bounded composition reweighting.
 
-The post-freeze D3 ablation makes this explicit across four nested records: target/not-target; target/nuisance/other; B/T/N/U; and reason-resolved B/T/N/U.
+For the primary comparison, median target-prevalence width is approximately `0.0299` with B/T/N/U versus `0.2656` after binary coarsening. This is the core downstream information result.
 
-## 8. Adaptive ecological sampling
+## 8. D3 and D5: refinement is informative, semantic specificity is not demonstrated
 
-Adaptive and preferential sampling already treat data-dependent effort as an inferential-design problem [@henrys2024adaptive; @pescott2025adaptive].
+D3, motivated after the prior-art audit, split the frozen generic U column into two observed reason buckets and found large additional numerical narrowing (`0.02992 -> 0.00408` for target prevalence).
 
-TNOA Paper 1 is upstream of adaptive control. Its field translation requires shadow-mode calibration before reason-specific acquisition can change sampling effort.
+D5 was added as the required control. A constant 50:50 split of U gives no gain, but 500 arbitrary regime-dependent two-way splits have median target-prevalence width `0.0050075`; `48.0%` are equal to or narrower than the frozen two-reason split. Across all five estimands, random equal-or-better fractions range from `0.480` to `0.672`. Random three-way splits generically make the six-regime constraint system full rank.
 
-## 9. Residual novelty after the expanded audit
+Therefore D3 shows the value of adding **non-redundant observation structure**, not an isolated information premium caused by the meanings of the two frozen reason labels. Exact width at a fixed rank still depends on column orientation, so state count/rank does not alone determine every effect size.
 
-The defensible contribution is not a conjunction-of-components priority claim. It is a tested **upstream process-semantic ecological observation contract** that:
+The frozen D3/D5 surface also has only two U reason buckets, whereas the later reusable API exposes four U reasons. The frozen analysis does not validate a one-to-one four-reason API decomposition.
 
-1. separates positive target and nuisance process support;
-2. preserves T+N coexistence;
-3. keeps measurement support O semantically separate;
+## 9. Adaptive ecological sampling
+
+Adaptive and preferential sampling already treat data-dependent effort as an inferential-design problem [@henrys2024adaptive; @pescott2025adaptive]. TNOA Paper 1 is upstream of adaptive control; field translation begins in shadow mode and requires fresh calibration.
+
+## 10. Residual novelty after the expanded audit and D5 control
+
+The defensible contribution is a tested **upstream process-semantic ecological observation contract** that:
+
+1. keeps positive target and nuisance support non-complementary;
+2. permits T+N coexistence;
+3. separates measurement support O;
 4. requires attribution before C is promoted to target evidence;
 5. requires independent evidence for certified absence;
-6. preserves unresolved-reason provenance;
-7. calibrates process-support decisions to predeclared family-conditional error semantics rather than inherited raw thresholds;
-8. quantifies under frozen known truth how much downstream ecological identification is lost when the record is progressively garbled.
-
-## 10. D3 prior-art-motivated test
-
-Because prior ecology already preserves uncertain observations and continuous classifier scores, the key residual empirical question is whether TNOA-specific **reason provenance** carries additional information.
-
-The literature-audit-motivated D3 analysis is explicitly post-freeze and not preregistered. Median target-prevalence width across the four nested vocabularies was `0.2656`, `0.1886`, `0.02992`, `0.00408`; T+N co-occurrence width was `0.7231`, `0.5136`, `0.10494`, `0.01484`. Reason-resolved U was never wider than generic U in all 34 registered single-axis slices for all five fixed estimands and strictly reduced the slice median in most slices.
-
-The nesting direction is structural. The numerical reduction is the post-freeze result.
+6. calibrates operational support decisions to declared family-conditional error semantics rather than inherited raw thresholds;
+7. quantifies under frozen known truth how much downstream ecological identification is lost when the **core B/T/N/U record** is garbled to binary;
+8. reports finer reason refinements only with the explicit D5 qualification that their semantic-specific information value is not isolated.
 
 ## 11. MEE positioning
 
-The intended MEE framing is therefore:
+> TNOA contributes a tested upstream ecological observation contract, a frozen operational calibration failure/recovery, and a known-truth experiment quantifying the ecological information destroyed by binary coarsening of core observation-process states.
 
-> TNOA contributes a tested upstream ecological observation contract and a frozen known-truth experiment quantifying the ecological information destroyed by coarsening that contract.
-
-It is not framed as the first abstaining classifier, first uncertain ecological-event model, first continuous-score inference method, first multilabel method, first calibration method, or first use of partial identification.
-
-Quantitative transfer beyond the frozen synthetic generator remains unclaimed; field validation is external to Paper 1.
+D3/D5 is a self-critical supporting diagnostic, not a reason-semantics novelty claim. Quantitative transfer beyond the frozen generator remains unclaimed; field validation is external to Paper 1.

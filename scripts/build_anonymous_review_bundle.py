@@ -44,21 +44,23 @@ TNOA_DOCS = (
     "docs/CLAIM_TRACEABILITY.md", "docs/FIGURE_PLAN.md",
     "docs/MEE_FIGURE_VALIDATION.md", "docs/MEE_SYNTHETIC_CONSEQUENCES.md",
     "docs/STRUCTURAL_RESULT_AUDIT.md", "docs/OBSERVATION_VOCABULARY_ABLATION.md",
-    "docs/PREVALENCE_WEIGHTING_SENSITIVITY.md", "docs/REUSABLE_IMPLEMENTATION.md",
-    "docs/FIELD_TRANSLATION_PATHWAY.md", "docs/MEE_VOCABULARY_MAP.md",
+    "docs/PREVALENCE_WEIGHTING_SENSITIVITY.md", "docs/REASON_SPLIT_SPECIFICITY_CONTROL.md",
+    "docs/REUSABLE_IMPLEMENTATION.md", "docs/FIELD_TRANSLATION_PATHWAY.md",
+    "docs/MEE_VOCABULARY_MAP.md",
 )
 DERIVED = (
     "derived/mee_figure_data.json", "derived/mee_synthetic_consequences.json",
     "derived/structural_axis_audit.json", "derived/observation_vocabulary_ablation.json",
-    "derived/prevalence_weighting_sensitivity.json",
+    "derived/prevalence_weighting_sensitivity.json", "derived/reason_split_specificity_control.json",
 )
 TNOA_SCRIPTS = (
     "scripts/audit_manuscript_claims.py", "scripts/validate_mee_figure_data.py",
     "scripts/validate_mee_synthetic_consequences.py", "scripts/validate_structural_axis_audit.py",
     "scripts/validate_observation_vocabulary_ablation.py", "scripts/validate_prevalence_weighting_sensitivity.py",
-    "scripts/build_mee_figures.py", "scripts/analyze_mee_synthetic_consequences.py",
-    "scripts/analyze_structural_axis_audit.py", "scripts/analyze_observation_vocabulary_ablation.py",
-    "scripts/analyze_prevalence_weighting_sensitivity.py", "scripts/validate_anonymous_review_bundle.py",
+    "scripts/validate_reason_split_specificity_control.py", "scripts/build_mee_figures.py",
+    "scripts/analyze_mee_synthetic_consequences.py", "scripts/analyze_structural_axis_audit.py",
+    "scripts/analyze_observation_vocabulary_ablation.py", "scripts/analyze_prevalence_weighting_sensitivity.py",
+    "scripts/analyze_reason_split_specificity_control.py", "scripts/validate_anonymous_review_bundle.py",
 )
 
 
@@ -141,7 +143,7 @@ def neutral_readme() -> str:
 
 This package supports double-anonymous review of the active MEE-focused TNOA methods paper. Public repository ownership is withheld; immutable scientific run IDs, hashes and artifact digests are retained.
 
-Included materials cover the anonymous manuscript, a parallel C/D-tagged audit source, expanded nearest-neighbour prior-art positioning, frozen/post-freeze derived analyses including the explicitly non-preregistered D3 observation-vocabulary ablation and D4 prevalence/composition-weight sensitivity, reproducible figure inputs/builders, and the minimal reusable API/CLI.
+Included materials cover the anonymous manuscript, a parallel C/D-tagged audit source, expanded nearest-neighbour prior-art positioning, frozen/post-freeze derived analyses including D3 vocabulary refinement, D4 prevalence/composition-weight sensitivity and the D5 random-split specificity control, reproducible figure inputs/builders, and the minimal reusable API/CLI.
 
 Fast checks:
 
@@ -149,13 +151,14 @@ Fast checks:
 python scripts/validate_mee_synthetic_consequences.py
 python scripts/validate_observation_vocabulary_ablation.py
 python scripts/validate_prevalence_weighting_sensitivity.py
+python scripts/validate_reason_split_specificity_control.py
 python scripts/validate_structural_axis_audit.py
 python scripts/validate_mee_figure_data.py
 python scripts/audit_manuscript_claims.py
 python -m unittest discover -s tests -p 'test_*.py'
 ```
 
-The historical full phase-surface generation is intentionally not rerun for routine peer review. D3 and D4 are deterministic post-freeze transformations/sensitivity analyses of the immutable surface and are explicitly not preregistered.
+The historical full phase-surface generation is intentionally not rerun for routine peer review. D3-D5 are post-freeze transformations/controls of the immutable surface and are explicitly not preregistered. D5 is the required guard against interpreting D3's additional narrowing as a semantic-specific information premium.
 """
 
 
@@ -306,8 +309,9 @@ def main() -> None:
             "paper_generation": "TNOA-P1-MEE",
             "double_anonymous": True,
             "scientific_claim_boundary_unchanged": True,
-            "d3_status": "post-freeze/not-preregistered",
+            "d3_status": "post-freeze/not-preregistered; semantic specificity not demonstrated",
             "d4_status": "post-freeze/not-preregistered design sensitivity",
+            "d5_status": "post-freeze/not-preregistered random-split specificity control",
             "source_snapshots": source_meta,
             "files": files,
         }
@@ -320,8 +324,9 @@ def main() -> None:
         "zip_sha256": sha256(zip_path.read_bytes()),
         "source_A_commit": SOURCE_A_COMMIT,
         "source_B_commit": SOURCE_B_COMMIT,
-        "d3_status": "post-freeze/not-preregistered",
+        "d3_status": "post-freeze/not-preregistered; semantic specificity not demonstrated",
         "d4_status": "post-freeze/not-preregistered design sensitivity",
+        "d5_status": "post-freeze/not-preregistered random-split specificity control",
     }
     receipt_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(f"Built anonymous review bundle: {zip_path}")

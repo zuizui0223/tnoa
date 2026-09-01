@@ -1,133 +1,88 @@
 # Final targeted prior-art audit for TNOA Paper 1
 
-Status: **expanded targeted adversarial audit for manuscript positioning**.
+Status: **expanded targeted adversarial audit for manuscript positioning; not a systematic review**.
 
-This is not a systematic review. Its purpose is narrower: search the method families most likely to invalidate TNOA's strongest novelty statement, surrender component-level priority wherever prior art exists, and identify the residual contribution that remains defensible.
+The purpose is to surrender component-level priority wherever prior art exists and define the residual contribution that remains after direct controls.
 
-## 1. Search scope
+## 1. Prior-art families that constrain the claim
 
-The audit covers:
+The audit covers ecological occupancy/multievent/partial-observation models; continuous-score and AI-assisted ecological inference; classifier-error propagation; selective/reject methods; multilabel partial abstention; evidential uncertainty; calibration/risk control; Blackwell comparison and partial identification; and sensor/adaptive-monitoring neighbours.
 
-- ecological occupancy, multistate and multievent models with imperfect, ambiguous, equivocal or partial observations;
-- continuous-score and AI-assisted ecological inference;
-- ecological models that propagate image/audio classification error;
-- selective classification, reject options, conformal/risk-controlling prediction sets and multilabel partial abstention;
-- open-set recognition and evidential/belief-function uncertainty;
-- confidence calibration and uncertainty under dataset shift;
-- Blackwell comparison/garbling of statistical experiments and partial identification;
-- camera-trap component detection, sensor fusion and adaptive/preferential sampling.
+Selective prediction and learned reject mechanisms are already well developed [@geifman2017selective; @geifman2019selectivenet]. Partial reject/abstention formulations extend that logic to selective components of a prediction [@karlsson2024partialreject], while conformal/reject approaches provide additional calibration and error-control neighbours [@garciagalindo2024conformalreject; @szabadvary2025reject]. These works reinforce that TNOA cannot claim priority for abstention or rejection itself.
 
-The search is deliberately adversarial. A neighbouring method only needs to invalidate one priority claim; it need not reproduce the full TNOA architecture.
+The following ideas are established prior art and are **not** TNOA priority claims:
 
-## 2. Strong claims that prior art invalidates
+- unresolved, ambiguous or equivocal ecological observations;
+- nondetection is not absence;
+- non-binary/continuous machine-learning outputs in ecological inference;
+- abstention, partial refusal, simultaneous labels and explicit ignorance/conflict;
+- calibration and formal risk-control theory;
+- deterministic garbling/information ordering;
+- partial-identification bounds and identification width.
 
-### 2.1 TNOA is not the first ecological method to retain uncertain observations
+## 2. Residual methodological object
 
-Multievent models explicitly accommodate uncertain state assignment [@pradel2005multievent]. Multistate occupancy models allow multiple ecological states under imperfect detection and ambiguous state information [@mackenzie2009multistate]. Later ecological methods explicitly retain uncertain, ambiguous, equivocal or partially observed events [@hollanders2022stateuncertainty; @campbellgrant2023partial].
+TNOA's residual contribution is an **upstream process-semantic ecological observation contract** in which target and nuisance are positive non-complements, observability is a separate measurement proposition, coupled response requires attribution before promotion to target support, and biological absence requires evidence distinct from low target support.
 
-Therefore TNOA must not claim:
+The paper then tests two primary consequences:
 
-- the first ecological unresolved observation;
-- the first ecological representation of ambiguous/equivocal events;
-- the first separation of nondetection from absence.
+1. **C6/C7:** after a nuisance representation changed, ranking remained useful but the inherited raw threshold lost its operating meaning; a predeclared family-conditional false-attribution criterion was recalibrated and checked held-out (`0/43,200`, `1,920/43,200 = 0.04444`). This is not classical FWER or distribution-free risk control.
+2. **D1/D4:** under frozen known truth, collapsing the core B/T/N/U record to target/not-target substantially expands the compatible set for target prevalence. The Blackwell never-wider direction is structural; TNOA contributes the measured magnitude and its prevalence/weight conditions.
 
-### 2.2 TNOA is not the first non-binary use of machine-learning output in ecological inference
+The registered global target-prevalence median widths are about `0.0299207` with B/T/N/U and `0.2656306` after binary collapse. Only `141/3003 = 4.70%` simplex compositions have θ≤0.2, but in that subset medians remain `0.000175` versus `0.07410`; at composition-weight `kappa=10`, B/T/N/U still removes at least `57.5%` of weighted-mean binary width.
 
-A continuous-score occupancy model already incorporates uncertain machine-learning scores directly without first thresholding them to detections [@rhinehart2022continuous]. AI-to-inference workflows explicitly address how automated classifier confidence and uncertainty enter ecological analyses [@cowans2026aiworkflow; @kitzes2026aiworkflow]. Classification-error models and empirical audits show that confusion and systematic classifier bias alter ecological results [@spence2025classification; @santoro2025bias].
+## 3. D3 does not establish a semantic-specific reason premium
 
-Therefore TNOA must not claim:
+The prior-art audit originally motivated D3: split the frozen generic U record into the two V14b reason buckets and quantify the additional narrowing. Numerically, target-prevalence median width changed `0.0299207 -> 0.0040780`.
 
-- the first threshold-free ecological use of classifier output;
-- the first continuous-score ecological inference method;
-- the first recognition that AI error propagates into ecological inference.
+That result initially invited a semantic interpretation: perhaps the **meaning** of the U reasons carried a special downstream information value. A later reviewer-motivated D5 control shows that interpretation is unsupported.
 
-### 2.3 Abstention, coexistence and partial decisions are established machine-learning ideas
+D5 keeps the same generic B/T/N/U matrix and changes only how U is split:
 
-Selective/reject methods formalize abstention [@elyaniv2010selective; @hendrickx2024reject]. Partial/set-valued and multilabel abstention methods can preserve multiple labels and refuse only part of a multilabel decision [@karlsson2024partialreject; @nguyen2020partialabstention]. Open-set and evidential methods represent unknowns, ignorance and conflict [@geng2021openset; @denoeux2019belief; @gao2026evidential].
+- constant 50:50 split: `0.0299207` — no gain because the added column is redundant;
+- 500 unlabeled regime-dependent two-way splits: median `0.0050075`;
+- frozen two-reason split: `0.0040780`;
+- **48.0%** of random two-way splits are equal to or narrower than the frozen split for target prevalence.
 
-Therefore TNOA must not claim:
+Across all five estimands, the random-equal-or-better fraction ranges `0.480–0.672`. All 500 unlabeled three-way splits produce a full-rank six-regime constraint system and point-identify all five estimands to numerical tolerance.
 
-- invention of abstention;
-- invention of simultaneous labels or partial refusal;
-- invention of explicit ignorance or conflict.
+Therefore D3 remains an informative **refinement/identifiability diagnostic**, but the size of its gain is not shown to be specific to the selected reason semantics. Much of the effect follows from adding non-collinear regime-discriminating observation columns and reducing latent-mixture degrees of freedom. Exact width also depends on column orientation relative to the estimand, so state count alone is not a complete explanation.
 
-T+N coexistence remains important to TNOA's semantics, but coexistence alone is not a historical-priority claim.
+## 4. Frozen reason vocabulary is not the reusable API vocabulary
 
-### 2.4 Error control and calibration have stronger formal precedents
+The frozen V14b D3/D5 surface has two unresolved buckets: historical `INFORMATION_ABSENT` and `OVERLAP_OR_ATTRIBUTION`. The latter combines at least simultaneous T+N support and unresolved indirect-only attribution in the frozen decision code.
 
-Conformal/reject methods and risk-controlling prediction sets can provide formal error guarantees under specified assumptions [@garciagalindo2024conformalreject; @szabadvary2025reject; @bates2021riskcontrol]. Confidence calibration is known to depend on model representation, and predictive uncertainty can degrade under dataset shift [@guo2017calibration; @ovadia2019shift].
+The later reusable API exposes four U reasons: no-supported-evidence, target+nuisance overlap, missing attribution and insufficient observability. The frozen experiment does **not** provide a one-to-one four-way empirical validation; insufficient observability has no separate D3 column, and overlap versus missing attribution cannot be separated from the frozen aggregate rate.
 
-The TNOA nuisance experiment therefore supports a narrower claim: a historical raw threshold lost its registered operating meaning after representation change, while a **predeclared family-conditional false-attribution criterion** could be recalibrated on the new score representation and checked held-out. The observed rates `0/43,200` and `1,920/43,200 = 0.04444` are closed-world empirical checks. They are not classical family-wise error-rate control and not a distribution-free finite-sample guarantee.
+Reason provenance can still be a scientifically useful design feature because different unresolved situations motivate different follow-up measurements. But that practical semantic justification is independent of D3's identification-width effect and must be validated in the deployment where the reason is used.
 
-### 2.5 Deterministic coarsening and partial-identification bounds are not TNOA inventions
+## 5. Nearest-neighbour positioning
 
-Blackwell's comparison of experiments formalizes information loss under garbling [@blackwell1953comparison]. Partial-identification theory formalizes identified sets when data and assumptions do not point-identify an estimand [@manski2005partial].
-
-Therefore the statement that a deterministic coarsening cannot be more informative is structural prior art. TNOA's empirical result is the **magnitude and ecological consequence** of that information loss for its frozen observation experiment.
-
-## 3. What remains distinct
-
-The residual object is not a generic uncertain label or a single continuous target-confidence score. TNOA defines an **upstream process-semantic observation contract** in which:
-
-1. T is positive support for the focal target process;
-2. N is separate positive support for an exogenous process that can mimic, mask, corrupt attribution or degrade support;
-3. T and N are non-complementary and may coexist;
-4. O is a measurement-support proposition rather than target confidence or nuisance burden;
-5. C is a local target-coupled response that is not promoted without independent attribution;
-6. A−, if used, requires independent positive support for absence;
-7. U retains reason provenance rather than serving only as a generic reject label;
-8. process-support decisions are calibrated to declared error semantics rather than inherited raw-score values;
-9. the resulting record is evaluated by the downstream ecological information lost when it is deliberately coarsened.
-
-The strongest contribution is therefore functional rather than combinatorial: **define a process-semantic observation record upstream of ecological inference, then experimentally measure the decision-relevant information destroyed when that record is garbled to coarser vocabularies.**
-
-## 4. New post-freeze evidence motivated by this audit
-
-The prior-art comparison raised a question not answered by the original D1 analysis: if uncertain events and non-binary outputs are already known, does TNOA gain anything specifically from preserving the **reason** for unresolvedness?
-
-A deterministic post-freeze vocabulary ablation on the immutable V14b surface addresses that question. It is explicitly literature-audit-motivated and **not preregistered**. No observer, threshold or synthetic world was changed.
-
-Across the same 3,003 six-regime mixtures, median target-prevalence identification width was:
-
-- TARGET/not-TARGET: `0.2656`;
-- TARGET/NUISANCE/other: `0.1886`;
-- B/T/N/U: `0.02992`;
-- B/T/N/U with no-support and overlap/attribution U separated: `0.00408`.
-
-For T+N co-occurrence prevalence the corresponding widths were `0.7231`, `0.5136`, `0.10494` and `0.01484`. Reason-resolved U reduced median width by a further `86.37%` for target prevalence and `85.86%` for T+N co-occurrence relative to generic B/T/N/U. All five fixed estimands and all 34 registered-axis slices are reported in `docs/OBSERVATION_VOCABULARY_ABLATION.md`.
-
-The nested never-wider direction is structural; the numerical reductions are the post-freeze empirical result.
-
-## 5. Nearest-neighbour comparison
-
-The detailed comparison is retained in `docs/NEAREST_NEIGHBOUR_METHODS.md`. The key distinctions are:
-
-- continuous-score occupancy preserves one classifier-score stream; TNOA preserves heterogeneous process propositions;
-- multievent/partial-observation ecology models uncertain observed events; TNOA constructs the upstream event vocabulary from sensor evidence;
-- multilabel abstention allows coexistence/refusal among labels; TNOA's channels make different propositions and have different evidential requirements;
-- Blackwell/Manski supply the information-ordering and identified-set language; TNOA contributes the frozen ecological observation experiment and measured loss magnitude.
+- continuous-score occupancy preserves a classifier-score stream; TNOA asks what process-semantic record should exist upstream of that downstream inference;
+- multievent/partial-observation ecology already models uncertain observed events; TNOA constructs a sensor-side observation contract;
+- multilabel abstention already permits coexistence/refusal; TNOA's T/N/O/C/A− propositions have different measurement meanings;
+- Blackwell/Manski provide the formal information-ordering/identified-set language; TNOA's contribution is the frozen ecological experiment and measured coarsening magnitude;
+- D5 prevents the novelty claim from relying on the number of finer categories or on an untested semantic-information interpretation.
 
 ## 6. Strongest safe novelty statement
 
-> TNOA contributes a tested upstream ecological observation contract that separates positive target support, positive nuisance support, measurement observability, attribution-gated coupled response and independently supported absence; preserves reason-resolved unresolved observations before downstream analysis; calibrates process-support decisions against predeclared family-conditional errors; and quantifies under frozen known truth the decision-relevant information lost when this record is garbled to coarser observation vocabularies.
-
-This wording deliberately does not claim priority for abstention, uncertain ecological events, continuous classifier scores, multilabel coexistence, calibration theory, information ordering or partial identification.
+> TNOA contributes a tested upstream ecological observation contract that separates target, nuisance, observability and attribution propositions; demonstrates that an inherited raw score threshold can lose its operating meaning after representation change and can instead be recalibrated against explicit family-conditional error semantics; and quantifies under frozen known truth the ecological information lost when core B/T/N/U observation-process distinctions are garbled to a binary record. Finer reason provenance remains part of the implementation contract only when independently justified; the present D3/D5 experiment does not demonstrate a semantic-specific information premium for the selected reason labels.
 
 ## 7. Prohibited wording
 
-Do not write:
+Do not claim:
 
-- “TNOA is the first abstaining ecological classifier.”
-- “TNOA is the first ecological method to retain uncertain observations.”
-- “TNOA is the first method to use non-binary classifier output in ecological inference.”
-- “TNOA is the first method to allow target and nuisance to coexist.”
-- “TNOA proves family-wise error-rate control.”
-- “TNOA provides a distribution-free risk guarantee.”
-- “TNOA discovers that richer deterministic records are never less informative.”
-- “No previous method can retain multiple hypotheses or conflicting evidence.”
+- first abstaining/non-binary/uncertain-observation ecological method;
+- first target+nuisance coexistence or multilabel method;
+- family-wise error-rate control or a distribution-free guarantee;
+- invention of Blackwell ordering or partial identification;
+- that `0.00408` demonstrates semantic reason value;
+- that the `86.37%` refinement is caused by the reason meanings;
+- that the frozen two-reason surface validates the current four API reasons;
+- that adding more categories is intrinsically better.
 
 ## 8. Remaining uncertainty
 
-This audit reduces but cannot eliminate prior-art risk because it is targeted rather than systematic, relevant work may use different terminology, and adjacent results may exist in robotics, fault diagnosis, active perception, source separation or evidence theory. Those outer-ring literatures are reasons to avoid absolute priority claims, not reasons to delay Paper 1 until every technical field has been systematically reviewed.
+This is a targeted, not systematic, review. Adjacent work may use different terminology or appear in robotics, fault diagnosis, active perception, source separation or evidence theory. That residual uncertainty is a reason to avoid absolute priority claims, not a reason to expand Paper 1 indefinitely.
 
-The paper should therefore claim a tested **ecological observation contract and measured coarsening consequence**, not historical ownership of its individual mathematical or machine-learning ingredients.
+The paper should claim the tested ecological observation contract, C6/C7 calibration result and D1/D4 measured binary-coarsening consequence, with D3/D5 retained as a self-critical supporting control.

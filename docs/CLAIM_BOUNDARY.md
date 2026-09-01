@@ -1,309 +1,149 @@
 # TNOA claim boundary
 
-This file is a hard manuscript guardrail. Claims are grouped by what the current closed-world evidence can support.
+This file is the hard manuscript guardrail for Paper 1. The paper is a closed-world methods study. Later field implementation may validate, revise or reject individual evidence adapters without changing these boundaries retroactively.
 
-## A. Claims currently supportable in a methods paper
+## A. Claims currently supportable
 
-### A1. Architecture
+### A1. Observation architecture
 
-TNOA defines target, target-coupled response, nuisance and observability as non-equivalent evidence channels, with optional independent target-absence evidence.
+TNOA separates positive target support, positive nuisance support, measurement observability, attribution-gated coupled response and optional independently supported absence. T and N are non-complementary and may coexist. Low target support is not biological absence.
 
-### A2. Positive non-complementary T/N hypotheses
+### A2. C6 -> C7 threshold/calibration result
 
-Target and nuisance are not complements, and the framework permits legitimate T+N superposition.
+The frozen development history supports the following methodological result:
 
-### A3. Abstention as a formal output
+- nuisance ranking remained useful after the score representation changed;
+- the inherited raw threshold `0.55` lost its registered operating meaning;
+- pooled calibration failed one predeclared negative-family criterion;
+- max-over-predeclared-families calibration produced held-out false nuisance attribution `0/43,200` and `1,920/43,200 = 0.04444`, both within `alpha=0.05`.
 
-The final decision vocabulary includes U whenever the current evidence does not justify a unique target/nuisance inference. Abstention itself is established prior art and is not claimed as novel.
+Use **predeclared family-conditional false-attribution criterion**, not classical family-wise error-rate control. These are closed-world empirical rates, not a distribution-free finite-sample guarantee and not field FPRs.
 
-### A4. Low target evidence is not biological absence
+### A3. D1 core downstream information-loss result
 
-Without an independently validated A− channel, low target evidence cannot certify target absence.
+Using known synthetic truth and the frozen six-regime emission map, Paper 1 may compare target-prevalence partial-identification sets after retaining B/T/N/U versus deterministic target/not-target coarsening.
 
-### A5. Observability is separate from target and nuisance
+The never-wider direction is structural: the binary record is a deterministic garbling of B/T/N/U. It is not a performance discovery. The empirical result is the **magnitude and design dependence** of the information loss. The registered global median widths are approximately `0.0299207` for B/T/N/U and `0.2656306` for binary collapse. The deliberately naive target-fraction bias remains a secondary comparator only.
 
-Good O does not prove target absence. High nuisance does not necessarily imply low O. Quiet scenes are not automatically observable.
+### A4. D4 prevalence/composition-weight sensitivity
 
-### A6. Closed-world phase geometry
+D4 is reviewer-motivated, post-freeze and not preregistered. It may support the core D1 result within its explicit design class:
 
-Under the registered synthetic design and frozen observers, resolvability can be mapped over six dimensionless coordinates.
+- only `141/3003 = 4.70%` of the 0.1-step simplex compositions have target prevalence `<=0.2`;
+- in that subset, median target-prevalence width is `0.07410` after binary collapse versus `0.000175` with B/T/N/U;
+- under `kappa=10` bounded adversarial composition weighting, B/T/N/U still removes at least `57.5%` of weighted-mean binary width.
 
-### A7. Negative Pi2 result
+This is not an ecological prior and not arbitrary-distribution robustness.
 
-The registered narrow ambiguity-ridge prediction near `Pi2 ~= 1` was not supported and was retired.
+### A5. C2 negative result
 
-### A8. Attribution-channel dependence
+The preregistered narrow ambiguity-ridge prediction near `Pi2 ~= 1` was not supported and was retired without changing the generator to rescue it.
 
-Within the frozen synthetic representation, direct-visible target evidence is separable from nuisance-only worlds while indirect-only coupled response without independent attribution remains unresolved under the tested observation-safe statistic family.
+### A6. U composition and Pi1 reason substitution
 
-### A9. Error-criterion principle
+Within the frozen V14b semantics, no-supported-evidence U and the combined overlap/attribution U bucket may be reported. Overlap/attribution remains a majority of U through the tested row-level bounded reweighting class to `kappa=10`. The Pi1 result is a secondary reason-substitution illustration: after `Pi1=1`, no-support decreases while the combined overlap/attribution bucket continues to increase. Do not headline generic non-monotonicity.
 
-A raw score threshold need not retain meaning after representation changes. Operational decisions can instead be tied to predeclared false-attribution or false-certainty criteria.
+### A7. Structural/design diagnostics
 
-The historical nuisance protocol used two predeclared negative families, computed a calibration boundary in each, and adopted the maximum boundary as one operational threshold. Manuscript prose should describe the inferential object as a **predeclared family-conditional false-attribution criterion** or **max-over-predeclared-families calibration**, not as classical family-wise error-rate control. The observed held-out rates (`0/43,200` and `1,920/43,200 = 0.04444`) are closed-world empirical rates. They are not distribution-free finite-sample guarantees.
+The six registered coordinates are not six equally effective ecological dimensions. Pi3 is effectively zero-versus-positive in the frozen observer; Pi4/Pi5 are weak marginal separators. C13 `0.3569 = 0.2*1.0 + 0.8*0.196125` is a design-compositional comparator diagnostic, not performance.
 
-### A10. Frozen final surface
+## B. D3/D5: refinement is informative; semantic specificity is not demonstrated
 
-The 30,625-coordinate / 5.88M-world frozen surface and its B/T/N/U rates may be reported as **registered design and provenance facts**. The world count is not evidence strength, and the pooled rates are not ecological prevalences.
+### B1. D3 numerical refinement result
 
-### A11. Synthetic downstream ecological estimand
+D3 is literature-audit-motivated, post-freeze and not preregistered. It may report the numerical nested-vocabulary widths, including target prevalence
 
-Using known latent truth and the frozen V14b emission map, Paper 1 may report how binary collapse versus retention of B/T/N/U changes inference about **synthetic target prevalence**.
+`0.2656306 -> 0.1886143 -> 0.0299207 -> 0.0040780`.
 
-The logical direction of the comparison is structural. Because TARGET/not-TARGET is a deterministic coarsening of B/T/N/U, every latent mixture compatible with the four-state record is also compatible with the binary record. Therefore the B/T/N/U compatible set cannot be wider. This **never-wider property is not an empirical performance result** and should be positioned as an information-ordering/garbling property rather than as TNOA novelty.
+The final step is the frozen V14b two-way U split (`no-supported-evidence` versus the aggregate `overlap-or-attribution`). Deterministic never-wider relations are structural.
 
-The empirical Paper-1 result is the magnitude and design dependence of the information loss under coarsening. Allowed outputs include:
+### B2. D5 random-split specificity control
 
-- partial-identification bounds over latent-regime mixtures compatible with the retained observation states;
-- identification-width magnitudes comparing full B/T/N/U with its binary coarsening, especially the registered median `0.030` versus `0.266` contrast;
-- variation in the amount of narrowing across registered Pi-axis slices;
-- the deliberately naive forced-binary prevalence bias as a **secondary comparator diagnostic**, not the primary information-preservation result.
+D5 is reviewer-motivated, post-freeze and not preregistered. It is required whenever D3's final split is interpreted.
 
-This is a downstream information-preservation result. It is **not** a field-calibrated visit-rate estimator and does not promote any field prevalence claim into Paper 1.
+For target prevalence:
 
-### A12. Post-freeze observation-vocabulary ablation (D3)
+- generic B/T/N/U median width: `0.0299207`;
+- constant 50:50 U split: `0.0299207`;
+- median of 500 unlabeled regime-dependent two-way random splits: `0.0050075`;
+- frozen two-reason split: `0.0040780`;
+- `48.0%` of random two-way splits are equal to or narrower than the frozen split.
 
-Paper 1 may report the deterministic post-freeze comparison among four nested observation vocabularies:
+Across the five estimands, the random-equal-or-better fraction ranges `0.480`–`0.672`. All 500 unlabeled three-way random U splits are full rank for the six-regime constraint system and point-identify all five estimands to numerical tolerance.
 
-1. TARGET / not-TARGET;
-2. TARGET / NUISANCE / other;
-3. B / T / N / U with U reasons collapsed;
-4. B / T / N / U with no-supported-evidence U separated from overlap/attribution U.
-
-The analysis must always be described as **literature-audit-motivated, post-freeze and not preregistered**. It uses the immutable V14b phase surface and the same 3,003 regime mixtures, with no observer retuning, threshold change or new synthetic world.
-
-Allowed frozen-design results include:
-
-- target-prevalence median widths `0.2656 -> 0.1886 -> 0.02992 -> 0.00408`;
-- target+nuisance co-occurrence median widths `0.7231 -> 0.5136 -> 0.10494 -> 0.01484`;
-- reason-resolved additional median-width reductions of approximately `86.37%` for target prevalence and `85.86%` for T+N co-occurrence relative to generic B/T/N/U;
-- all five estimands in `derived/observation_vocabulary_ablation.json`;
-- the registered 34-axis-slice summaries, including that reason-resolved U was never wider than generic U in all 34 slices and strictly improved the median in 27/34 target-prevalence slices and 29/34 slices for each other reported estimand.
-
-The nested never-wider relations are structural consequences of deterministic coarsening. The **numerical magnitude** of the width reductions is the post-freeze empirical result.
-
-Not allowed:
-
-- calling D3 preregistered or confirmatory;
-- claiming arbitrary weighting robustness from the 34 registered slices;
-- treating reason-resolved U as universally sufficient in field systems;
-- inferring field target/nuisance prevalence from the synthetic emission matrix.
-
-### A13. Post-freeze prevalence/composition-weight sensitivity (D4)
-
-Paper 1 may report the reviewer-motivated sensitivity analysis that conditions D1/D3 on known target prevalence and reweights the 3,003 regime compositions directly.
-
-D4 must always be described as **post-freeze and not preregistered**. It does not change the observer, emission matrix, thresholds, latent regimes or synthetic worlds.
-
-Allowed D4 results include:
-
-- only `141/3003 = 4.70%` of uniformly enumerated compositions have known target prevalence `<=0.2`;
-- in that rare-target subset, median target-prevalence width is `0.07410` for target/not-target, `0.07386` for target/nuisance/other, `0.000175` for B/T/N/U and `0.0` to numerical tolerance for reason-resolved U;
-- under direct composition-level bounded density-ratio reweighting at `kappa=10`, the worst-case weighted-mean fraction of binary width removed by B/T/N/U remains at least `57.5%`;
-- under the same `kappa=10` class, reason-resolved U removes at least a further `40.0%` of generic-U weighted-mean width.
-
-Required qualifications:
-
-- the 3,003-point lattice remains a sensitivity design, not an ecological prior;
-- the composition-level statistic is a worst-case **weighted-mean reduction ratio**, not a weighted median;
-- the bounded class does not imply robustness to arbitrary ecological prevalence distributions;
-- rare-target results are conditional on the frozen emission map and do not estimate field rarity or field prevalence.
-
-Not allowed:
-
-- calling D4 preregistered or confirmatory;
-- claiming the 3,003 compositions represent natural prevalence frequencies;
-- treating `kappa=10` as an ecological prior class;
-- claiming universal superiority under arbitrary composition weighting.
-
-## B. Claims allowed only with explicit qualification
-
-### B1. U is mainly attribution/overlap
-
-Allowed wording:
-
-> In the registered frozen design space, most U was assigned to attribution/overlap rather than no-supported-evidence cases.
-
-Stronger wording is allowed only with the explicit weighting class:
-
-> Under bounded density-ratio reweighting of the frozen rows, overlap/attribution remained more than half of U through the tested `kappa=10` class.
-
-Not allowed:
-
-> Most ecological uncertainty is caused by attribution overlap.
-
-### B2. Observation duration and U
-
-Preferred wording:
-
-> In the registered equal-grid design, extending the observation window did not automatically resolve U. After `Pi1=1`, no-supported-evidence U decreased while overlap/attribution U continued to increase.
-
-The reason decomposition is the result. The exact pooled total-U shape is secondary: overlap/attribution contributes about 84–94% of U across the registered Pi1 levels, and the total curve is not robust to moderate reweighting.
-
-Do **not** headline this result as generic `non-monotonicity`. The post-freeze sensitivity audit finds that a monotone non-increasing Pi1 total-U curve becomes feasible by approximately `kappa=1.6` under the tested density-ratio class.
-
-Not allowed:
-
-> Longer monitoring generally increases uncertainty in ecological systems.
-
-### B3. Pi3 boundary
+### B3. Correct D3/D5 interpretation
 
 Allowed:
 
-> The exact `Pi3=0` versus `Pi3>0` transition is a structural result of the frozen exact-zero direct-channel observer.
+> The frozen two-way U split is informative, but comparable narrowing is commonly produced by arbitrary regime-discriminating U refinements. The current experiment therefore demonstrates the value of additional non-redundant observation structure, not a semantic-specific information advantage of the selected U reasons.
 
-Required effective-axis qualification:
+Also allowed:
 
-> Although Pi3 was registered at five numeric levels, its marginal B/T/N/U decision vector has only two distinct levels in the frozen surface: zero and positive.
-
-Not allowed:
-
-> Any nonzero direct signal is sufficient for target identification in field ecology.
-
-### B4. Generality
-
-Allowed:
-
-> The architecture is transferable to other sensing domains provided evidence channels and calibration are revalidated.
+> The large D3 refinement effect is substantially explained by rank/identifiability gain as non-collinear observation columns are added; exact width still depends on column orientation relative to the estimand.
 
 Not allowed:
 
-> TNOA is validated across ecological sensor domains.
+- the selected reason meanings explain the `86.37%` reduction;
+- D3 demonstrates an information premium for reason semantics;
+- more categories are always scientifically better;
+- state count alone determines the exact width;
+- the frozen six-regime result predicts the effect size for a larger/different latent-regime set.
 
-### B5. Superior safety
+D3/D5 are supporting diagnostics, not primary evidence. The core information-preservation claim remains D1 B/T/N/U versus binary collapse.
 
-Allowed:
+## C. Frozen two-reason surface versus reusable four-reason API
 
-> TNOA prevents specific logically unsafe shortcuts such as low-target-to-absence inversion and forced T/N exclusivity.
+The frozen V14b source contains only two unresolved reason buckets:
 
-Not allowed without comparative empirical/benchmark evidence:
+1. historical `INFORMATION_ABSENT`, reported conservatively as no-supported-evidence;
+2. `OVERLAP_OR_ATTRIBUTION`.
 
-> TNOA is safer or more accurate than all existing ecological classifiers.
+The frozen decision code places both simultaneous T+N support and unresolved indirect-only attribution into `OVERLAP_OR_ATTRIBUTION`.
 
-### B6. Weighting robustness
+The later reusable API exposes four U reasons:
 
-Allowed:
+- `no_supported_evidence`;
+- `target_nuisance_overlap`;
+- `missing_attribution`;
+- `insufficient_observability`.
 
-> A qualitative result is robust only within the explicitly reported reweighting class or registered slices/strata actually tested.
+There is **no one-to-one empirical four-way mapping validated by D3**. Overlap and missing attribution cannot be separated from the frozen aggregate reason-rate column, and insufficient observability has no separate frozen D3 column. The API vocabulary is a later implementation contract whose reason semantics require independent deployment-specific validation.
 
-For the current post-freeze analyses:
+## D. Weighting and annotation boundaries
 
-- overlap/attribution dominance of U survives phase-space-row reweighting through `kappa=10`;
-- the exact Pi1 total-U shape does **not** survive all moderate reweightings and must remain conditional;
-- the small pooled Pi2=1 contrast changes sign within the `kappa=1.25` admissible range and therefore cannot be presented as a stable ridge;
-- D3's 34 registered-axis slices demonstrate slice-level nesting and frequent strict median improvement, but do not establish arbitrary ecological weighting robustness;
-- D4 separately shows the information-preservation magnitude by known target prevalence and under bounded reweighting of the 3,003 **composition** lattice through `kappa=10`.
+Any robustness statement must be tied to the explicit class tested. Row-level phase-space reweighting, composition-level simplex reweighting and registered axis slices are distinct sensitivity analyses.
 
-Not allowed:
+All D1/D3/D4/D5 information comparisons condition on a frozen, effectively known emission map. Paper 1 does not compare information per annotation, per unit cost or per field hour. Under finite calibration data, uncertainty in a richer emission map could offset some of the identification gain. A fixed-budget comparison requires a new measurement-design specification and is outside Paper 1.
 
-> The phase-surface or vocabulary-ablation conclusions are prior-free or invariant to arbitrary ecological prevalence weighting.
+## E. Field/generalization boundaries
 
-### B7. Effective phase-space dimensionality
+Paper 1 does not claim:
 
-Allowed:
+- field flower-visitor detection accuracy or nuisance rates;
+- field target prevalence, abundance or visitation-rate accuracy;
+- biological absence certification without independently validated A−;
+- pollination effectiveness;
+- universal raw thresholds, alpha, Pi3 laws or optimal abstention;
+- numerical transfer of the synthetic emission matrix to another camera/site/taxon;
+- validation across camera, acoustic or interaction-monitoring domains;
+- distribution-free risk control;
+- systematic-review completeness or historical priority for abstention, uncertain events, multilabel prediction, continuous-score inference, Blackwell ordering or partial identification.
 
-> The experiment used six registered dimensionless coordinates, but their marginal separation of the final B/T/N/U response was highly uneven in the frozen design.
+The field translation pathway is an implementation template, not a Paper-1 empirical result.
 
-Not allowed:
-
-> The ecological problem has exactly two (or any fixed number of) intrinsic dimensions.
-
-### B8. Forced-binary comparator C13
-
-Allowed wording:
-
-> The registered equal-grid comparator has target-present false-negative rate 0.3569, but this quantity is strongly design-compositional: `0.3569 = 0.2*1.0 + 0.8*0.196125` across the registered Pi3 levels.
-
-The zero target false-positive rate is likewise a property of the frozen positive-target observer on the registered non-target regimes. C13 is a **design diagnostic**, not a performance estimate.
-
-Not allowed:
-
-> TNOA achieves zero false positives or prevents 35.69% misses in field sensing.
-
-### B9. Fail-closed field translation pathway
-
-Paper 1 may describe a **prospective implementation sequence** that moves a new sensor domain toward calibrated TNOA inputs. The pathway is implementation guidance, not a new result or field validation.
-
-### B10. Annotation/calibration burden
-
-The D1/D3/D4 information comparisons condition on a frozen, effectively known emission map. This is appropriate for isolating information loss caused by observation coarsening, but it does not answer a fixed-budget measurement-design question.
-
-Required limitation:
-
-> A richer observation vocabulary may require more annotation and calibration effort, and finite-sample uncertainty in a richer emission map could offset part of the identification gain under a fixed validation budget.
-
-Allowed:
-
-> Paper 1 compares information retained **conditional on the frozen calibrated emission map**.
-
-Not allowed:
-
-> TNOA provides more information per annotation, per unit cost or per field hour.
-
-A finite-budget comparison would require a new specification for annotation allocation, grouped dependence, rare-state sampling and emission-matrix uncertainty.
-
-## C. Claims not allowed in Paper 1
-
-Do not claim:
-
-- first non-binary ecological use of classifier output;
-- first ecological representation of uncertain, ambiguous or equivocal observations;
-- first multilabel coexistence or partial abstention method;
-- first continuous-score or threshold-free ecological inference method;
-- invention of information ordering, garbling, partial identification or identification widths;
-- classical family-wise error-rate control or a distribution-free finite-sample guarantee for the current nuisance calibration;
-- field flower-visitor detection accuracy;
-- field-calibrated T/C/N/O probabilities;
-- field-calibrated biological absence;
-- field visit prevalence, abundance or visitation-rate accuracy;
-- pollination or visitation effectiveness;
-- universal superiority of the TNOA decision rule;
-- universal optimality of any alpha, threshold, sampling budget or abstention rate;
-- statistical independence of target-side and nuisance-side implementation errors;
-- that every no-supported-evidence case is true information absence;
-- that nuisance is fully represented by the current synthetic process families;
-- that synthetic phase-space frequency or simplex composition frequency equals natural ecological frequency;
-- that 5.88M synthetic worlds substitute for external ecological validation;
-- that the equal-grid synthetic emission matrix transfers numerically to another camera, site, taxon or sensor domain;
-- that the six registered coordinates are six equally effective or intrinsic ecological dimensions;
-- that C13 is a field or transferable classifier-performance estimate;
-- that D3 or D4 is preregistered;
-- that the present analysis establishes information per annotation or cost efficiency;
-- that a development shadow implementation, hardware smoke test or prospective calibration protocol constitutes field validation.
-
-## D. Terminology guardrails
+## F. Terminology guardrails
 
 Use:
 
 - `target-supported`, not `target-present`, unless truth is known;
-- `nuisance-supported`, not `noise`, when referring to the formal N output;
-- `no supported evidence`, not `information absent`, unless absence of information is independently established;
-- `abstention` or `undetermined`, not `classification error`, for U by default;
-- `ordinal evidence`, not `probability`, for a source-system 0/0.5/1 evidence adapter;
-- `predeclared family-conditional false-attribution criterion`, not `family-wise error control`, for the manuscript interpretation of the historical nuisance protocol;
-- `structural boundary`, not `field threshold`, for the exact-zero synthetic Pi3 result;
+- `nuisance-supported`, not generic `noise`, for formal N;
+- `no-supported-evidence`, not `information absent`, for manuscript interpretation of the historical source label;
+- `predeclared family-conditional false-attribution criterion`, not `family-wise error control`;
 - `registered six-coordinate design`, not `six-dimensional ecological complexity`;
-- `registered design space`, not `nature`, when reporting phase-surface frequencies;
-- `synthetic target-prevalence estimand`, not `field visit-rate estimate`, for the known-truth downstream analysis;
-- `post-freeze observation-vocabulary ablation`, not `preregistered vocabulary test`, for D3;
-- `post-freeze prevalence/composition-weight sensitivity`, not `ecological prevalence prior robustness`, for D4;
-- `bounded reweighting sensitivity`, not `prior robustness`, unless an actual ecological prior has been specified;
-- `design-compositional comparator rate`, not `performance`, for C13;
-- `field translation pathway` or `implementation template`, not `field validation`, for the prospective fail-closed deployment sequence.
+- `synthetic target-prevalence estimand`, not `field visit rate`;
+- `frozen two-way U split` or `D3 refinement`, not `semantic information premium`;
+- `D5 random-split specificity control`, not an ecological alternative-reason experiment;
+- `bounded reweighting sensitivity`, not `prior robustness`;
+- `design-compositional comparator rate`, not classifier performance.
 
-## E. Paper-2 promotion rules
-
-A claim may move from forbidden/conditional to empirical only when the empirical bridge freezes and validates the relevant channel.
-
-Examples:
-
-- O field claims require frozen support measurement/calibration and held-out validation;
-- C indirect-rescue claims require independently validated attribution;
-- N field claims require effect-specific nuisance calibration;
-- absence claims require validated A− or an explicitly different study design;
-- empirical visit-rate claims require frozen split/exposure/sampling design and held-out estimates;
-- fixed-budget annotation-efficiency claims require a preregistered allocation and emission-uncertainty design.
-
-The A11 synthetic known-truth estimand analysis, A12 vocabulary ablation, A13 prevalence/composition sensitivity and B9 implementation pathway do not satisfy or bypass these empirical promotion rules.
-
-Paper 1 must remain valid if every later empirical result is null or adverse.
+Paper 1 must remain scientifically valid if later field validation or finer reason calibration is null or adverse.
