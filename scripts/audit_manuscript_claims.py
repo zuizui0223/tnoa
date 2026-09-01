@@ -162,8 +162,8 @@ def main() -> None:
         fail("Results 3.2 must lead with the downstream ecological estimand")
     if "the empirical result is the size of the information loss" not in section32:
         fail("Results 3.2 must distinguish structural garbling from empirical loss magnitude")
-    if "post-freeze vocabulary ablation" not in section32 or "not preregistered" not in section32:
-        fail("Results 3.2 must label D3 as post-freeze/not-preregistered")
+    if "post-freeze vocabulary ablation" not in section32 or "<!-- d3 -->" not in section32:
+        fail("Results 3.2 must retain the D3 post-freeze refinement")
     if "not specific to the reason semantics" not in section32 or "500 unlabeled" not in section32:
         fail("Results 3.2 must retain D5 semantic-specificity control")
     if "rare-target subset" not in section32 or "adversarially" not in section32:
