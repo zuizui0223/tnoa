@@ -1,0 +1,212 @@
+{
+  "claim_boundary": [
+    "D5 is post-freeze and not preregistered.",
+    "The random controls do not invalidate D1 B/T/N/U versus binary coarsening.",
+    "No semantic-specific information advantage of the recorded U reasons is claimed.",
+    "No claim is made about what would happen after adding unregistered latent regimes.",
+    "The V14b two-reason record is not identified with the later reusable API's four U reasons."
+  ],
+  "constant_two_way_split": {
+    "any_deviation_prevalence": {
+      "constraint_rank": 4,
+      "median_width": 0.01371606776231138,
+      "nullspace_dimension": 2
+    },
+    "coupled_response_prevalence": {
+      "constraint_rank": 4,
+      "median_width": 0.3999026031009052,
+      "nullspace_dimension": 2
+    },
+    "nuisance_prevalence": {
+      "constraint_rank": 4,
+      "median_width": 0.08923538672581843,
+      "nullspace_dimension": 2
+    },
+    "target_nuisance_cooccurrence": {
+      "constraint_rank": 4,
+      "median_width": 0.10493504246086593,
+      "nullspace_dimension": 2
+    },
+    "target_prevalence": {
+      "constraint_rank": 4,
+      "median_width": 0.02992070478107489,
+      "nullspace_dimension": 2
+    }
+  },
+  "control_design": {
+    "constant_split_definition": "replace U by 0.5*U and 0.5*U",
+    "random_seed": 0,
+    "random_three_way_definition": "for each split and latent regime draw three proportions from Dirichlet(1,1,1), then partition U accordingly",
+    "random_three_way_split_count": 500,
+    "random_two_way_definition": "for each split and latent regime draw p~Uniform(0,1), then replace U by U*p and U*(1-p)",
+    "random_two_way_split_count": 500
+  },
+  "interpretation": "D3 demonstrates that a regime-discriminating refinement can greatly narrow compatible sets in this six-regime frozen design. The random controls show that the magnitude is not specific to the semantic meaning of the two recorded U reasons; rank/identifiability gain is a major mechanism. Semantic utility must therefore be justified independently rather than inferred from D3 width reduction alone.",
+  "random_three_way_target_prevalence": {
+    "all_constraint_ranks": [
+      6
+    ],
+    "all_nullspace_dimensions": [
+      0
+    ],
+    "median_width_distribution": {
+      "max": 0.0,
+      "mean": 0.0,
+      "median": 0.0,
+      "min": 0.0,
+      "q05": 0.0,
+      "q25": 0.0,
+      "q75": 0.0,
+      "q95": 0.0
+    },
+    "point_identified_count": 500
+  },
+  "random_two_way_splits": {
+    "any_deviation_prevalence": {
+      "all_random_constraint_ranks": [
+        5
+      ],
+      "all_random_nullspace_dimensions": [
+        1
+      ],
+      "fraction_random_splits_at_or_below_semantic": 0.48,
+      "random_split_median_width_distribution": {
+        "max": 0.007859824935603065,
+        "mean": 0.0033901534609045223,
+        "median": 0.0022955136987646285,
+        "min": 0.0,
+        "q05": 0.0,
+        "q25": 0.0,
+        "q75": 0.007623234963472442,
+        "q95": 0.00784333929867242
+      },
+      "semantic_constraint_rank": 5,
+      "semantic_nullspace_dimension": 1,
+      "semantic_split_median_width": 0.0018694101219792758,
+      "semantic_to_random_median_ratio": 0.814375502522739
+    },
+    "coupled_response_prevalence": {
+      "all_random_constraint_ranks": [
+        5
+      ],
+      "all_random_nullspace_dimensions": [
+        1
+      ],
+      "fraction_random_splits_at_or_below_semantic": 0.672,
+      "random_split_median_width_distribution": {
+        "max": 0.14787886098960113,
+        "mean": 0.04747347336458053,
+        "median": 0.021181311888209417,
+        "min": 0.0,
+        "q05": 0.0,
+        "q25": 0.0,
+        "q75": 0.10374846282144215,
+        "q95": 0.13242063490492703
+      },
+      "semantic_constraint_rank": 5,
+      "semantic_nullspace_dimension": 1,
+      "semantic_split_median_width": 0.07510112725107763,
+      "semantic_to_random_median_ratio": 3.5456315287478817
+    },
+    "nuisance_prevalence": {
+      "all_random_constraint_ranks": [
+        5
+      ],
+      "all_random_nullspace_dimensions": [
+        1
+      ],
+      "fraction_random_splits_at_or_below_semantic": 0.488,
+      "random_split_median_width_distribution": {
+        "max": 0.05025116580399042,
+        "mean": 0.02154601539836342,
+        "median": 0.014601712582934454,
+        "min": 0.0,
+        "q05": 0.0,
+        "q25": 0.0,
+        "q75": 0.04875662335017033,
+        "q95": 0.050137777833434254
+      },
+      "semantic_constraint_rank": 5,
+      "semantic_nullspace_dimension": 1,
+      "semantic_split_median_width": 0.012631643480150667,
+      "semantic_to_random_median_ratio": 0.8650795862749499
+    },
+    "target_nuisance_cooccurrence": {
+      "all_random_constraint_ranks": [
+        5
+      ],
+      "all_random_nullspace_dimensions": [
+        1
+      ],
+      "fraction_random_splits_at_or_below_semantic": 0.488,
+      "random_split_median_width_distribution": {
+        "max": 0.059450764376946186,
+        "mean": 0.025490996893725503,
+        "median": 0.017292354117098056,
+        "min": 0.0,
+        "q05": 0.0,
+        "q25": 0.0,
+        "q75": 0.05768290800657945,
+        "q95": 0.059315618496944965
+      },
+      "semantic_constraint_rank": 5,
+      "semantic_nullspace_dimension": 1,
+      "semantic_split_median_width": 0.014840229278269765,
+      "semantic_to_random_median_ratio": 0.8581960083500881
+    },
+    "target_prevalence": {
+      "all_random_constraint_ranks": [
+        5
+      ],
+      "all_random_nullspace_dimensions": [
+        1
+      ],
+      "fraction_random_splits_at_or_below_semantic": 0.48,
+      "random_split_median_width_distribution": {
+        "max": 0.017145673213453727,
+        "mean": 0.007396697318611371,
+        "median": 0.005007513005321984,
+        "min": 0.0,
+        "q05": 0.0,
+        "q25": 0.0,
+        "q75": 0.016594302295180385,
+        "q95": 0.01710973171904462
+      },
+      "semantic_constraint_rank": 5,
+      "semantic_nullspace_dimension": 1,
+      "semantic_split_median_width": 0.004077995920098443,
+      "semantic_to_random_median_ratio": 0.8143755025227791
+    }
+  },
+  "schema": "tnoa-vocabulary-rank-control-v1",
+  "source": {
+    "coordinate_count": 30625,
+    "mixture_count": 3003,
+    "phase_surface_sha256": "1d2c7c1f8f7370aad3cdde4d9d9d47bf318b2a057b6f788d3a48df9ea8d16c34",
+    "row_count": 183750,
+    "workflow_run_id": 32932634622
+  },
+  "status": "reviewer-motivated post-freeze random-split control; not preregistered; no observer retuning or new synthetic worlds",
+  "target_prevalence_rank_ladder": {
+    "binary_target_not_target": {
+      "constraint_rank": 2,
+      "nullspace_dimension": 4,
+      "target_prevalence_median_width": 0.2656306018443621
+    },
+    "btnu_collapsed": {
+      "constraint_rank": 4,
+      "nullspace_dimension": 2,
+      "target_prevalence_median_width": 0.02992070478107567
+    },
+    "semantic_two_way_u_split": {
+      "constraint_rank": 5,
+      "nullspace_dimension": 1,
+      "target_prevalence_median_width": 0.004077995920098443
+    },
+    "target_nuisance_other": {
+      "constraint_rank": 3,
+      "nullspace_dimension": 3,
+      "target_prevalence_median_width": 0.18861428571428596
+    }
+  }
+}
