@@ -39,11 +39,15 @@ The minimal evidence contract is:
 
 The decision mapping preserves the manuscript guardrails:
 
+- `B / baseline` is allowed only when `deviation_observed=False` **and** no positive target, nuisance, coupled-response or attribution support is present;
+- a contradictory row with `deviation_observed=False` plus any such positive support raises `ValueError` rather than being silently collapsed to baseline;
 - an unobservable window cannot silently become baseline or absence;
 - target and nuisance are positive non-complementary supports;
 - simultaneous T and N support becomes U under the minimal exclusive-decision contract rather than being forced to one side;
 - coupled response is promoted to target support only when attribution is supported;
 - lack of positive evidence becomes U/no-supported-evidence, not biological absence.
+
+The contradiction check is an **input-contract guard**, not a fifth ecological U reason. It prevents mutually inconsistent calibrated flags from entering the scientific record as an apparently valid baseline observation.
 
 ## Important: the reusable U-reason vocabulary is not the frozen V14b D3 vocabulary
 
@@ -83,7 +87,7 @@ The annotated CSV receives:
 - `reason`: provenance for the decision;
 - the support flags actually used by the decision layer.
 
-The summary JSON returns B/T/N/U rates and reason-resolved U rates by the requested ecological covariates.
+The summary JSON returns B/T/N/U rates and reason-resolved U rates by the requested ecological covariates. If an input row violates the evidence contract—for example positive target/nuisance/coupled-response support with `deviation_observed=False`—classification fails explicitly instead of emitting a misleading baseline record.
 
 ## Field translation begins before this API
 
@@ -106,6 +110,7 @@ It does not:
 - calibrate target or nuisance scores;
 - choose a universal threshold;
 - infer biological absence from low target support;
+- silently coerce contradictory positive-support inputs to baseline;
 - reproduce the historical V14b phase-surface generator;
 - validate the current four U reasons from the frozen two-reason D3 surface;
 - claim that finer reason labels provide a semantic-specific information premium;

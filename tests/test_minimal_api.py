@@ -10,6 +10,17 @@ class DecisionTests(unittest.TestCase):
         self.assertEqual(result.decision, Decision.UNDETERMINED)
         self.assertEqual(result.reason, Reason.INSUFFICIENT_OBSERVABILITY)
 
+    def test_positive_support_cannot_silently_become_baseline(self):
+        contradictory = (
+            Evidence(False, True, False),
+            Evidence(False, False, True),
+            Evidence(False, False, False, coupled_response_supported=True),
+        )
+        for evidence in contradictory:
+            with self.subTest(evidence=evidence):
+                with self.assertRaisesRegex(ValueError, "deviation_observed=False"):
+                    classify(evidence)
+
     def test_positive_target_and_nuisance_are_not_complements(self):
         target = classify(Evidence(True, True, False))
         nuisance = classify(Evidence(True, False, True))
