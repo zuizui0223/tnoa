@@ -59,12 +59,24 @@ def classify(evidence: Evidence) -> DecisionRecord:
     """Map process-preserving evidence to the minimal B/T/N/U vocabulary.
 
     Precedence is intentionally conservative:
+    - contradictory positive support cannot be silently collapsed to baseline;
     - insufficient observability cannot become baseline/absence;
     - direct T and attribution-gated coupled response are positive target support;
     - simultaneous T and N support is retained as U rather than forced exclusive;
     - an unattributed coupled response remains U even when nuisance is supported;
     - lack of positive support is U, not biological absence.
     """
+
+    if not evidence.deviation_observed and (
+        evidence.target_supported
+        or evidence.nuisance_supported
+        or evidence.coupled_response_supported
+        or evidence.attribution_supported
+    ):
+        raise ValueError(
+            "deviation_observed=False is inconsistent with positive target, "
+            "nuisance, coupled-response, or attribution support"
+        )
 
     if not evidence.observable:
         return DecisionRecord(
