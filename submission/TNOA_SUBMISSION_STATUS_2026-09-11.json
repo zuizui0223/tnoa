@@ -1,0 +1,63 @@
+{
+  "schema": "tnoa-mee-submission-status-v1",
+  "date": "2026-09-11",
+  "paper": "TNOA",
+  "target_journal": "Methods in Ecology and Evolution",
+  "status": "science-complete-production-validated-human-input-open",
+  "scientific_source_manifest": "paper_manifest.json",
+  "submission_manifest": "submission/submission_manifest.json",
+  "canonical_manuscript": "manuscript/TNOA_MEE_DRAFT.md",
+  "scientific_submission_blockers": 0,
+  "validated_source_sha": "1f78e65ba3cb2c8fdfb622107b06cc16879a9bec",
+  "validation_run": {
+    "workflow": "validate-paper-package",
+    "run_id": 34564310098,
+    "conclusion": "success"
+  },
+  "validated_artifacts": {
+    "anonymous_docx": {
+      "artifact_id": 10185463934,
+      "name": "tnoa-mee-anonymous-docx-validation",
+      "digest": "sha256:5a010f2524669732cf9f7f87eb6946e4865c986edb39c49b381a60fa5bdddfaf"
+    },
+    "anonymous_reviewer_bundle": {
+      "artifact_id": 10185463162,
+      "name": "tnoa-anonymous-review-bundle-validation",
+      "digest": "sha256:a08e8a45488ad495bd6c8fa7d2cd6c8c88ded030ce8fcb38fcaed8b4c08fb345"
+    },
+    "initial_submission_readiness": {
+      "artifact_id": 10185463542,
+      "name": "tnoa-mee-initial-submission-readiness",
+      "digest": "sha256:fe6bfc0ab53540b83b4c2e6c26b6bee1c3ec6296fe53d5851c889dade2f74b18"
+    },
+    "composite_figures": {
+      "artifact_id": 10185464425,
+      "name": "tnoa-mee-composite-figures-validation",
+      "digest": "sha256:439945387667f1af43fe48f963e1e62f622c1487ce5ca40cb2f4e53139712b1e"
+    }
+  },
+  "production_state": {
+    "anonymous_docx_built_and_validated": true,
+    "double_spacing": true,
+    "continuous_line_numbering": true,
+    "page_numbering": true,
+    "citations_and_references_rendered": true,
+    "anonymous_reviewer_bundle_built_and_validated": true,
+    "figure_1_to_4_and_supplementary_s2_code_assembled": true,
+    "open_source_license": "MIT",
+    "final_human_visual_inspection_required": true
+  },
+  "remaining_before_submission": [
+    "complete final author names and affiliations",
+    "complete corresponding-author details",
+    "complete CRediT contribution statement",
+    "complete acknowledgements",
+    "complete funding and competing-interest statements",
+    "perform final visual inspection of DOCX and composite figures",
+    "recheck publisher-facing word count and live submission instructions",
+    "rebuild final private reviewer ZIP with the final author/institution literals supplied to the identity scanner",
+    "rerun claim audit after any material manuscript-text edit"
+  ],
+  "science_blocker": false,
+  "next_mainline": "human metadata plus final visual inspection; no new scientific analysis"
+}
