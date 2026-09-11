@@ -53,6 +53,8 @@ jobs:
         run: python scripts/audit_manuscript_claims.py
       - name: Validate MEE submission package
         run: python scripts/validate_mee_submission_package.py
+      - name: Validate standalone TNOA submission status
+        run: python scripts/validate_tnoa_submission_status.py
       - name: Build anonymous MEE manuscript source
         run: python scripts/build_mee_anonymous_manuscript.py
       - name: Build MEE initial-submission source with captions
