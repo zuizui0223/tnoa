@@ -2,7 +2,7 @@
   "schema": "tnoa-mee-submission-package-v5",
   "target_journal": "Methods in Ecology and Evolution",
   "article_type": "Standard Article / methods paper",
-  "journal_guidance_checked_date": "2026-08-27",
+  "journal_guidance_checked_date": "2026-09-12",
   "scientific_source_manifest": "paper_manifest.json",
   "scientific_submission_blockers": 0,
   "open_source_license": {"path": "LICENSE", "license": "MIT", "status": "present"},
@@ -79,6 +79,15 @@
     "acknowledgements_complete": false,
     "funding_and_competing_interests_complete": false
   },
+  "ai_assistance": {
+    "live_mee_policy_checked_date": "2026-09-12",
+    "template": "submission/MEE_AI_DISCLOSURE_TEMPLATE.md",
+    "methods_statement_required_for_substantive_llm_use": true,
+    "application_name_and_version_required": true,
+    "human_author_responsibility_required": true,
+    "finalized": false,
+    "human_blocker": "confirm exact application/model version(s), actual scope of use, responsible author, and insert the checked statement into Materials and Methods before submission"
+  },
   "editorial_pitch": {
     "path": "submission/MEE_EDITORIAL_PITCH.md",
     "cover_letter_required_by_journal": false,
@@ -124,6 +133,7 @@
     "recheck final formatted word count using the publisher-facing DOCX and submission system conventions",
     "complete author names, affiliations, corresponding-author details, CRediT contributions and acknowledgements on the separate title page",
     "complete funding and competing-interest statements on the separate title page",
+    "confirm exact ChatGPT application/model version(s) and scope of substantive AI assistance, then insert the checked disclosure in Materials and Methods",
     "build the validated anonymous reviewer ZIP with final author/institution literals supplied to the identity scanner and upload it to the private reviewer-only location",
     "perform final visual inspection of the formatted DOCX, code-assembled multi-panel figures and final reference-style rendering",
     "rerun manuscript claim audit after any material manuscript revision or formatting edit that changes text"
