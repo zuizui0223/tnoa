@@ -45,6 +45,9 @@
     "anonymous_reviewer_bundle_built_and_validated": true,
     "figure_1_to_4_and_supplementary_s2_code_assembled": true,
     "open_source_license": "MIT",
+    "live_mee_author_guidelines_checked_date": "2026-09-12",
+    "ai_disclosure_template": "submission/MEE_AI_DISCLOSURE_TEMPLATE.md",
+    "ai_disclosure_human_finalization_required": true,
     "final_human_visual_inspection_required": true
   },
   "remaining_before_submission": [
@@ -53,11 +56,13 @@
     "complete CRediT contribution statement",
     "complete acknowledgements",
     "complete funding and competing-interest statements",
+    "confirm exact ChatGPT application/model version(s), actual scope of substantive AI assistance and responsible-author wording, then insert the checked disclosure in Materials and Methods",
     "perform final visual inspection of DOCX and composite figures",
     "recheck publisher-facing word count and live submission instructions",
     "rebuild final private reviewer ZIP with the final author/institution literals supplied to the identity scanner",
     "rerun claim audit after any material manuscript-text edit"
   ],
   "science_blocker": false,
-  "next_mainline": "human metadata plus final visual inspection; no new scientific analysis"
+  "machine_production_blocker": false,
+  "next_mainline": "human metadata, AI-disclosure finalization and final visual inspection; no new scientific analysis"
 }
