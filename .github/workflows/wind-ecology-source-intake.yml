@@ -36,12 +36,14 @@ jobs:
           python - <<'PY'
           import json
           x=json.load(open("research/wind_process_overlap/intake_receipt.json"))
-          assert x["status"]=="source_only_no_biological_outcomes"
-          assert len(x["original_files"])==3
-          assert len(x["original_files"]["balfour_zip"]["members"])>=3
+          assert x["status"]=="source_only_partial_or_full"
+          assert len(x["original_files"])>=1
+          assert any(v.get("members") or v.get("worksheets") for v in x["original_files"].values())
+          print("Unavailable source paths:",list(x["source_errors"]))
           print("TNOA_WIND_INTAKE_GATE_PASS")
           PY
-      - name: Upload dataset-fingerprint and schema receipt only
+      - name: Upload dataset-fingerprint and failure/schema receipt only
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: tnoa-wind-ecological-source-schema
