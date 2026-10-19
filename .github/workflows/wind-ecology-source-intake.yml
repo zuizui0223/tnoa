@@ -42,10 +42,14 @@ jobs:
           print("Unavailable source paths:",list(x["source_errors"]))
           print("TNOA_WIND_INTAKE_GATE_PASS")
           PY
+      - name: Audit authentic orchid-bee specimen-session keys before ecological outcomes
+        run: python research/wind_process_overlap/crall_linkage_audit.py
       - name: Upload dataset-fingerprint and failure/schema receipt only
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: tnoa-wind-ecological-source-schema
-          path: research/wind_process_overlap/intake_receipt.json
+          path: |
+            research/wind_process_overlap/intake_receipt.json
+            research/wind_process_overlap/crall_linkage_audit_receipt.json
           retention-days: 60
