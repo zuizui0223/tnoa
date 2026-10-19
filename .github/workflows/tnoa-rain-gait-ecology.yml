@@ -1,0 +1,55 @@
+name: TNOA Real Ecological Behavior Replay
+
+on:
+  push:
+    branches:
+      - research/rain-gait-ecology-20261019
+      - main
+    paths:
+      - 'research/ecological_process_overlap/**'
+      - '.github/workflows/tnoa-rain-gait-ecology.yml'
+  pull_request:
+    paths:
+      - 'research/ecological_process_overlap/**'
+      - '.github/workflows/tnoa-rain-gait-ecology.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-verified-ecology:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Syntax check
+        run: python -m py_compile research/ecological_process_overlap/rain_gait_reference_replay.py
+      - name: Replay original CCTV-referenced wild mammal passes
+        run: |
+          python research/ecological_process_overlap/rain_gait_reference_replay.py \
+            --output research/ecological_process_overlap/rain_gait_reference_result.json
+      - name: Enforce no ecological causal or independent-replicate inference
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open("research/ecological_process_overlap/rain_gait_reference_result.json"))
+          assert x["science_status"]=="retrospective-exploratory-not-confirmed-abiotic-causal-effect"
+          assert x["denominators"]["original_CCTV_pass_rows"]==881
+          assert x["denominators"]["RAIN_YES_NO_admitted"]==870
+          assert x["denominators"]["excluded_uninterpretable_RAIN_values"]=={"N0":4,"NA":7}
+          assert x["by_position"]["fox_positive_positions"]==4
+          assert x["by_position"]["badger_negative_positions"]==4
+          assert len(x["rejected_inferences"])>=6
+          assert abs(x["model_sensitivity"][2]["fox_minus_badger_rain_contrast"]-0.3782681986879159)<0.000001
+          print("TNOA_ECOLOGY_CLAIM_GATE_PASS; retrospective observational only")
+          PY
+      - name: Upload ecological source-verified result (no raw data)
+        uses: actions/upload-artifact@v4
+        with:
+          name: tnoa-rain-gait-exploratory-result
+          path: research/ecological_process_overlap/rain_gait_reference_result.json
+          retention-days: 60
