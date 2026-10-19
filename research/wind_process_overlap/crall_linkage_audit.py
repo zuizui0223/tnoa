@@ -41,44 +41,61 @@ def main():
         for col in bj: bjkey[col].append(clean(row[col]))
     for row in sessions:
         for col in sj: sjkey[col].append(clean(row[col]))
-    idsession={clean(x["coll.id"]):i for i,x in enumerate(sessions)}
-    missing_number=[x for x in bjkey["number"] if x not in idsession]
-    duplicated_ids=len(idsession)!=len(sessions)
-    beadates=[(clean(x["date"]),clean(x["site"]),clean(x["scent"])) for x in bees]
-    sessionsdates=[(clean(x["date"]),clean(x["site"]),clean(x["scent"])) for x in sessions]
-    observedstrata=set(sessionsdates)
-    missing_meta=[x for x in beadates if x not in observedstrata]
-    mult_meta=sum(sessionsdates.count(k)>1 for k in set(sessionsdates))
-    # number+site/date/scent collision audit, excluding actual biology outcomes
-    num_to_meta_error=sum(
-      bool(clean(x["number"]) in idsession) and
-      any(clean(x[c])!=clean(sessions[idsession[clean(x["number"])]][cs]) for c,cs in [
-          ("date","date"),("site","site"),("scent","scent")])
-      for x in bees)
-    totals={"original_Zenodo_sha256":SHA256,"bees":len(bees),"sessions":len(sessions),
-        "metadata_rows":len(collections),"n_sites":len(set(sjkey["site"])),
-        "n_dates":len(set(sjkey["date"])),
-        "n_scents":len(set(sjkey["scent"])),
-        "n_session_ids":len(idsession),"non_session_bee_number":len(missing_number),
-        "duplicate_session_ids":duplicated_ids,
-        "bee_date_site_scent_missing":len(missing_meta),
-        "date_site_scent_nonunique_session_keys":mult_meta,
-        "number_metadata_contradictions":num_to_meta_error,
-        "sample_bee_keys":[{k:r[k] for k in bj} for r in bees[:3]],
-        "sample_session_keys":[{k:r[k] for k in sj} for r in sessions[:3]],
-        "R_source_lines":[line.strip() for line in
-             z.read("Zenodo/GenerateFiguresAndAnalyses_CrallEtAl_OrchidBeeWindEcology.R")
-              .decode("utf-8-sig",errors="replace").splitlines()
-             if ("coll.id" in line or "beedata" in line.lower() or "keep" in line.lower() or
-                 "count" in line.lower() or "scent" in line.lower())][:60],
-        "status":"LINKAGE_SCHEMA_ONLY; no biological wind×taxon response scores opened"}
+    # beedata.number is a bee specimen row ordinal, NOT a session ID.
+    # The paper's sessions have a unique date × site × bait compound key.
+    def makekey(row):
+        return (clean(row["date"]),clean(row["site"]),clean(row["scent"]))
+    session_by_key={makekey(row): i for i,row in enumerate(sessions)}
+    session_keys=[makekey(row) for row in sessions]
+    if len(session_by_key)!=len(sessions):
+        raise ValueError("Sampling sessions are not unique by date/site/scent; cannot join")
+    matched=[(bee,session_by_key[makekey(bee)]) for bee in bees if makekey(bee) in session_by_key]
+    unmatched=[bee for bee in bees if makekey(bee) not in session_by_key]
+    from collections import Counter
+    actual_by_session=Counter(i for bee,i in matched)
+    summary_counts=[]
+    time_equal=0
+    for bee,i in matched:
+        time_equal+=clean(bee["time"])==clean(sessions[i]["start.time"])
+    for i,row in enumerate(sessions):
+        raw=row.get("count", "")
+        try: source_count=int(float(raw))
+        except (ValueError, TypeError):source_count=None
+        summary_counts.append({"session_key":"|".join(makekey(row)),
+          "source_count":source_count,
+          "linked_bees":actual_by_session.get(i,0),
+          "keep":clean(row.get("keep","")),
+          "valid_wind":bool(row.get("wind.mean","") not in ("","NA","NaN","nan")),
+          "site":clean(row["site"]),"date":clean(row["date"])})
+    mismatched=[item for item in summary_counts if item["source_count"]!=item["linked_bees"]]
+    wind_valid=sum(int(item["valid_wind"]) for item in summary_counts)
+    totals={"original_Zenodo_sha256":SHA256,"bee_record_rows":len(bees),
+        "session_rows":len(sessions),
+        "collection_metadata_rows":len(collections),
+        "unique_sessions_date_site_scent":len(session_by_key),
+        "matched_specimen_rows":len(matched),
+        "unmatched_specimen_rows":len(unmatched),
+        "matched_bees_time_equal_session_start_time":time_equal,
+        "sessions_with_at_least_one_bee":len(actual_by_session),
+        "session_count_total":sum(item["source_count"] for item in summary_counts if item["source_count"] is not None),
+        "session_matched_bee_total":sum(actual_by_session.values()),
+        "sessions_source_count_mismatch":len(mismatched),
+        "sessions_valid_mean_wind":wind_valid,
+        "session_keep_distribution":dict(Counter(item["keep"] for item in summary_counts)),
+        "unmatched_bee_dates":dict(Counter(clean(bee["date"]) for bee in unmatched)),
+        "matched_sites":len({clean(sessions[i]["site"]) for bee,i in matched}),
+        "dates_of_sessions":len(set(clean(x["date"]) for x in sessions)),
+        "scent_types":sorted(set(clean(x["scent"]) for x in sessions)),
+        "first_six_count_mismatches":mismatched[:6],
+        "source_fields":{"beedata":list(bees[0]),"sessions":list(sessions[0])},
+        "status":"SOURCE_LINKAGE_ONLY; no wind×taxon ecological effect computed"}
+    if len(matched)<0.85*len(bees):
+        raise ValueError("Insufficient original bee-session metadata linkage")
+    print("CRALL_LINKAGE",json.dumps(totals))
+    print("CRALL_LINKAGE_SCHEMA_ONLY_PASS")
     out=Path("research/wind_process_overlap/crall_linkage_audit_receipt.json")
     out.parent.mkdir(parents=True,exist_ok=True)
     out.write_text(json.dumps(totals,indent=2)+"\n")
     print("CRALL_LINKAGE",json.dumps({k:v for k,v in totals.items() if k not in
             ["R_source_lines","sample_bee_keys","sample_session_keys"]}))
-    print("BEEDATA_KEY_EXAMPLES",json.dumps(totals["sample_bee_keys"]))
-    print("SESSION_KEY_EXAMPLES",json.dumps(totals["sample_session_keys"]))
-    print("SOURCE_ANALYSIS_R_REFERENCES",json.dumps(totals["R_source_lines"]))
-    print("CRALL_LINKAGE_SCHEMA_ONLY_PASS")
 if __name__=="__main__":main()
