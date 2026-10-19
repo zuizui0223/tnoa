@@ -67,6 +67,8 @@ def main():
                       "sha256":hashlib.sha256(content).hexdigest(),"http_content_type":ct}
             if not content.startswith(b"PK\x03\x04"):
                 raise ValueError(f"{key}: expected ZIP/XLSX archive, received {content[:32]!r}")
+            if key=="crall_zenodo_zip" and fileinfo["sha256"]!="d5b217261e4695e2098bde90576238018ad978c581f4b7799c15e429be19384b":
+                raise ValueError("Crall original ZIP SHA256 drift; stop before opening data")
             with ZipFile(io.BytesIO(content)) as z:
                 names=z.namelist()
                 if key.endswith("_zip"):
@@ -106,6 +108,7 @@ def main():
             print("SOURCE_AUDIT",key, fileinfo["bytes"],fileinfo["sha256"])
             for name,m in fileinfo.get("members",{}).items():
                 print("SOURCE_CSV",name,m["rows"],"columns",len(m["columns"]))
+                if key=="crall_zenodo_zip":print("SOURCE_FIELDS",name,repr(m["columns"]))
             for name,m in fileinfo.get("worksheets",{}).items():
                 print("SOURCE_SHEET",key,name,m["total_rows_including_header"],m["total_cols"])
         except Exception as exc:
