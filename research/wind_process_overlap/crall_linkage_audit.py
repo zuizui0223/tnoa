@@ -17,7 +17,15 @@ def load():
     assert hashlib.sha256(src).hexdigest()==SHA256,"Original Zenodo ZIP identity drift"
     z=zipfile.ZipFile(io.BytesIO(src))
     def csvfile(name):
-        return list(csv.DictReader(io.StringIO(z.read("Zenodo/"+name).decode("utf-8-sig"))))
+        raw=z.read("Zenodo/"+name)
+        try:
+            decoded=raw.decode("utf-8-sig")
+            encoding="utf-8-sig"
+        except UnicodeDecodeError:
+            decoded=raw.decode("latin-1")
+            encoding="latin-1"
+        print("LINKAGE_SOURCE_ENCODING",name,encoding)
+        return list(csv.DictReader(io.StringIO(decoded)))
     return csvfile("beedata.csv"),csvfile("integratedSpatialWindData.csv"),csvfile("collectionMetadata.csv"),z
 
 def clean(s):
