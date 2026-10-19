@@ -76,7 +76,7 @@ def main():
                     for name in csvnames:
                         raw=z.read(name)
                         text=raw.decode("utf-8-sig",errors="replace")
-                        delimiter=csv.Sniffer().sniff(text[:4096],delimiters=",;\\t").delimiter
+                        delimiter=csv.Sniffer().sniff(text[:4096],delimiters=",;\t").delimiter
                         table=list(csv.reader(io.StringIO(text),delimiter=delimiter))
                         fileinfo["members"][name.split("/")[-1]]={
                           "rows":len(table)-1,"columns":table[0],
@@ -114,7 +114,7 @@ def main():
     receipt["status"] = ("source_only_partial_or_full" if receipt["original_files"]
                           else "source_intake_blocked")
     Path(args.output).parent.mkdir(parents=True,exist_ok=True)
-    Path(args.output).write_text(json.dumps(receipt,indent=2,ensure_ascii=False)+"\\n",encoding="utf-8")
+    Path(args.output).write_text(json.dumps(receipt,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
     if not receipt["original_files"]:
         raise SystemExit("TNOA_WIND_ECOLOGY_SOURCE_INTAKE_BLOCKED: no raw dataset was accessible; no ecological results produced")
     print("TNOA_WIND_ECOLOGY_SOURCE_INTAKE_PASS: verified",len(receipt["original_files"]),
