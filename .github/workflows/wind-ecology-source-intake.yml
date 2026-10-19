@@ -1,0 +1,49 @@
+name: TNOA Ecology Wind Source Intake
+
+on:
+  push:
+    branches:
+      - research/wind-process-overlap-ecology-20261019
+    paths:
+      - 'research/wind_process_overlap/**'
+      - '.github/workflows/wind-ecology-source-intake.yml'
+  pull_request:
+    paths:
+      - 'research/wind_process_overlap/**'
+      - '.github/workflows/wind-ecology-source-intake.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-intake:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install file readers
+        run: python -m pip install openpyxl==3.1.5
+      - name: Check source-audit code
+        run: python -m py_compile research/wind_process_overlap/source_intake.py
+      - name: Download and fingerprint original public data; inspect schema only
+        run: python research/wind_process_overlap/source_intake.py --output research/wind_process_overlap/intake_receipt.json
+      - name: Verify no ecological outcomes were opened
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open("research/wind_process_overlap/intake_receipt.json"))
+          assert x["status"]=="source_only_no_biological_outcomes"
+          assert len(x["original_files"])==3
+          assert len(x["original_files"]["balfour_zip"]["members"])>=3
+          print("TNOA_WIND_INTAKE_GATE_PASS")
+          PY
+      - name: Upload dataset-fingerprint and schema receipt only
+        uses: actions/upload-artifact@v4
+        with:
+          name: tnoa-wind-ecological-source-schema
+          path: research/wind_process_overlap/intake_receipt.json
+          retention-days: 60
