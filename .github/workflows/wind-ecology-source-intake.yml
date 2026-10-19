@@ -44,6 +44,8 @@ jobs:
           PY
       - name: Audit authentic orchid-bee specimen-session keys before ecological outcomes
         run: python research/wind_process_overlap/crall_linkage_audit.py
+      - name: Build source-verified session × genus matrix without opening ecological wind effects
+        run: python research/wind_process_overlap/crall_derived_matrix.py
       - name: Upload dataset-fingerprint and failure/schema receipt only
         if: always()
         uses: actions/upload-artifact@v4
@@ -52,4 +54,5 @@ jobs:
           path: |
             research/wind_process_overlap/intake_receipt.json
             research/wind_process_overlap/crall_linkage_audit_receipt.json
+            research/wind_process_overlap/crall_derived_session_matrix.json
           retention-days: 60
