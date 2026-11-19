@@ -76,12 +76,16 @@ def main():
               "message":v["message"]} for k,v in
               [("quantity_reduced",base),("quantity_full",full),
                ("guild_reduced",bcomp),("guild_full",fcomp)]}
-        if not all(z["ok"] for z in [base,full,bcomp,fcomp]):
+        count_estimable=base["ok"] and full["ok"]
+        guild_estimable=bcomp["ok"] and fcomp["ok"]
+        output["guild_status"]="ESTIMABLE" if guild_estimable else "HOLD_DATE_FIXED_EFFECT_GUILD_OPTIMIZER"
+        output["count_status"]="ESTIMABLE" if count_estimable else "HOLD_DATE_FIXED_EFFECT_COUNT_OPTIMIZER"
+        if not count_estimable and not guild_estimable:
             output["status"]="HOLD_DATE_FIXED_EFFECT_OPTIMIZER"
         else:
-            obs_count=2*(base["nll"]-full["nll"])
-            obs_comp=2*(bcomp["nll"]-fcomp["nll"])
-            rate=float(np.exp(full["theta"][-1]))
+            obs_count=2*(base["nll"]-full["nll"]) if count_estimable else None
+            obs_comp=2*(bcomp["nll"]-fcomp["nll"]) if guild_estimable else None
+            rate=float(np.exp(full["theta"][-1])) if count_estimable else None
             rng=np.random.default_rng(SEED)
             winds=np.array([r["wind"] for r in rows],float)
             nullcount=[];nullcomp=[];badcount=0;badcomp=0
@@ -92,27 +96,37 @@ def main():
                 _,Xp,_,_,_=prepare(rows,w)
                 if np.linalg.matrix_rank(Xp)!=Xp.shape[1]:
                     raise ValueError("Permutation design rank changed")
-                c=fit_poisson(Xp,y,off);v=fit_comp(Xp,Y)
-                if c["ok"]:nullcount.append(max(0,2*(base["nll"]-c["nll"])))
-                else:badcount+=1
-                if v["ok"]:nullcomp.append(max(0,2*(bcomp["nll"]-v["nll"])))
-                else:badcomp+=1
-            valid=badcount==0 and badcomp==0
+                if count_estimable:
+                    c=fit_poisson(Xp,y,off)
+                    if c["ok"]:nullcount.append(max(0,2*(base["nll"]-c["nll"])))
+                    else:badcount+=1
+                if guild_estimable:
+                    v=fit_comp(Xp,Y)
+                    if v["ok"]:nullcomp.append(max(0,2*(bcomp["nll"]-v["nll"])))
+                    else:badcomp+=1
+            count_valid=count_estimable and badcount==0 and len(nullcount)==N
+            guild_valid=guild_estimable and badcomp==0 and len(nullcomp)==N
             output.update({
-              "status":"EXPLORATORY_ESTIMATED" if valid else "HOLD_NULL_OPTIMIZER",
+              "status":("EXPLORATORY_ESTIMATED" if count_valid and guild_valid else
+                        "PARTIAL_COUNT_ESTIMATED_GUILD_HOLD" if count_valid and not guild_valid else
+                        "PARTIAL_GUILD_ESTIMATED_COUNT_HOLD" if guild_valid and not count_valid else
+                        "HOLD_NULL_OPTIMIZER"),
               "count_deviance_gain":obs_count,"guild_deviance_gain":obs_comp,
               "within_day_count_rate_ratio_per_source_wind_IQR":rate,
-              "null_count_exceedances":sum(v>=obs_count-1e-8 for v in nullcount),
-              "null_guild_exceedances":sum(v>=obs_comp-1e-8 for v in nullcomp),
+              "null_count_exceedances":sum(v>=obs_count-1e-8 for v in nullcount)
+                   if obs_count is not None else None,
+              "null_guild_exceedances":sum(v>=obs_comp-1e-8 for v in nullcomp)
+                   if obs_comp is not None else None,
               "null_count_fit_failures":badcount,"null_guild_fit_failures":badcomp,
               "within_day_count_permutation_p":(
-                (1+sum(v>=obs_count-1e-8 for v in nullcount))/(N+1) if valid else None),
+                (1+sum(v>=obs_count-1e-8 for v in nullcount))/(N+1) if count_valid else None),
               "within_day_guild_permutation_p":(
-                (1+sum(v>=obs_comp-1e-8 for v in nullcomp))/(N+1) if valid else None)})
+                (1+sum(v>=obs_comp-1e-8 for v in nullcomp))/(N+1) if guild_valid else None)})
     out=Path("research/natural_flower_wind/THREE_BEE_SITE_DATE_FIXED_EFFECT_2026-11-19.json")
     out.write_text(json.dumps(output,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
     print("IRISH_DATE_FIXED_EFFECT",json.dumps(output,ensure_ascii=False)[:14000])
     if output["status"] not in ("EXPLORATORY_ESTIMATED","HOLD_FIXED_EFFECT_RANK",
-      "HOLD_WITHIN_DAY_WIND_SUPPORT","HOLD_DATE_FIXED_EFFECT_OPTIMIZER","HOLD_NULL_OPTIMIZER"):
+      "HOLD_WITHIN_DAY_WIND_SUPPORT","HOLD_DATE_FIXED_EFFECT_OPTIMIZER","HOLD_NULL_OPTIMIZER",
+       "PARTIAL_COUNT_ESTIMATED_GUILD_HOLD","PARTIAL_GUILD_ESTIMATED_COUNT_HOLD"):
         raise SystemExit("Unknown result state")
 if __name__=="__main__":main()
