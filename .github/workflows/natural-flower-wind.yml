@@ -1,0 +1,51 @@
+name: TNOA Natural Flower Wind Source and Ecology
+
+on:
+  push:
+    branches:
+      - research/independent-natural-flower-wind-20261119
+      - main
+    paths:
+      - 'research/natural_flower_wind/**'
+      - '.github/workflows/natural-flower-wind.yml'
+  pull_request:
+    paths:
+      - 'research/natural_flower_wind/**'
+      - '.github/workflows/natural-flower-wind.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-and-ecology:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Audit script syntax
+        run: python -m py_compile research/natural_flower_wind/intake.py
+      - name: Fetch source and verify checksum, schema and effort BEFORE outcome tests
+        run: python research/natural_flower_wind/intake.py
+      - name: Source denominator check
+        run: |
+          python - <<'PY'
+          import json
+          p='research/natural_flower_wind/source_intake_receipt.json'
+          x=json.load(open(p))
+          assert x['status']=='SOURCE_SCHEMA_PASS'
+          assert x['source']['published_md5']=='85cc235a323d45c0fa52efcc27db9f82'
+          assert not x['required_columns_missing']
+          print('NATURAL_FLOWER_SOURCE_GATE_PASS')
+          PY
+      - name: Preserve SOURCE AUDIT only (never raw external rows)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tnoa-independent-flower-source-audit
+          path: research/natural_flower_wind/source_intake_receipt.json
+          if-no-files-found: warn
+          retention-days: 45
