@@ -131,6 +131,8 @@ jobs:
           assert x['permutations']==999
           print('IRISH_WITHIN_DAY_FIELD_DATE_FIXED_SENSITIVITY_GUARD',x['status'])
           PY
+      - name: Enforce evidence ceiling across independently verified ecology analyses
+        run: python research/natural_flower_wind/audit_final_claims.py
       - name: Preserve SOURCE AUDIT only (never raw external rows)
         if: always()
         uses: actions/upload-artifact@v4
@@ -145,5 +147,6 @@ jobs:
             research/natural_flower_wind/WESCHLER_BEHAVIOR_COOCCURRENCE_2026-11-19.json
             research/natural_flower_wind/THREE_BEE_DATE_BLOCK_SENSITIVITY_2026-11-19.json
             research/natural_flower_wind/THREE_BEE_SITE_DATE_FIXED_EFFECT_2026-11-19.json
+            research/natural_flower_wind/FINAL_REPRODUCED_DISPOSITION_2026-11-19.json
           if-no-files-found: warn
           retention-days: 45
