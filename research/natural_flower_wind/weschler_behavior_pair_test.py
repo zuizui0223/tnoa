@@ -49,19 +49,19 @@ def analyze(rows,sha):
         bysession[id].append({
           "p":p,"n":n,"wind":numfield(r["WindSpeed"]),
           "site":str(r["Site"]).strip(),"date":str(r["Date"]).strip(),
-          "plant":str(r["Plant"]).strip()})
+          "plant":str(r["Plant"]).strip(),"file":str(r["FileName"]).strip()})
     total=sum(map(len,bysession.values()))
     if total<300 or len(bysession)<12:
         return {"status":"HOLD_BEHAVIOR_OR_SESSION_COUNT",
           "original_rows":len(rows),"valid_rows":total,"session_n":len(bysession),"excluded":dict(rejected)}
     contexts={}
     for sid,rr in bysession.items():
-        for col in ("site","date","plant","wind"):
+        for col in ("site","date","wind"):
             if len(set(r[col] for r in rr))!=1:
                 return {"status":"HOLD_SESSION_NONUNIQUE_CONTEXT",
                   "field":col,"unique_session_id":sid,"n_values":len(set(r[col] for r in rr))}
         contexts[sid]={"site":rr[0]["site"],"date":rr[0]["date"],
-                       "plant":rr[0]["plant"],"wind":rr[0]["wind"],"n":len(rr)}
+                       "n_plants":len({r["plant"] for r in rr}),"n_source_files":len({r["file"] for r in rr}),"wind":rr[0]["wind"],"n":len(rr)}
     pollen=sum(r["p"] for rr in bysession.values() for r in rr)
     nectar=sum(r["n"] for rr in bysession.values() for r in rr)
     both=sum(r["p"]*r["n"] for rr in bysession.values() for r in rr)
@@ -83,6 +83,44 @@ def analyze(rows,sha):
             score+=sum(x*y for x,y in zip(p,n))
         null.append(score)
     if statistics.pstdev(null)==0:return {"status":"HOLD_DEGENERATE_PAIR_NULL"}
+    # Plant and file-level controls are more restrictive than original
+    # same-session shuffle; all are calculated on the same source rows.
+    subgroup_controls={}
+    for mode,fields in (
+        ("source_visit_session_by_plant",("plant",)),
+        ("source_visit_session_by_filename",("file",)),
+        ("source_visit_session_by_plant_filename",("plant","file"))):
+        subsegs=[]
+        for sid,rr in bysession.items():
+            clusters=defaultdict(list)
+            for item in rr:
+                clusters[tuple(item[f] for f in fields)].append(item)
+            subsegs.extend(clusters.values())
+        o=sum(z["p"]*z["n"] for seg in subsegs for z in seg)
+        expected_seg=sum(sum(z["p"] for z in seg)*sum(z["n"] for z in seg)/len(seg)
+                         for seg in subsegs)
+        rng_robust=Random(SEED+len(subsegs)*11)
+        nnull=[]
+        for _ in range(N_PERM):
+            val=0
+            for seg in subsegs:
+                ps=[z["p"] for z in seg];ns=[z["n"] for z in seg]
+                rng_robust.shuffle(ns)
+                val+=sum(x*y for x,y in zip(ps,ns))
+            nnull.append(val)
+        sd_robust=statistics.pstdev(nnull)
+        p_robust=(1+sum(abs(v-expected_seg)>=abs(o-expected_seg)-1e-9
+                    for v in nnull))/(N_PERM+1) if sd_robust>0 else None
+        subgroup_controls[mode] = {
+           "status":"EXPLORATORY_ESTIMATED" if sd_robust>0 else "HOLD_DEGENERATE_NULL",
+           "subgroups":len(subsegs),"subgroups_with_2plus_interactions":
+              sum(len(seg)>=2 for seg in subsegs),
+           "observed_pair":o,"expected_pair":expected_seg,
+           "excess_pair":o-expected_seg,
+           "two_sided_p_plus_one":p_robust,
+           "null_sd":sd_robust,
+           "note":"Stricter same source control for plant or physical filename within Unique_ID; not independent confirmation."
+        }
     n_extreme=sum(abs(a-expect)>=abs(both-expect)-1e-9 for a in null)
     pvalue=(1+n_extreme)/(1+N_PERM)
     sortednull=sorted(null)
@@ -127,6 +165,9 @@ def analyze(rows,sha):
       "units":{"raw_interaction_rows":len(rows),"valid_interactions":total,
         "excluded":dict(rejected),"video_sessions":len(bysession),
         "physical_sites":len(sites),"observation_days":len({x["date"] for x in contexts.values()}),
+        "source_unique_id_group_units":len(contexts),
+        "uid_groups_with_multiple_plant_taxa":sum(x["n_plants"]>1 for x in contexts.values()),
+        "source_filenames_across_groups":len({(sid,r["file"]) for sid,rr in bysession.items() for r in rr}),
         "pollen_positive_visits":pollen,"nectar_positive_visits":nectar,
         "sessions_with_pollen":sessions_p,"sessions_with_nectar":sessions_n},
       "primary":{"pair":"CollectingPollen AND DrinkNectar",
@@ -141,6 +182,7 @@ def analyze(rows,sha):
         "two_sided_p_plus_one":pvalue,"n_permutations":N_PERM,
         "seed":SEED,
         "scheme":"Shuffle DrinkNectar binary labels among interactions within the same original Unique_ID, preserving both per-session margins"},
+      "plant_and_video_file_null_sensitivity":subgroup_controls,
       "leave_one_site_out":site_out,
       "wind_exploration":windout,
       "claim_limits":[
