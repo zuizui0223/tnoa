@@ -36,10 +36,12 @@ jobs:
           import json
           p='research/natural_flower_wind/source_intake_receipt.json'
           x=json.load(open(p))
-          assert x['status']=='SOURCE_SCHEMA_PASS'
+          assert x['status']=='HOLD_UNVERIFIED_HOVERFLY_COLUMN'
           assert x['source']['published_md5']=='85cc235a323d45c0fa52efcc27db9f82'
           assert not x['required_columns_missing']
-          print('NATURAL_FLOWER_SOURCE_GATE_PASS')
+          assert x['butterfly_is_a_different_taxon']
+          assert x['hoverfly_candidate_columns']==[]
+          print('NATURAL_FLOWER_SOURCE_INTEGRITY_PASS; FOUR_GUILD_ECOLOGY_HOLD')
           PY
       - name: Audit original source row multiplicity and pollinator guild semantics
         run: python research/natural_flower_wind/audit_semantics.py
