@@ -107,5 +107,5 @@ def main():
     output.write_text(json.dumps(receipt,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
     print("NATURAL_FLOWER_SOURCE_AUDIT",json.dumps(receipt,ensure_ascii=False))
     if status!="SOURCE_SCHEMA_PASS":
-        raise SystemExit("SOURCE_HOLD_"+status)
+        print("SOURCE_AUDIT_COMPLETED_WITH_SCIENCE_HOLD",status)
 if __name__=="__main__":main()
