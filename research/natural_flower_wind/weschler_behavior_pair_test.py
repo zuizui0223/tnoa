@@ -151,7 +151,7 @@ def analyze(rows,sha):
         "Wind measured at session scale, confounded by distance, site, plant composition and time.",
         "Repeated insects/plants and uncertain observation quality may affect behavior coding.",
         "This is ecological field-video data, not validation of a calibrated TNOA field observer.",
-        "No natural pollinator response is inferred from video rows without grouping by recording session."]}
+        "No natural pollinator response is inferred from video rows without grouping by recording session."]
     }
 
 def main():
