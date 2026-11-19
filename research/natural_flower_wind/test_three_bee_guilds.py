@@ -138,18 +138,50 @@ def build():
     },data
 
 def fit_poisson(X,y,off):
+    """Unchanged convex Poisson likelihood; L-BFGS followed by exact Newton refinement.
+
+    The Newton stage only addresses failed numerical convergence, with no
+    regularization, no changed data, and no altered permutation/response model.
+    """
     def fn(b):
         z=X@b+off
         mu=np.exp(np.clip(z,-22,22))
         val=float(np.sum(mu-y*z))
         grad=X.T@(mu-y)
-        return val,grad
-    z=minimize(fn,np.zeros(X.shape[1]),jac=True,method="L-BFGS-B",
+        return val,grad,mu
+    def wrapper(b):
+        v,g,_=fn(b)
+        return v,g
+    z=minimize(wrapper,np.zeros(X.shape[1]),jac=True,method="L-BFGS-B",
         options={"maxiter":1000,"ftol":5e-12,"gtol":1e-8})
-    val,g=fn(z.x)
-    return {"ok":bool(z.success and np.isfinite(val) and np.linalg.norm(g)<.02),
-            "nll":val,"theta":z.x,"grad":float(np.linalg.norm(g)),
-            "message":str(z.message)}
+    theta=z.x.copy()
+    val,g,mu=fn(theta)
+    refined=0
+    if not (z.success and np.isfinite(val) and np.linalg.norm(g)<.02):
+        for iteration in range(35):
+            val,g,mu=fn(theta)
+            if np.linalg.norm(g)<1e-7:break
+            H=X.T@(mu[:,None]*X)
+            try:
+                delta=np.linalg.solve(H+1e-9*np.eye(X.shape[1]),g)
+            except np.linalg.LinAlgError:
+                break
+            alpha=1.0
+            accepted=False
+            for trial in range(35):
+                candidate=theta-alpha*delta
+                nextval,_,_=fn(candidate)
+                if np.isfinite(nextval) and nextval<=val-1e-9*alpha*np.dot(g,delta):
+                    theta=candidate
+                    accepted=True
+                    break
+                alpha/=2
+            if not accepted:break
+            refined+=1
+    val,g,mu=fn(theta)
+    return {"ok":bool(np.isfinite(val) and np.linalg.norm(g)<.02),
+            "nll":val,"theta":theta,"grad":float(np.linalg.norm(g)),
+            "message":str(z.message),"newton_refinement_steps":refined}
 def analyse(gate,rows,permutations):
     if gate["status"]!="PASS":
         return {"status":gate["status"],"gate":gate,
