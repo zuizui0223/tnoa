@@ -46,6 +46,20 @@ The pre-outcome secondary protocol is [CRALL_EUGLOSSA_SPECIES_FOLLOWUP_PROTOCOL_
 
 **Result:** the preregistered-format exploratory joint test **does not support** a wind-dependent seven-category species-composition response after these controls. It does not establish zero wind effects or identical species responses.
 
+## Published total-arrival relationship re-estimated as an auxiliary reference
+
+We also refitted the original authors' **already-known wind–total-arrival** question on the same 70 sessions (409 male bees, including *Eulaema*) using a matched site + bait + linear-day Poisson mean model with and without within-site-centred log wind. We used the identical 999 site×bait whole-session wind permutations for a descriptive reanalysis, **not an independent confirmation**.
+
+| Reference outcome | Source-verified matched specification |
+| --- | ---: |
+| Total arrivals: wind coefficient per pooled log-wind IQR | +0.32713 |
+| Predicted arrival count ratio per IQR | **1.38698** |
+| Poisson deviance gain | 15.28270 |
+| Site×bait 999-permutation plus-one p | **0.008** |
+| Pearson residual overdispersion | **1.905** |
+
+Source CI reproduced these numbers with `crall_total_count_reference.py`. The comparison makes the biological endpoint difference concrete: **arrival quantity** retains a wind association under this model, while **within-*Euglossa* identity/composition** is not supported by the separate test (`p=0.164`). Different response measures and power prevent interpreting one p-value as a formal test of their difference. The count result was already reported in the original publication; only this matched-protocol juxtaposition is our secondary analysis. Temporal exchangeability, overdispersion, scent-bait limitation and all ecological observational boundaries apply.
+
 ## Effect-size description, not discoveries about individual species
 
 Model-standardized, noncausal one-log-wind-IQR contrasts in predicted *conditional* arrival share are approximately:
