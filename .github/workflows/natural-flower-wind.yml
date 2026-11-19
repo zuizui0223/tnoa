@@ -127,7 +127,7 @@ jobs:
           assert x['scientific_status'].startswith('post-result adversarial')
           assert x['source_sha256']=='07c902217da47953966f93319ef8db4ef1a83d7911f41c86cbe735368e7820b5'
           assert x['unique_raw_transects']==124 and x['eligible_transects']==120
-          assert x['status'] in ('EXPLORATORY_ESTIMATED','HOLD_FIXED_EFFECT_RANK','HOLD_WITHIN_DAY_WIND_SUPPORT','HOLD_DATE_FIXED_EFFECT_OPTIMIZER','HOLD_NULL_OPTIMIZER')
+          assert x['status'] in ('EXPLORATORY_ESTIMATED','HOLD_FIXED_EFFECT_RANK','HOLD_WITHIN_DAY_WIND_SUPPORT','HOLD_DATE_FIXED_EFFECT_OPTIMIZER','HOLD_NULL_OPTIMIZER','PARTIAL_COUNT_ESTIMATED_GUILD_HOLD','PARTIAL_GUILD_ESTIMATED_COUNT_HOLD')
           assert x['permutations']==999
           print('IRISH_WITHIN_DAY_FIELD_DATE_FIXED_SENSITIVITY_GUARD',x['status'])
           PY
