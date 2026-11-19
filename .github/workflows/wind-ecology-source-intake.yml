@@ -3,6 +3,7 @@ name: TNOA Ecology Wind Source Intake
 on:
   push:
     branches:
+      - main
       - research/wind-process-overlap-ecology-20261019
     paths:
       - 'research/wind_process_overlap/**'
