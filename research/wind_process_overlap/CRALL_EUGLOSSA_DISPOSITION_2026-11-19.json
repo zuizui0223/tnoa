@@ -43,7 +43,8 @@
     "entrypoint": "research/wind_process_overlap/crall_species_wind_test.py",
     "workflow": ".github/workflows/wind-ecology-source-intake.yml",
     "raw_data_redistributed": false,
-    "archival_report": "research/wind_process_overlap/CRALL_EUGLOSSA_REAL_RESULT_2026-11-19.md"
+    "archival_report": "research/wind_process_overlap/CRALL_EUGLOSSA_REAL_RESULT_2026-11-19.md",
+    "entrypoint_published_count_reference": "research/wind_process_overlap/crall_total_count_reference.py"
   },
   "limitations": [
     "Secondary result chosen only after an earlier genus-level support gate failed",
@@ -53,5 +54,19 @@
     "Sparse taxa, extreme nuisance coefficients and rare meth bait sessions",
     "One forest field system; not cross-region ecological generality",
     "Unverified field-day/time observer and detection corrections"
-  ]
+  ],
+  "auxiliary_published_count_comparator": {
+    "role": "Source-author wind–total-arrival association, retrospectively re-estimated on matched source sessions; not novel biological finding",
+    "n_sessions": 70,
+    "n_bees_all_genera": 409,
+    "model": "Poisson arrivals ~ site fixed + bait + linear day + within-site-centered log(wind) / pooled IQR",
+    "wind_log_rate_coefficient": 0.327127969327593,
+    "predicted_count_ratio_per_log_wind_iqr": 1.3869789548373654,
+    "deviance_gain": 15.282697516190979,
+    "session_level_site_bait_permutations": 999,
+    "permutation_p": 0.008,
+    "pearson_overdispersion": 1.905415364159595,
+    "source_verified_ci_run": 44520175292,
+    "interpretation": "A source-published positive amount relationship under the matched model contrasts with an inconclusive seven-category Euglossa identity test; comparing p-values is not a formal cross-response difference test"
+  }
 }
