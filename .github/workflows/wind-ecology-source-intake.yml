@@ -55,6 +55,28 @@ jobs:
             --input research/wind_process_overlap/crall_derived_session_matrix.json \
             --output research/wind_process_overlap/crall_species_wind_result.json \
             --permutations 999
+      - name: Recompute published wind-total-arrival comparison on identical sessions
+        env:
+          OPENBLAS_NUM_THREADS: '1'
+        run: |
+          python research/wind_process_overlap/crall_total_count_reference.py \
+            --input research/wind_process_overlap/crall_derived_session_matrix.json \
+            --output research/wind_process_overlap/crall_total_count_reference_result.json \
+            --permutations 999
+      - name: Preserve auxiliary count-effect provenance and original publication priority
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open('research/wind_process_overlap/crall_total_count_reference_result.json'))
+          assert x['scientific_role'].startswith('auxiliary source-author result')
+          assert x['n_sessions']==70 and x['n_total_bees']==409
+          assert x['permutation']['n']==999
+          assert abs(x['count_ratio_per_log_wind_iqr']-1.38697896)<0.005
+          assert abs(x['permutation']['plus_one_p']-0.008)<0.002
+          assert x['poisson_pearson_overdispersion']>1.
+          assert len(x['leave_one_site_out'])==9
+          print('CRALL_COUNT_PUBLISHED_BENCHMARK_PASS')
+          PY
       - name: Audit source-pinned ecological null result and uncertainty contract
         run: |
           python - <<'PY'
@@ -85,4 +107,5 @@ jobs:
             research/wind_process_overlap/crall_linkage_audit_receipt.json
             research/wind_process_overlap/crall_derived_session_matrix.json
             research/wind_process_overlap/crall_species_wind_result.json
+            research/wind_process_overlap/crall_total_count_reference_result.json
           retention-days: 60
