@@ -41,13 +41,13 @@ def main():
     data,columns,enc,sha,nbytes=prepare()
     present = [k for k in REQUIRED if k in columns]
     missing = [k for k in REQUIRED if k not in columns]
-    hovered=[x for x in columns if "hover" in x or "syrph" in x or "fly" in x]
+    hovered=[x for x in columns if "hover" in x or "syrph" in x]
     count_columns = {k: [k] for k in ["honeybee","bumblebee","solitary"]}
     for k in ["honeybee","bumblebee","solitary"]:count_columns[k].append(k+"_pollen")
     if "hoverfly" in columns: count_columns["hoverfly"]=["hoverfly"]
     else:count_columns["hoverfly"]=hovered
     status = "SOURCE_SCHEMA_PASS"
-    if missing or len(count_columns["hoverfly"])!=1:status="HOLD_MISSING_REQUIRED_COLUMNS"
+    if missing or len(count_columns["hoverfly"])!=1:status="HOLD_UNVERIFIED_HOVERFLY_COLUMN"
     sites=Counter(str(r.get("site","")).strip() for r in data)
     locs=Counter(str(r.get("location","")).strip() for r in data)
     wind=[num(r.get("meanwindspd")) for r in data]
@@ -82,6 +82,7 @@ def main():
       "columns":columns,
       "required_columns_missing":missing,
       "hoverfly_candidate_columns":hovered,
+      "butterfly_is_a_different_taxon":("butterfly" in columns),
       "source_site_distribution":dict(sites),
       "source_location_distribution":dict(locs),
       "unique_site_datetime_transect_keys":len(set(recordids)),
@@ -95,7 +96,7 @@ def main():
         "positive_fields":len(occurrences[k]["sites"])} for k in GUILDS},
       "uncertain_count_cell_examples":uncertain_counts[:12],
       "uncertain_count_cell_count":len(uncertain_counts),
-      "status_reason":"Source MD5 and schema/denominators only; wind-guild associations not opened.",
+      "status_reason":"Source MD5 verified. Butterfly is not hoverfly; the published README calls the literal butterfly field butterflies. Biological four-guild test is HOLD unless exact hoverfly source exists.",
       "hard_limits":["Natural flower visitors observed in relatively favourable weather; not a full wind-gradient experiment",
         "One weather station shifted among three sites; site/day/time confounding possible",
         "Field x date, not insect or transect rows, is uncertainty-clustering unit",
