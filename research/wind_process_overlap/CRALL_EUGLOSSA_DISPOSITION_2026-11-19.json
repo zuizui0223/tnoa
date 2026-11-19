@@ -1,0 +1,57 @@
+{
+  "schema": "tnoa-ecology-source-verified-wind-reallocation-disposition-v1",
+  "date": "2026-11-19",
+  "lane": "ecological_extension_only",
+  "original_scientific_home": "Crall et al. 2020 Biology Letters; original collection and total-count results remain source-owned",
+  "source": {
+    "zenodo_doi": "10.5281/zenodo.3675327",
+    "article_doi": "10.1098/rsbl.2020.0103",
+    "frozen_source_zip_sha256": "d5b217261e4695e2098bde90576238018ad978c581f4b7799c15e429be19384b"
+  },
+  "denominators": {
+    "source_bee_rows": 450,
+    "matched_bee_rows": 409,
+    "unmatched": 41,
+    "source_sessions": 70,
+    "sites": 9,
+    "dates": 29,
+    "scent_types": 2,
+    "euglossa_bees": 399,
+    "eulaema_bees": 10,
+    "genus_analysis": "HOLD—only Euglossa meets taxonomic support",
+    "species_analysis_categories": 7,
+    "eligible_named_species": 6,
+    "permutation_site_bait_groups": 9,
+    "permutable_sessions": 67
+  },
+  "secondary_analysis": {
+    "protocol": "research/wind_process_overlap/CRALL_EUGLOSSA_SPECIES_FOLLOWUP_PROTOCOL_2026-10-19.md",
+    "question": "Within Euglossa, is wind associated with male scent-bait-arrival species composition after accounting for site, scent, and linear study day?",
+    "model": "Multinomial conditional species composition; six gated named taxa plus other Euglossa; site + scent + day vs same + within-site centered log(wind)",
+    "wind_full_model_deviance_gain": 12.31688955,
+    "permutation_count": 999,
+    "null_exceedance_count": 163,
+    "plus_one_p": 0.164,
+    "numerical_optimizer_failed_permutations": 0,
+    "numerical_near_separation_warning": true,
+    "verdict": "NOT_SUPPORTED",
+    "p_value_interpretation": "No detected joint composition shift at the chosen site-bait-day-adjusted estimator; not evidence of zero biological wind effect",
+    "novelty_boundary": "Previously published wind-total-arrival association is not a new finding",
+    "prior_genus_hold_preserved": true
+  },
+  "reproducibility": {
+    "entrypoint": "research/wind_process_overlap/crall_species_wind_test.py",
+    "workflow": ".github/workflows/wind-ecology-source-intake.yml",
+    "raw_data_redistributed": false,
+    "archival_report": "research/wind_process_overlap/CRALL_EUGLOSSA_REAL_RESULT_2026-11-19.md"
+  },
+  "limitations": [
+    "Secondary result chosen only after an earlier genus-level support gate failed",
+    "70 observation sessions, not 409 independent wind-exposure replicates",
+    "Artificial chemical male-bee baits, not flower visitation or pollination effectiveness",
+    "Wind not randomized; within-site×bait permutation exchangeability may be violated by time",
+    "Sparse taxa, extreme nuisance coefficients and rare meth bait sessions",
+    "One forest field system; not cross-region ecological generality",
+    "Unverified field-day/time observer and detection corrections"
+  ]
+}
