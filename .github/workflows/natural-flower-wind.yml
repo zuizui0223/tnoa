@@ -26,8 +26,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - name: Install ecological model dependencies
+        run: python -m pip install numpy==2.3.5 scipy==1.17.0
       - name: Audit script syntax
-        run: python -m py_compile research/natural_flower_wind/intake.py
+        run: python -m py_compile research/natural_flower_wind/intake.py research/natural_flower_wind/audit_semantics.py research/natural_flower_wind/test_three_bee_guilds.py research/natural_flower_wind/test_amount_vs_guild.py research/natural_flower_wind/weschler_source_intake.py
       - name: Fetch source and verify checksum, schema and effort BEFORE outcome tests
         run: python research/natural_flower_wind/intake.py
       - name: Source denominator check
@@ -47,6 +49,33 @@ jobs:
         run: python research/natural_flower_wind/audit_semantics.py
       - name: Audit independent Wyoming natural-flower behavior archive before viewing outcomes
         run: python research/natural_flower_wind/weschler_source_intake.py
+      - name: Run source-corrected exploratory three-bee guild ecological comparison
+        env:
+          OPENBLAS_NUM_THREADS: '1'
+          OMP_NUM_THREADS: '1'
+        run: |
+          python research/natural_flower_wind/test_three_bee_guilds.py \
+            --output research/natural_flower_wind/THREE_BEE_GUILD_RESULT_2026-11-19.json \
+            --permutations 999
+      - name: Audit noninvented source and independent survey denominator
+        run: |
+          python - <<'PY'
+          import json
+          a=json.load(open('research/natural_flower_wind/THREE_BEE_GUILD_RESULT_2026-11-19.json'))
+          assert a['status']=='EXPLORATORY_ESTIMATED',a
+          assert a['scientific_role'].startswith('Retrospective')
+          assert a['source']['source_rows']==496
+          assert a['source']['identical_fourfold_copies'] is True
+          assert a['source']['independent_source_transects_before_missing_weather']==124
+          assert a['coverage']['eligible_observations']>=118
+          assert len(a['identity']['categories'])==3
+          assert 'hoverfly' not in a['identity']['categories']
+          assert a['permutation']['n']==999
+          assert a['permutation']['failed_quantity']==0
+          assert a['permutation']['failed_identity']==0
+          assert len(a['hard_limits'])>=8
+          print('THREE_BEE_NATURAL_FLOWER_ECOLOGY_SOURCE_AND_CLAIM_GATE_PASS')
+          PY
       - name: Preserve SOURCE AUDIT only (never raw external rows)
         if: always()
         uses: actions/upload-artifact@v4
@@ -56,5 +85,6 @@ jobs:
             research/natural_flower_wind/source_intake_receipt.json
             research/natural_flower_wind/SEMANTIC_AUDIT_2026-11-19.json
             research/natural_flower_wind/WESCHLER_SOURCE_INTAKE_2026-11-19.json
+            research/natural_flower_wind/THREE_BEE_GUILD_RESULT_2026-11-19.json
           if-no-files-found: warn
           retention-days: 45
