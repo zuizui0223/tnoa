@@ -60,8 +60,10 @@ The recorded binary behavior labels are separately positive, and can coexist wit
 - Valid interactions: **472/472**, across **15** source UID site/date units and six locations.
 - Recorded pollen collection: **198**; nectar drinking: **39**.
 - Recorded both: **20**; expectation from independent behavior-label assignment within each UID: **20.2216**.
-- Within-UID 999-permutation two-sided **p = 1.000**, observational overlap-to-expected ratio **0.989**.
+- Within-UID 999-permutation two-sided **p = 1.000**, observational overlap-to-expected ratio **0.989**. Additional matched-label shuffles within **UID×plant** (18 groups), **UID×recording file** (146 groups), and **UID×plant×file** (152 groups) also give **p = 1.000**; the file-restricted independence expectation is 19.8468 joint visits versus 20 observed. These are sensitivity controls within the same field study, not three independent replications.
 - Wind association with residual overlap is **descriptive only** because there are 15 wind-observation contexts, original wind/plant/turbine context confounding, and no prospective randomization.
+
+**Further source-semantic safeguard:** the released 472-row video table contains exactly **15** unique site-date `Unique_ID` groups, not 17 independent wind-replicated sessions. Plant identities vary within two groups; their source plant labels are preserved, and the added file/plant conditional tests do not force a single plant per observation day.
 
 **Disposition:** behaviors can co-occur in real visits, but this does **not** demonstrate excess pollen–nectar co-occurrence beyond matched within-session margins. Do not claim instant simultaneity, pollination effectiveness, or a general law of ecological process-superposition. Original article already reports multibehavioral visits; this secondary co-occurrence-versus-null test is not an independent new discovery of multi-behavioral interactions.
 
