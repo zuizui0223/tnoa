@@ -29,7 +29,7 @@ jobs:
       - name: Install ecological model dependencies
         run: python -m pip install numpy==2.3.5 scipy==1.17.0
       - name: Audit script syntax
-        run: python -m py_compile research/natural_flower_wind/intake.py research/natural_flower_wind/audit_semantics.py research/natural_flower_wind/test_three_bee_guilds.py research/natural_flower_wind/test_amount_vs_guild.py research/natural_flower_wind/weschler_source_intake.py
+        run: python -m py_compile research/natural_flower_wind/intake.py research/natural_flower_wind/audit_semantics.py research/natural_flower_wind/test_three_bee_guilds.py research/natural_flower_wind/test_amount_vs_guild.py research/natural_flower_wind/weschler_source_intake.py research/natural_flower_wind/audit_weschler_session_key.py research/natural_flower_wind/weschler_behavior_pair_test.py research/natural_flower_wind/date_block_sensitivity.py
       - name: Fetch source and verify checksum, schema and effort BEFORE outcome tests
         run: python research/natural_flower_wind/intake.py
       - name: Source denominator check
@@ -98,6 +98,22 @@ jobs:
           assert len(a['hard_limits'])>=8
           print('THREE_BEE_NATURAL_FLOWER_ECOLOGY_SOURCE_AND_CLAIM_GATE_PASS')
           PY
+      - name: Post-result stronger within-field-date wind permutation check
+        env:
+          OPENBLAS_NUM_THREADS: '1'
+          OMP_NUM_THREADS: '1'
+        run: python research/natural_flower_wind/date_block_sensitivity.py
+      - name: Date-block sensitivity provenance guard
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open('research/natural_flower_wind/THREE_BEE_DATE_BLOCK_SENSITIVITY_2026-11-19.json'))
+          assert x['scientific_role'].startswith('strictly post-result')
+          assert x['source_rows']==496 and x['exact_unique_transects']==124
+          assert x['n_permutations']==999
+          assert x['status'] in ('EXPLORATORY_ESTIMATED','HOLD_FIELD_DATE_PERMUTATION_SUPPORT','HOLD_DESIGN_RANK','HOLD_OPTIMIZER','HOLD_PERMUTATION_OPTIMIZER')
+          print('IRISH_FIELD_DATE_ADVERSE_SENSITIVITY_GATE_PASS',x['status'])
+          PY
       - name: Preserve SOURCE AUDIT only (never raw external rows)
         if: always()
         uses: actions/upload-artifact@v4
@@ -110,5 +126,6 @@ jobs:
             research/natural_flower_wind/WESCHLER_SESSION_KEY_AUDIT_2026-11-19.json
             research/natural_flower_wind/THREE_BEE_GUILD_RESULT_2026-11-19.json
             research/natural_flower_wind/WESCHLER_BEHAVIOR_COOCCURRENCE_2026-11-19.json
+            research/natural_flower_wind/THREE_BEE_DATE_BLOCK_SENSITIVITY_2026-11-19.json
           if-no-files-found: warn
           retention-days: 45
