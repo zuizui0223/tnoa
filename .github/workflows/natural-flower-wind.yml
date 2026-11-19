@@ -49,7 +49,23 @@ jobs:
         run: python research/natural_flower_wind/audit_semantics.py
       - name: Audit independent Wyoming natural-flower behavior archive before viewing outcomes
         run: python research/natural_flower_wind/weschler_source_intake.py
+      - name: Test natural-flower visit pollen × nectar co-occurrence in source-verified video sessions
+        continue-on-error: true
+        run: python research/natural_flower_wind/weschler_behavior_pair_test.py
+      - name: Weschler session-based inference and semantic audit
+        run: |
+          python - <<'PY'
+          import json
+          a=json.load(open('research/natural_flower_wind/WESCHLER_BEHAVIOR_COOCCURRENCE_2026-11-19.json'))
+          assert a['status']=='EXPLORATORY_ESTIMATED',a
+          assert a['units']['raw_interaction_rows']==472
+          assert a['units']['video_sessions']>=12
+          assert a['primary']['n_permutations']==999
+          assert len(a['claim_limits'])>=6
+          print('WESCHLER_VIDEO_BEHAVIOR_SOURCE_AND_CLAIM_GATE_PASS')
+          PY
       - name: Run source-corrected exploratory three-bee guild ecological comparison
+        continue-on-error: true
         env:
           OPENBLAS_NUM_THREADS: '1'
           OMP_NUM_THREADS: '1'
@@ -86,5 +102,6 @@ jobs:
             research/natural_flower_wind/SEMANTIC_AUDIT_2026-11-19.json
             research/natural_flower_wind/WESCHLER_SOURCE_INTAKE_2026-11-19.json
             research/natural_flower_wind/THREE_BEE_GUILD_RESULT_2026-11-19.json
+            research/natural_flower_wind/WESCHLER_BEHAVIOR_COOCCURRENCE_2026-11-19.json
           if-no-files-found: warn
           retention-days: 45
