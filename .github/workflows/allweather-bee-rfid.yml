@@ -27,7 +27,7 @@ jobs:
         with:
           python-version: '3.11'
       - name: Syntax and source identity checks
-        run: python -m py_compile research/nest_activity_wind/intake.py
+        run: python -m py_compile research/nest_activity_wind/intake.py research/nest_activity_wind/audit_temporal_support.py
       - name: Download source originals into memory and audit public MD5
         run: python research/nest_activity_wind/intake.py
       - name: Verify independent raw-source provenance
@@ -42,11 +42,26 @@ jobs:
           assert x['files']['bumblebee']['rows']>=1000
           print('TNOA_BEE_RFID_SOURCE_PROVENANCE_PASS')
           PY
+      - name: Check true source-year and duplicate weather consistency
+        run: python research/nest_activity_wind/audit_temporal_support.py
+      - name: Audit temporal receipt and no silent year correction
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open('research/nest_activity_wind/TEMPORAL_SUPPORT_2026-11-22.json'))
+          assert x['scientific_status']=='TIME_AND_JOIN_AUDIT_ONLY_NO_BIOLOGICAL_ASSOCIATION'
+          assert x['unreconciled_year_mismatch'] is True
+          assert x['taxa']['honeybee']['arrival_records']==1650
+          assert x['taxa']['bumblebee']['arrival_records']==3872
+          print('TNOA_RFID_TEMPORAL_AUDIT_RECEIPT_PASS')
+          PY
       - name: Publish only schema/provenance receipt
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: tnoa-irish-bee-rfid-source-audit
-          path: research/nest_activity_wind/INTAKE_RECEIPT_2026-11-22.json
+          path: |
+            research/nest_activity_wind/INTAKE_RECEIPT_2026-11-22.json
+            research/nest_activity_wind/TEMPORAL_SUPPORT_2026-11-22.json
           if-no-files-found: warn
           retention-days: 45
