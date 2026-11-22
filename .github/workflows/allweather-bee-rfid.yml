@@ -27,7 +27,7 @@ jobs:
         with:
           python-version: '3.11'
       - name: Syntax and source identity checks
-        run: python -m py_compile research/nest_activity_wind/intake.py research/nest_activity_wind/audit_temporal_support.py research/nest_activity_wind/audit_clean_windows.py research/nest_activity_wind/audit_arrival_timing.py
+        run: python -m py_compile research/nest_activity_wind/intake.py research/nest_activity_wind/audit_temporal_support.py research/nest_activity_wind/audit_clean_windows.py research/nest_activity_wind/audit_arrival_timing.py research/nest_activity_wind/build_safe_15min.py
       - name: Download source originals into memory and audit public MD5
         run: python research/nest_activity_wind/intake.py
       - name: Verify independent raw-source provenance
@@ -71,6 +71,20 @@ jobs:
           PY
       - name: Audit fractional-second RFID arrival clock support before matching wind
         run: python research/nest_activity_wind/audit_arrival_timing.py
+      - name: Construct safe 15-minute derived wind × tagged-return records
+        run: python research/nest_activity_wind/build_safe_15min.py
+      - name: Validate 5-minute tag and field-day eligibility without claiming ecological effects
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open('research/nest_activity_wind/DERIVED_SAFE_15MIN_2026-11-22.json'))
+          assert x['literal_source_year']==2020 and x['manuscript_methods_year']==2021
+          assert len(x['rows'])==x['n_paired_15min_bins']
+          assert x['status'] in ('DERIVED_WINDOWS_ONLY_NO_WIND_EFFECT_FIT','HOLD_CLEAN_DAY_COVERAGE','HOLD_NONFINITE_SOURCE_WIND')
+          assert x['weather_conflict_timestamps_excluded']>0 if 'weather_conflict_timestamps_excluded' in x else x['meteorological_conflict_timestamps_excluded']>0
+          assert all(x['rows'][i]['bin_start']!=x['rows'][i+1]['bin_start'] for i in range(len(x['rows'])-1))
+          print('TNOA_RFID_DERIVED_SOURCE_QA_PASS',x['status'],x['n_paired_15min_bins'])
+          PY
       - name: Publish only schema/provenance receipt
         if: always()
         uses: actions/upload-artifact@v4
@@ -81,5 +95,6 @@ jobs:
             research/nest_activity_wind/TEMPORAL_SUPPORT_2026-11-22.json
             research/nest_activity_wind/CLEAN_WINDOW_ELIGIBILITY_2026-11-22.json
             research/nest_activity_wind/RFID_ARRIVAL_TIME_CONSISTENCY_2026-11-22.json
+            research/nest_activity_wind/DERIVED_SAFE_15MIN_2026-11-22.json
           if-no-files-found: warn
           retention-days: 45
