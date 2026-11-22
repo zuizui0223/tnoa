@@ -27,7 +27,7 @@ jobs:
         with:
           python-version: '3.11'
       - name: Syntax and source identity checks
-        run: python -m py_compile research/nest_activity_wind/intake.py research/nest_activity_wind/audit_temporal_support.py research/nest_activity_wind/audit_clean_windows.py
+        run: python -m py_compile research/nest_activity_wind/intake.py research/nest_activity_wind/audit_temporal_support.py research/nest_activity_wind/audit_clean_windows.py research/nest_activity_wind/audit_arrival_timing.py
       - name: Download source originals into memory and audit public MD5
         run: python research/nest_activity_wind/intake.py
       - name: Verify independent raw-source provenance
@@ -69,6 +69,8 @@ jobs:
           assert x['source_firsttimefound_precision_checks']['honeybee']['wrong_clock_minute']>=0
           print('TNOA_RFID_UNAMBIGUOUS_WEATHER_COVERAGE_PASS')
           PY
+      - name: Audit fractional-second RFID arrival clock support before matching wind
+        run: python research/nest_activity_wind/audit_arrival_timing.py
       - name: Publish only schema/provenance receipt
         if: always()
         uses: actions/upload-artifact@v4
@@ -78,5 +80,6 @@ jobs:
             research/nest_activity_wind/INTAKE_RECEIPT_2026-11-22.json
             research/nest_activity_wind/TEMPORAL_SUPPORT_2026-11-22.json
             research/nest_activity_wind/CLEAN_WINDOW_ELIGIBILITY_2026-11-22.json
+            research/nest_activity_wind/RFID_ARRIVAL_TIME_CONSISTENCY_2026-11-22.json
           if-no-files-found: warn
           retention-days: 45
