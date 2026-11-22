@@ -1,0 +1,134 @@
+name: TNOA All-Weather Bee RFID Source Audit
+
+on:
+  push:
+    branches:
+      - research/irish-allweather-rfid-wind-20261122
+      - main
+    paths:
+      - 'research/nest_activity_wind/**'
+      - '.github/workflows/allweather-bee-rfid.yml'
+  pull_request:
+    paths:
+      - 'research/nest_activity_wind/**'
+      - '.github/workflows/allweather-bee-rfid.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rfid-source-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install numerical fit dependencies
+        run: python -m pip install numpy==2.3.5 scipy==1.17.0
+      - name: Syntax and source identity checks
+        run: python -m py_compile research/nest_activity_wind/intake.py research/nest_activity_wind/audit_temporal_support.py research/nest_activity_wind/audit_clean_windows.py research/nest_activity_wind/audit_arrival_timing.py research/nest_activity_wind/build_safe_15min.py research/nest_activity_wind/test_rfid_relative_arrivals.py research/nest_activity_wind/audit_final_claims.py
+      - name: Download source originals into memory and audit public MD5
+        run: python research/nest_activity_wind/intake.py
+      - name: Verify independent raw-source provenance
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open('research/nest_activity_wind/INTAKE_RECEIPT_2026-11-22.json'))
+          assert x['scientific_status'].startswith('source_schema')
+          assert set(x['files'])=={'honeybee','bumblebee','weather'}
+          assert x['files']['weather']['rows']>=20000
+          assert x['files']['honeybee']['rows']>=1000
+          assert x['files']['bumblebee']['rows']>=1000
+          print('TNOA_BEE_RFID_SOURCE_PROVENANCE_PASS')
+          PY
+      - name: Check true source-year and duplicate weather consistency
+        run: python research/nest_activity_wind/audit_temporal_support.py
+      - name: Audit temporal receipt and no silent year correction
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open('research/nest_activity_wind/TEMPORAL_SUPPORT_2026-11-22.json'))
+          assert x['scientific_status']=='TIME_AND_JOIN_AUDIT_ONLY_NO_BIOLOGICAL_ASSOCIATION'
+          assert x['unreconciled_year_mismatch'] is True
+          assert x['taxa']['honeybee']['arrival_records']==1650
+          assert x['taxa']['bumblebee']['arrival_records']==3872
+          print('TNOA_RFID_TEMPORAL_AUDIT_RECEIPT_PASS')
+          PY
+      - name: Count conflict-free concurrent RFID/weather windows without fitting an effect
+        run: python research/nest_activity_wind/audit_clean_windows.py
+      - name: Enforce source-year and conflict-free eligibility receipts
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open('research/nest_activity_wind/CLEAN_WINDOW_ELIGIBILITY_2026-11-22.json'))
+          assert x['source_time_year']==2020
+          assert x['paper_methods_reported_year']==2021
+          assert x['scientific_status'].startswith('source_eligibility_only')
+          assert x['weather_conflicting_unique_timestamps']>0
+          assert x['source_firsttimefound_precision_checks']['honeybee']['wrong_clock_minute']>=0
+          print('TNOA_RFID_UNAMBIGUOUS_WEATHER_COVERAGE_PASS')
+          PY
+      - name: Audit fractional-second RFID arrival clock support before matching wind
+        run: python research/nest_activity_wind/audit_arrival_timing.py
+      - name: Construct safe 15-minute derived wind × tagged-return records
+        run: python research/nest_activity_wind/build_safe_15min.py
+      - name: Validate 5-minute tag and field-day eligibility without claiming ecological effects
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open('research/nest_activity_wind/DERIVED_SAFE_15MIN_2026-11-22.json'))
+          assert x['literal_source_year']==2020 and x['manuscript_methods_year']==2021
+          assert len(x['rows'])==x['n_paired_15min_bins']
+          assert x['status'] in ('DERIVED_WINDOWS_ONLY_NO_WIND_EFFECT_FIT','HOLD_CLEAN_DAY_COVERAGE','HOLD_NONFINITE_SOURCE_WIND')
+          assert x['weather_conflict_timestamps_excluded']>0 if 'weather_conflict_timestamps_excluded' in x else x['meteorological_conflict_timestamps_excluded']>0
+          assert all(x['rows'][i]['bin_start']!=x['rows'][i+1]['bin_start'] for i in range(len(x['rows'])-1))
+          print('TNOA_RFID_DERIVED_SOURCE_QA_PASS',x['status'],x['n_paired_15min_bins'])
+          PY
+      - name: Fit exploratory same-day tagged-bee relative-return wind association
+        env:
+          OPENBLAS_NUM_THREADS: '1'
+          OMP_NUM_THREADS: '1'
+        run: python research/nest_activity_wind/test_rfid_relative_arrivals.py --permutations 999
+      - name: Enforce no missing source provenance, no fabricated true absence
+        run: |
+          python - <<'PY'
+          import json
+          f='research/nest_activity_wind/EXPLORATORY_RFID_WIND_RESULT_2026-11-22.json'
+          x=json.load(open(f))
+          assert x['source_year_mismatch'] is True
+          assert len(x['hard_limits'])>=8
+          assert x['status'] in ('EXPLORATORY_ESTIMATED','HOLD_SOURCE_DRIFT','HOLD_CLEAN_DAY_COVERAGE',
+             'HOLD_NONFINITE_SOURCE_WIND','HOLD_UNEXPLAINED_YEAR_REWRITE',
+             'HOLD_TOO_FEW_CLEAN_WINDOWS','HOLD_UNQUALIFIED_PAIRED_SENSOR_EXPOSURE',
+             'HOLD_INCONSISTENT_DERIVED_DENOMINATOR','HOLD_RARE_TAGGED_ARRIVALS',
+             'HOLD_DESIGN_RANK_OR_WIND','HOLD_MAIN_NUMERIC_FIT',
+             'HOLD_INVALID_LIKELIHOOD_GAIN','HOLD_DAYPART_PERMUTATION_SUPPORT',
+             'HOLD_PERMUTATION_FIT')
+          if x['status']=='EXPLORATORY_ESTIMATED':
+              assert x['permutation']['n']==999
+              assert x['permutation']['failed_fits']==0
+              assert x['source_scope']['matched_days']>=12
+              assert x['source_scope']['clean_paired_antenna_bins']>=200
+              assert 'true' not in x['scientific_target'].lower()
+          print('TNOA_RFID_ECOLOGICAL_CLAIM_CEILING_PASS',x['status'])
+          PY
+      - name: Verify source and 999-permutation negative ecological disposition without rescoping
+        run: python research/nest_activity_wind/audit_final_claims.py
+      - name: Publish only schema/provenance receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tnoa-irish-bee-rfid-source-audit
+          path: |
+            research/nest_activity_wind/INTAKE_RECEIPT_2026-11-22.json
+            research/nest_activity_wind/TEMPORAL_SUPPORT_2026-11-22.json
+            research/nest_activity_wind/CLEAN_WINDOW_ELIGIBILITY_2026-11-22.json
+            research/nest_activity_wind/RFID_ARRIVAL_TIME_CONSISTENCY_2026-11-22.json
+            research/nest_activity_wind/DERIVED_SAFE_15MIN_2026-11-22.json
+            research/nest_activity_wind/EXPLORATORY_RFID_WIND_RESULT_2026-11-22.json
+            research/nest_activity_wind/FINAL_RFID_CLAIM_DISPOSITION_2026-11-22.json
+          if-no-files-found: warn
+          retention-days: 45
