@@ -1,0 +1,52 @@
+name: TNOA All-Weather Bee RFID Source Audit
+
+on:
+  push:
+    branches:
+      - research/irish-allweather-rfid-wind-20261122
+      - main
+    paths:
+      - 'research/nest_activity_wind/**'
+      - '.github/workflows/allweather-bee-rfid.yml'
+  pull_request:
+    paths:
+      - 'research/nest_activity_wind/**'
+      - '.github/workflows/allweather-bee-rfid.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rfid-source-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Syntax and source identity checks
+        run: python -m py_compile research/nest_activity_wind/intake.py
+      - name: Download source originals into memory and audit public MD5
+        run: python research/nest_activity_wind/intake.py
+      - name: Verify independent raw-source provenance
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open('research/nest_activity_wind/INTAKE_RECEIPT_2026-11-22.json'))
+          assert x['scientific_status'].startswith('source_schema')
+          assert set(x['files'])=={'honeybee','bumblebee','weather'}
+          assert x['files']['weather']['rows']>=20000
+          assert x['files']['honeybee']['rows']>=1000
+          assert x['files']['bumblebee']['rows']>=1000
+          print('TNOA_BEE_RFID_SOURCE_PROVENANCE_PASS')
+          PY
+      - name: Publish only schema/provenance receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tnoa-irish-bee-rfid-source-audit
+          path: research/nest_activity_wind/INTAKE_RECEIPT_2026-11-22.json
+          if-no-files-found: warn
+          retention-days: 45
