@@ -192,6 +192,25 @@ def main():
                                         "status":"EXPLORATORY_ESTIMATED",
                                         "wind_odds_ratio":float(np.exp(f1["coefficient"][-1])),
                                         "deviance_gain":float(2*(f0["nll"]-f1["nll"]))}
+                            # Leave-one-source-day-out is a fragility check,
+                            # not a second search for significance.
+                            leftout=[]
+                            for held in dates:
+                                keep_rows=[row for row in indexed if row["date"]!=held]
+                                ty=np.array([r["honeybee_arriving"] for r in keep_rows],float)
+                                tn=ty+np.array([r["bumblebee_arriving"] for r in keep_rows],float)
+                                sub=prepare(keep_rows)
+                                if sub is None:
+                                    leftout.append({"excluded_day":held,"status":"HOLD_DESIGN"})
+                                    continue
+                                sf0=fit(sub[0],ty,tn);sf1=fit(sub[1],ty,tn)
+                                if not (sf0["ok"] and sf1["ok"]):
+                                    leftout.append({"excluded_day":held,"status":"HOLD_OPTIMIZER"})
+                                else:
+                                    leftout.append({"excluded_day":held,
+                                        "status":"EXPLORATORY_ESTIMATED",
+                                        "odds_ratio_per_local_wind_IQR":float(np.exp(sf1["coefficient"][-1])),
+                                        "deviance_gain":float(2*(sf0["nll"]-sf1["nll"]))})
                             result.update({
                                 "status":"EXPLORATORY_ESTIMATED" if valid else "HOLD_PERMUTATION_FIT",
                                 "model":{"reference":"binomial honey arrivals among recorded honey+bumble arrivals in matched sensor-active bins",
@@ -210,7 +229,8 @@ def main():
                                   "plus_one_p":pvalue,
                                   "median_null_deviance":float(np.median(null_gains)) if null_gains else None,
                                   "q95_null_deviance":float(np.quantile(null_gains,.95)) if null_gains else None},
-                                "weather_adjusted_sensitivity":sens_res})
+                                "weather_adjusted_sensitivity":sens_res,
+                                "leave_one_source_day_out":leftout})
     path=Path(a.output);path.parent.mkdir(parents=True,exist_ok=True)
     path.write_text(json.dumps(result,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
     print("TNOA_RFID_WIND_CONDITIONAL_RETURN_RESULT",json.dumps({
