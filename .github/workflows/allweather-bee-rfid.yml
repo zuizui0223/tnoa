@@ -29,7 +29,7 @@ jobs:
       - name: Install numerical fit dependencies
         run: python -m pip install numpy==2.3.5 scipy==1.17.0
       - name: Syntax and source identity checks
-        run: python -m py_compile research/nest_activity_wind/intake.py research/nest_activity_wind/audit_temporal_support.py research/nest_activity_wind/audit_clean_windows.py research/nest_activity_wind/audit_arrival_timing.py research/nest_activity_wind/build_safe_15min.py research/nest_activity_wind/test_rfid_relative_arrivals.py
+        run: python -m py_compile research/nest_activity_wind/intake.py research/nest_activity_wind/audit_temporal_support.py research/nest_activity_wind/audit_clean_windows.py research/nest_activity_wind/audit_arrival_timing.py research/nest_activity_wind/build_safe_15min.py research/nest_activity_wind/test_rfid_relative_arrivals.py research/nest_activity_wind/audit_final_claims.py
       - name: Download source originals into memory and audit public MD5
         run: python research/nest_activity_wind/intake.py
       - name: Verify independent raw-source provenance
@@ -115,6 +115,8 @@ jobs:
               assert 'true' not in x['scientific_target'].lower()
           print('TNOA_RFID_ECOLOGICAL_CLAIM_CEILING_PASS',x['status'])
           PY
+      - name: Verify source and 999-permutation negative ecological disposition without rescoping
+        run: python research/nest_activity_wind/audit_final_claims.py
       - name: Publish only schema/provenance receipt
         if: always()
         uses: actions/upload-artifact@v4
@@ -127,5 +129,6 @@ jobs:
             research/nest_activity_wind/RFID_ARRIVAL_TIME_CONSISTENCY_2026-11-22.json
             research/nest_activity_wind/DERIVED_SAFE_15MIN_2026-11-22.json
             research/nest_activity_wind/EXPLORATORY_RFID_WIND_RESULT_2026-11-22.json
+            research/nest_activity_wind/FINAL_RFID_CLAIM_DISPOSITION_2026-11-22.json
           if-no-files-found: warn
           retention-days: 45
